@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.support.GetNoticeListResponseDto;
+import com.korit.thememorialday.dto.response.support.GetNoticeResponseDto;
 import com.korit.thememorialday.entity.support.NoticeEntity;
 import com.korit.thememorialday.repository.support.NoticeRepository;
 import com.korit.thememorialday.service.support.NoticeService;
@@ -25,11 +26,23 @@ public class NoticeServiceImplement implements NoticeService{
         List<NoticeEntity> noticeEntities = new ArrayList<>();
 
         try {
-            noticeEntities = noticeRepository.findAll();
+            noticeEntities = noticeRepository.findByOrderByNoticeNumberDesc();
         } catch(Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
         }
         return GetNoticeListResponseDto.success(noticeEntities);
+    }
+
+    @Override
+    public ResponseEntity<? super GetNoticeResponseDto> getNotice(Integer noticeNumber) {
+        NoticeEntity noticeEntity = new NoticeEntity();
+        try {
+            noticeEntity = noticeRepository.findByNoticeNumber(noticeNumber);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetNoticeResponseDto.success(noticeEntity);
     }
 }

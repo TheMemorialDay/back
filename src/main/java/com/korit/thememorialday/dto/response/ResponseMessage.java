@@ -8,6 +8,7 @@ public interface ResponseMessage {
     String DUPLICATE_TEL_NUMBER = "Duplicated User Tel Number";
     String NO_EXIST_USER_ID = "No Exist User Id";
     String NO_EXIST_TOOL = "No Exist Tool";
+    String NO_EXIST_QUESTION = "No Exist Question";
     String NO_EXIST_CUSTOMER = "No Exist Customer";
 
     String TEL_AUTH_FAIL = "Telnumber Authentication Failed";
