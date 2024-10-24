@@ -17,6 +17,11 @@ public class ResponseDto {
         return ResponseEntity.status(HttpStatus.OK).body(responsdBody);
     }
 
+    public static ResponseEntity<ResponseDto> noExistQuestion() {
+        ResponseDto responsdBody = new ResponseDto(ResponseCode.NO_EXIST_QUESTION, ResponseMessage.NO_EXIST_QUESTION);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsdBody);
+    }
+
     public static ResponseEntity<ResponseDto> databaseError() {
         ResponseDto responseBody = new ResponseDto(ResponseCode.DATABASE_ERROR, ResponseMessage.DATABASE_ERROR);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
