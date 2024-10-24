@@ -1,9 +1,13 @@
 package com.korit.thememorialday.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.korit.thememorialday.entity.ProductEntity;
 
+@Repository
 public interface ProductRepository extends JpaRepository<ProductEntity, Integer> {
-    // 인티저로만 써도 되는지 뤼튼한테 물어보기
+
+    ProductEntity findByProductNumber(Integer productNumber);
+    
 }
