@@ -41,21 +41,6 @@ public class ResponseDto {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
 	}
 
-	public static ResponseEntity<ResponseDto> noExistTool() {
-		ResponseDto responsBody = new ResponseDto(ResponseCode.NO_EXIST_TOOL, ResponseMessage.NO_EXIST_TOOL);
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
-	}
-
-	public static ResponseEntity<ResponseDto> noExistCustomer() {
-		ResponseDto responsBody = new ResponseDto(ResponseCode.NO_EXIST_CUSTOMER, ResponseMessage.NO_EXIST_CUSTOMER);
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
-	}
-
-	public static ResponseEntity<ResponseDto> toolInsufficient() {
-		ResponseDto responsBody = new ResponseDto(ResponseCode.TOOL_INSUFFICIENT, ResponseMessage.TOOL_INSUFFICIENT);
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
-	}
-
 	public static ResponseEntity<ResponseDto> telAuthFail() {
 		ResponseDto responsBody = new ResponseDto(ResponseCode.TEL_AUTH_FAIL, ResponseMessage.TEL_AUTH_FAIL);
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responsBody);
@@ -83,6 +68,11 @@ public class ResponseDto {
 
 	public static ResponseEntity<ResponseDto> databaseError() {
 		ResponseDto responseBody = new ResponseDto(ResponseCode.DATABASE_ERROR, ResponseMessage.DATABASE_ERROR);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+	}
+
+	public static ResponseEntity<ResponseDto> noExistInfo() {
+		ResponseDto responseBody = new ResponseDto(ResponseCode.NO_EXIST_INFO, ResponseMessage.NO_EXIST_INFO);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
 	}
 }

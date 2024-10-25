@@ -30,7 +30,7 @@ public class SmsProvider {
 		Message message = new Message();
 		message.setFrom(from);
 		message.setTo(to);
-		message.setText("Senicare 인증 번호 [" + telAuthNumber + "] 를 정확히 입력해주세요.");
+		message.setText("TheMemorialDay 인증 번호 [" + telAuthNumber + "] 를 정확히 입력해주세요.");
 
 		SingleMessageSendingRequest request = new SingleMessageSendingRequest(message);
 		SingleMessageSentResponse response = messageService.sendOne(request);
