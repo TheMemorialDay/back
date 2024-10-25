@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 //# user 엔터티
 
@@ -18,6 +19,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity(name="user")
 @Table(name="user")
+@ToString
 public class UserEntity {
 	@Id
 	private String userId;
@@ -42,5 +44,6 @@ public class UserEntity {
 		this.gender = dto.getGender();
 		this.joinPath = dto.getJoinPath();
 		this.snsId = dto.getSnsId();
+		this.permission = "일반";
 	}
 }

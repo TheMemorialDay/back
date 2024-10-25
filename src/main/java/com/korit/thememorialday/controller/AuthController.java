@@ -4,12 +4,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.korit.thememorialday.dto.request.auth.IdCheckRequestDto;
+import com.korit.thememorialday.dto.request.auth.IdSearchAuthRequestDto;
+import com.korit.thememorialday.dto.request.auth.IdSearchRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignInRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthCheckRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
-import com.korit.thememorialday.dto.response.SignInResponseDto;
+import com.korit.thememorialday.dto.response.auth.IdSearchResponseDto;
+import com.korit.thememorialday.dto.response.auth.SignInResponseDto;
 import com.korit.thememorialday.service.AuthService;
 
 import jakarta.validation.Valid;
@@ -68,6 +71,24 @@ public class AuthController {
 		@RequestBody @Valid SignInRequestDto requestBody
 	) {
 		ResponseEntity<? super SignInResponseDto> response = authService.signIn(requestBody);
+		return response;
+	}
+
+	//* 아이디 찾기 시도
+	@PostMapping("id-search")
+	public ResponseEntity<ResponseDto> beforeIdSearch(
+		@RequestBody @Valid IdSearchRequestDto requestBody
+	) {
+		ResponseEntity<ResponseDto> response = authService.beforeIdSearch(requestBody);
+		return response;
+	}
+
+	//* 최종 아이디 찾기
+	@PostMapping("id-search-tel-auth-check")
+	public ResponseEntity<? super IdSearchResponseDto> idSearch(
+		@RequestBody @Valid IdSearchAuthRequestDto requestBody
+	) {
+		ResponseEntity<? super IdSearchResponseDto> response = authService.IdSearch(requestBody);
 		return response;
 	}
 	

@@ -34,7 +34,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		else {
 			String snsId = (String) attributes.get("snsId");
 			String joinPath = (String) attributes.get("joinPath");
-			response.sendRedirect("http://localhost:3000/auth?snsId=" + snsId + "&joinPath=" + joinPath);
+			response.sendRedirect("http://localhost:3000/auth/sign-up?snsId=" + snsId + "&joinPath=" + joinPath);
 		}
 	}
 }

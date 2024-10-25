@@ -21,7 +21,6 @@ public class SignUpRequestDto {
 	@NotBlank
 	private String name;
 	@NotBlank
-	@Past
 	private String birth;
 	@NotBlank
 	private String gender;

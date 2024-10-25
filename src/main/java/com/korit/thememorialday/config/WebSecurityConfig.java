@@ -21,6 +21,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.korit.thememorialday.dto.response.ResponseCode;
 import com.korit.thememorialday.dto.response.ResponseMessage;
 import com.korit.thememorialday.filter.JwtAuthenticationFilter;
+import com.korit.thememorialday.handler.OAuth2SuccessHandler;
 import com.korit.thememorialday.service.implement.OAuth2UserServiceImplement;
 
 import jakarta.servlet.ServletException;
@@ -38,6 +39,7 @@ public class WebSecurityConfig {
 
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 	private final OAuth2UserServiceImplement oAuth2UserServiceImplement;
+	private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
 	@Bean
 	protected SecurityFilterChain configure(HttpSecurity security) throws Exception {
@@ -63,6 +65,7 @@ public class WebSecurityConfig {
 				.authorizationEndpoint(endpoint -> endpoint.baseUri("/api/v1/auth/sns-sign-in"))
 				// OAuth 서비스 만든 후 적용
 				.userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserServiceImplement))
+				.successHandler(oAuth2SuccessHandler)
 			)
 
 			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

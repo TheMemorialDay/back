@@ -1,7 +1,11 @@
-package com.korit.thememorialday.dto.response;
+package com.korit.thememorialday.dto.response.auth;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import com.korit.thememorialday.dto.response.ResponseCode;
+import com.korit.thememorialday.dto.response.ResponseDto;
+import com.korit.thememorialday.dto.response.ResponseMessage;
 
 import lombok.Getter;
 

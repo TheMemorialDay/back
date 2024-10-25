@@ -18,4 +18,8 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
 	UserEntity findByUserId(String userId);
 	// 로그인을 위한 snsId & 가입 경로 찾기
 	UserEntity findBySnsIdAndJoinPath(String snsId, String joinPath);
+
+	// 아이디 찾기 (이름, 전화번호, 인증번호)
+	UserEntity findByName(String name);
+	UserEntity findByTelNumber(String telNumber);
 }
