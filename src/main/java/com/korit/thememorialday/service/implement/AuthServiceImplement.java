@@ -176,7 +176,7 @@ public class AuthServiceImplement implements AuthService {
 
 		try {
 			UserEntity userEntity = userRepository.findByName(name);
-			if (userEntity == null) return ResponseDto.noExistName();
+			if (userEntity == null) return ResponseDto.noExistInfo();
 
 			UserEntity userEntity2 = userRepository.findByTelNumber(telNumber);
 			if (userEntity2 == null) return ResponseDto.telAuthFail();
