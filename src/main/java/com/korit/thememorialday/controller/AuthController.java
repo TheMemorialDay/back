@@ -8,6 +8,7 @@ import com.korit.thememorialday.dto.request.auth.IdSearchAuthRequestDto;
 import com.korit.thememorialday.dto.request.auth.IdSearchRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordAuthRequestDto;
 import com.korit.thememorialday.dto.request.auth.PatchPasswordRequestDto;
+import com.korit.thememorialday.dto.request.auth.PatchUserInfoRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordSearchRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignInRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
@@ -123,7 +124,7 @@ public class AuthController {
 	public ResponseEntity<ResponseDto> passwordResetting(
 		@RequestBody @Valid PatchPasswordRequestDto requestBody
 	) {
-		ResponseEntity<ResponseDto> response = authService.passwordResetting(requestBody);
+		ResponseEntity<ResponseDto> response = authService.patchPassword(requestBody, null);
 		return response;
 	};
 
@@ -142,6 +143,16 @@ public class AuthController {
 		@PathVariable("userId") String userId
 	) {
 		ResponseEntity<? super GetUserInfoResponseDto> response = authService.getUserInfo(userId);
+		return response;
+	};
+
+	//* 회원 개인 정보 수정
+	@PostMapping("/{userId}")
+	public ResponseEntity<ResponseDto> patchUserInfo(
+		@RequestBody @Valid PatchUserInfoRequestDto requestBody,
+		@PathVariable("userId") String userId
+	) {
+		ResponseEntity<ResponseDto> response = authService.patchUserInfo(requestBody, userId);
 		return response;
 	};
 	

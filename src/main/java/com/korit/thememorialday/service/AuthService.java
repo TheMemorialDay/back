@@ -40,8 +40,8 @@ public interface AuthService {
 	ResponseEntity<ResponseDto> passwordSearch(PasswordSearchRequestDto dto);
 	// 비밀번호 찾기 - 전화번호 & 인증번호 확인
 	ResponseEntity<ResponseDto> passwordAuthCheck(PasswordAuthRequestDto dto);
-	// 비밀번호 재설정 - 아이디 & 전화번호
-	ResponseEntity<ResponseDto> passwordResetting(PatchPasswordRequestDto dto);
+	// 비밀번호 재설정
+	ResponseEntity<ResponseDto> patchPassword(PatchPasswordRequestDto dto, String password);
 
 	// 회원정보 수정 시 비밀번호 확인
 	ResponseEntity<ResponseDto> userUpdatePasswordCheck(UserUpdatePasswordCheckRequestDto dto);

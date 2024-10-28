@@ -286,16 +286,17 @@ public class AuthServiceImplement implements AuthService {
 
 	//* 비밀번호 재설정
 	@Override
-	public ResponseEntity<ResponseDto> passwordResetting(PatchPasswordRequestDto dto) {
-		String userId = dto.getUserId();
-		String telNumber = dto.getTelNumber();
-		String password = dto.getPassword();
-
-		UserEntity userEntity = null;
+	public ResponseEntity<ResponseDto> patchPassword(
+		PatchPasswordRequestDto dto, 
+		String password) {
 
 		try {
-			userEntity = userRepository.findByUserIdAndTelNumber(userId, telNumber);
-			if (userEntity == null) ResponseDto.databaseError();
+			password = dto.getPassword();
+
+			UserEntity userEntity = userRepository.findByPassword(password);
+			if (userEntity == null) return ResponseDto.noExistInfo();
+
+			userEntity.setPassword(password);
 
 			// 비밀번호 암호화 : 비밀번호만 업데이트
 			String encodedPassword = passwordEncoder.encode(password);
@@ -316,13 +317,14 @@ public class AuthServiceImplement implements AuthService {
 	public ResponseEntity<ResponseDto> userUpdatePasswordCheck(UserUpdatePasswordCheckRequestDto dto) {
 		String password = dto.getPassword();
 
-		UserEntity userEntity = null;
-
 		try {
+			UserEntity userEntity = userRepository.findByPassword(password);
+			if (userEntity == null) return ResponseDto.noExistInfo();
+
 			String encodedPassword = userEntity.getPassword();
 			boolean isMatched = passwordEncoder.matches(password, encodedPassword);
 			if (!isMatched) return ResponseDto.noPermission();
-
+			
 		} catch(Exception exception) {
 			exception.printStackTrace();
 			return ResponseDto.databaseError();
@@ -349,8 +351,28 @@ public class AuthServiceImplement implements AuthService {
 
 	//* 회원 개인 정보 수정
 	@Override
-	public ResponseEntity<ResponseDto> patchUserInfo(PatchUserInfoRequestDto dto, String userId) {
+	public ResponseEntity<ResponseDto> patchUserInfo( 
+		PatchUserInfoRequestDto dto,
+		String userId) {
+
 		try {
+
+			String password = dto.getPassword();
+			String name = dto.getName();
+			String birth = dto.getBirth();
+			String gender = dto.getGender();
+			String telNumber = dto.getTelNumber();
+
+			UserEntity userEntity = userRepository.findByUserId(userId);
+			if (userEntity == null) return ResponseDto.noExistUserId();
+
+			userEntity.setPassword(password);
+			userEntity.setName(name);
+			userEntity.setBirth(birth);
+			userEntity.setGender(gender);
+			userEntity.setTelNumber(telNumber);
+
+			userRepository.save(userEntity);
 
 		} catch(Exception exception) {
 			exception.printStackTrace();

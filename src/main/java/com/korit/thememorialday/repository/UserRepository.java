@@ -1,8 +1,6 @@
 package com.korit.thememorialday.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.korit.thememorialday.entity.UserEntity;
@@ -28,9 +26,6 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
 
 	// 비밀번호 찾기 (아이디 & 전화번호)
 	boolean existsByUserIdAndTelNumber(String userId, String telNumber);
-	// 비밀번호 재설정 (아이디 & 전화번호)
-	UserEntity findByUserIdAndTelNumber(String userId, String telNumber);
-
-	// 회원정보 수정 시 비밀번호 확인
-	boolean existsByPassword(String password);
+	// 비밀번호 재설정 & 정보 수정 시 비밀번호 확인
+	UserEntity findByPassword(String password);
 }
