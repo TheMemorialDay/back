@@ -33,6 +33,8 @@ public class StoreEntity {
   private String storeAddress;
   private String storeGugun;
   private String storeDong;
+  private String storeLatitude;
+  private String storeLongtitude;
   private String storeTel;
   private Float storeRating;
   private Integer reviewCount;
@@ -63,6 +65,8 @@ public class StoreEntity {
     this.storeAddress = dto.getStoreAddress();
     this.storeGugun = dto.getStoreGugun();
     this.storeDong = dto.getStoreDong();
+    this.storeLatitude = dto.getStoreLatitude();
+    this.storeLongtitude = dto.getStoreLongtitude();
     this.storeTel = dto.getStoreTel();
     this.storeRating = dto.getStoreRating();
     this.reviewCount = dto.getReviewCount();
@@ -94,6 +98,8 @@ public class StoreEntity {
     this.storeAddress = dto.getStoreAddress();
     this.storeGugun = dto.getStoreGugun();
     this.storeDong = dto.getStoreDong();
+    this.storeLatitude = dto.getStoreLatitude();
+    this.storeLongtitude = dto.getStoreLongtitude();
     this.storeTel = dto.getStoreTel();
     this.storeRating = dto.getStoreRating();
     this.reviewCount = dto.getReviewCount();

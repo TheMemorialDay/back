@@ -34,6 +34,12 @@ public class PatchStoreRegisterRequestDto {
   @NotBlank
   private String storeDong;
 
+  @NotBlank
+  private String storeLatitude;
+
+  @NotBlank
+  private String storeLongtitude;
+
   private String storeTel;
 
   @NotNull

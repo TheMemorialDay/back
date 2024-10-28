@@ -20,6 +20,8 @@ public class Store {
   private String storeAddress;
   private String storeGugun;
   private String storeDong;
+  private String storeLatitude;
+  private String storeLongtitude;
   private String storeTel;
   private Float storeRating;
   private Integer reviewCount;
@@ -51,6 +53,8 @@ public class Store {
     this.storeAddress = storeEntity.getStoreAddress();
     this.storeGugun = storeEntity.getStoreGugun();
     this.storeDong = storeEntity.getStoreDong();
+    this.storeLatitude = storeEntity.getStoreLatitude();
+    this.storeLongtitude = storeEntity.getStoreLongtitude();
     this.storeTel = storeEntity.getStoreTel();
     this.storeRating = storeEntity.getStoreRating();
     this.reviewCount = storeEntity.getReviewCount();
