@@ -232,7 +232,7 @@ public class AuthServiceImplement implements AuthService {
 		return IdSearchResponseDto.success(userEntity);
 	}
 
-	//* 비밀번호 찾기
+	//* 비밀번호 찾기 (아이디 & 전화번호로 존재 확인)
 	@Override
 	public ResponseEntity<ResponseDto> passwordSearch(PasswordSearchRequestDto dto) {
 		String userId = dto.getUserId();
@@ -266,7 +266,7 @@ public class AuthServiceImplement implements AuthService {
 		return ResponseDto.success();
 	}
 
-	//* 비밀번호를 위한 인증 확인
+	//* 비밀번호를 위한 인증 확인 (전화번호 + 인증번호)
 	@Override
 	public ResponseEntity<ResponseDto> passwordAuthCheck(PasswordAuthRequestDto dto) {
 		String telNumber = dto.getTelNumber();
@@ -284,7 +284,7 @@ public class AuthServiceImplement implements AuthService {
 		return ResponseDto.success();
 	}
 
-	//* 비밀번호 재설정
+	//* 비밀번호 재설정 (비밀번호 요청)
 	@Override
 	public ResponseEntity<ResponseDto> patchPassword(
 		PatchPasswordRequestDto dto, 

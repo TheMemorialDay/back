@@ -93,7 +93,7 @@ public class AuthController {
 	}
 
 	//* 최종 아이디 찾기
-	@PostMapping("/id-search-tel-auth-check")
+	@PostMapping("/id-search-result")
 	public ResponseEntity<? super IdSearchResponseDto> idSearch(
 		@RequestBody @Valid IdSearchAuthRequestDto requestBody
 	) {
