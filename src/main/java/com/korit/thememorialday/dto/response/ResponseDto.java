@@ -71,8 +71,15 @@ public class ResponseDto {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
 	}
 
+	// 없는 정보
 	public static ResponseEntity<ResponseDto> noExistInfo() {
 		ResponseDto responseBody = new ResponseDto(ResponseCode.NO_EXIST_INFO, ResponseMessage.NO_EXIST_INFO);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+	}
+
+	public static ResponseEntity<ResponseDto> noExistQuestion() {
+		ResponseDto responsBody = new ResponseDto(ResponseCode.NO_EXIST_QUESTION,
+				ResponseMessage.NO_EXIST_QUESTION);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
 	}
 }

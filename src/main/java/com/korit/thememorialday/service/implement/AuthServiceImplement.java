@@ -9,11 +9,17 @@ import com.korit.thememorialday.common.util.AuthNumberCreator;
 import com.korit.thememorialday.dto.request.auth.IdCheckRequestDto;
 import com.korit.thememorialday.dto.request.auth.IdSearchAuthRequestDto;
 import com.korit.thememorialday.dto.request.auth.IdSearchRequestDto;
+import com.korit.thememorialday.dto.request.auth.PasswordAuthRequestDto;
+import com.korit.thememorialday.dto.request.auth.PatchPasswordRequestDto;
+import com.korit.thememorialday.dto.request.auth.PatchUserInfoRequestDto;
+import com.korit.thememorialday.dto.request.auth.PasswordSearchRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignInRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthCheckRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthRequestDto;
+import com.korit.thememorialday.dto.request.auth.UserUpdatePasswordCheckRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
+import com.korit.thememorialday.dto.response.auth.GetUserInfoResponseDto;
 import com.korit.thememorialday.dto.response.auth.IdSearchResponseDto;
 import com.korit.thememorialday.dto.response.auth.SignInResponseDto;
 import com.korit.thememorialday.entity.TelAuthEntity;
@@ -22,6 +28,7 @@ import com.korit.thememorialday.provider.JwtProvider;
 import com.korit.thememorialday.provider.SmsProvider;
 import com.korit.thememorialday.repository.TelAuthRepository;
 import com.korit.thememorialday.repository.UserRepository;
+// import com.korit.thememorialday.repository.resultSet.GetUserInfoResultSet;
 import com.korit.thememorialday.service.AuthService;
 
 
@@ -175,12 +182,25 @@ public class AuthServiceImplement implements AuthService {
 		String telNumber = dto.getTelNumber();
 
 		try {
-			UserEntity userEntity = userRepository.findByName(name);
-			if (userEntity == null) return ResponseDto.noExistName();
+			UserEntity userEntity = userRepository.findByNameAndTelNumber(name, telNumber);
+			if (userEntity == null) return ResponseDto.noExistInfo();
 
-			UserEntity userEntity2 = userRepository.findByTelNumber(telNumber);
-			if (userEntity2 == null) return ResponseDto.telAuthFail();
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			return ResponseDto.databaseError();
+		}
 
+		// 이름 + 전화번호 일치하면 인증번호 전송
+		String telAuthNumber = AuthNumberCreator.number4();
+
+		boolean isSendSuccess = smsProvider.sendMessage(telNumber, telAuthNumber);
+		if (!isSendSuccess) return ResponseDto.messageSendFail();
+
+		try {
+			// 전화번호인증 엔터티 & 리포지토리 생성 먼저
+			TelAuthEntity telAuthNumberEntity = new TelAuthEntity(telNumber, telAuthNumber);
+			telAuthRepository.save(telAuthNumberEntity);
+			
 		} catch(Exception exception) {
 			exception.printStackTrace();
 			return ResponseDto.databaseError();
@@ -195,19 +215,149 @@ public class AuthServiceImplement implements AuthService {
 		String telNumber = dto.getTelNumber();
 		String telAuthNumber = dto.getTelAuthNumber();
 
-		try {
-			UserEntity userEntity = userRepository.findByTelNumber(telNumber);
-			if (userEntity == null) return ResponseDto.telAuthFail();
+		UserEntity userEntity = null;
 
-			boolean telAuthEntity = telAuthRepository.existsByTelAuthNumber(telAuthNumber);
-			if (!telAuthEntity) return ResponseDto.telAuthFail();
+		try {
+			boolean isMatched = telAuthRepository.existsByTelNumberAndTelAuthNumber(telNumber, telAuthNumber);
+			if (!isMatched) return ResponseDto.telAuthFail();
+
+			userEntity = userRepository.findByTelNumber(telNumber);
+			if (userEntity == null) return ResponseDto.noExistInfo();
 
 		} catch(Exception exception) {
 			exception.printStackTrace();
 			return ResponseDto.databaseError();
 		}
 
-		return IdSearchResponseDto.success();
+		return IdSearchResponseDto.success(userEntity);
+	}
+
+	//* 비밀번호 찾기
+	@Override
+	public ResponseEntity<ResponseDto> passwordSearch(PasswordSearchRequestDto dto) {
+		String userId = dto.getUserId();
+		String telNumber = dto.getTelNumber();
+
+		try {
+			boolean isMatched = userRepository.existsByUserIdAndTelNumber(userId, telNumber);
+			if (!isMatched) return ResponseDto.noExistInfo();
+
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			return ResponseDto.databaseError();
+		}
+
+		// 아이디 + 전화번호 일치하면 인증번호 전송
+		String telAuthNumber = AuthNumberCreator.number4();
+
+		boolean isSendSuccess = smsProvider.sendMessage(telNumber, telAuthNumber);
+		if (!isSendSuccess) return ResponseDto.messageSendFail();
+
+		try {
+			// 전화번호인증 엔터티 & 리포지토리 생성 먼저
+			TelAuthEntity telAuthNumberEntity = new TelAuthEntity(telNumber, telAuthNumber);
+			telAuthRepository.save(telAuthNumberEntity);
+			
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			return ResponseDto.databaseError();
+		}
+
+		return ResponseDto.success();
+	}
+
+	//* 비밀번호를 위한 인증 확인
+	@Override
+	public ResponseEntity<ResponseDto> passwordAuthCheck(PasswordAuthRequestDto dto) {
+		String telNumber = dto.getTelNumber();
+		String telAuthNumber = dto.getTelAuthNumber();
+
+		try {
+			boolean isMatched = telAuthRepository.existsByTelNumberAndTelAuthNumber(telNumber, telAuthNumber);
+			if (!isMatched) return ResponseDto.telAuthFail();
+
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			return ResponseDto.databaseError();
+		}
+
+		return ResponseDto.success();
+	}
+
+	//* 비밀번호 재설정
+	@Override
+	public ResponseEntity<ResponseDto> passwordResetting(PatchPasswordRequestDto dto) {
+		String userId = dto.getUserId();
+		String telNumber = dto.getTelNumber();
+		String password = dto.getPassword();
+
+		UserEntity userEntity = null;
+
+		try {
+			userEntity = userRepository.findByUserIdAndTelNumber(userId, telNumber);
+			if (userEntity == null) ResponseDto.databaseError();
+
+			// 비밀번호 암호화 : 비밀번호만 업데이트
+			String encodedPassword = passwordEncoder.encode(password);
+			userEntity.setPassword(encodedPassword);
+
+			userRepository.save(userEntity);
+
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			return ResponseDto.databaseError();
+		}
+
+		return ResponseDto.success();
+	}
+
+	//* 회원정보 수정 시 비밀번호 확인
+	@Override
+	public ResponseEntity<ResponseDto> userUpdatePasswordCheck(UserUpdatePasswordCheckRequestDto dto) {
+		String password = dto.getPassword();
+
+		UserEntity userEntity = null;
+
+		try {
+			String encodedPassword = userEntity.getPassword();
+			boolean isMatched = passwordEncoder.matches(password, encodedPassword);
+			if (!isMatched) return ResponseDto.noPermission();
+
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			return ResponseDto.databaseError();
+		}
+
+		return ResponseDto.success();
+	}
+
+	//* 회원 개인 정보 보기
+	@Override
+	public ResponseEntity<? super GetUserInfoResponseDto> getUserInfo(String userId) {
+		UserEntity userEntity = null;
+
+		try {
+			userEntity = userRepository.findByUserId(userId);
+			if (userEntity == null) return ResponseDto.noExistInfo();
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			return ResponseDto.databaseError();
+		}
+
+		return GetUserInfoResponseDto.success(userEntity);
+	}
+
+	//* 회원 개인 정보 수정
+	@Override
+	public ResponseEntity<ResponseDto> patchUserInfo(PatchUserInfoRequestDto dto, String userId) {
+		try {
+
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			ResponseDto.databaseError();
+		}
+
+		return ResponseDto.success();
 	}
 	
 }

@@ -10,6 +10,7 @@ public interface ResponseCode {
 	String DUPLICATED_TEL_NUMBER = "DT";
 	String NO_EXIST_USER_ID = "NI";
 	String NO_EXIST_INFO = "NF";
+	String NO_EXIST_QUESTION = "NQ";
 
 	String TEL_AUTH_FAIL = "TAF";
 	String SIGN_IN_FAIL = "SF";
