@@ -1,5 +1,6 @@
 package com.korit.thememorialday.entity;
 
+import com.korit.thememorialday.dto.request.auth.PatchPasswordRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
 
 import jakarta.persistence.Entity;
@@ -34,7 +35,7 @@ public class UserEntity {
 	private String businessUrl;
 	private String permission;
 
-	// 데이터베이스에 데이터를 삽입하기 위한 생성자
+	// 회원가입 시 데이터베이스에 데이터를 삽입하기 위한 생성자
 	public UserEntity(SignUpRequestDto dto) {
 		this.userId = dto.getUserId();
 		this.password = dto.getPassword();
