@@ -284,34 +284,6 @@ public class AuthServiceImplement implements AuthService {
 		return ResponseDto.success();
 	}
 
-	//* 비밀번호 재설정 (비밀번호 요청)
-	@Override
-	public ResponseEntity<ResponseDto> patchPassword(
-		PatchPasswordRequestDto dto, 
-		String password) {
-
-		try {
-			password = dto.getPassword();
-
-			UserEntity userEntity = userRepository.findByPassword(password);
-			if (userEntity == null) return ResponseDto.noExistInfo();
-
-			userEntity.setPassword(password);
-
-			// 비밀번호 암호화 : 비밀번호만 업데이트
-			String encodedPassword = passwordEncoder.encode(password);
-			userEntity.setPassword(encodedPassword);
-
-			userRepository.save(userEntity);
-
-		} catch(Exception exception) {
-			exception.printStackTrace();
-			return ResponseDto.databaseError();
-		}
-
-		return ResponseDto.success();
-	}
-
 	//* 회원정보 수정 시 비밀번호 확인
 	@Override
 	public ResponseEntity<ResponseDto> userUpdatePasswordCheck(UserUpdatePasswordCheckRequestDto dto) {
@@ -377,6 +349,48 @@ public class AuthServiceImplement implements AuthService {
 		} catch(Exception exception) {
 			exception.printStackTrace();
 			ResponseDto.databaseError();
+		}
+
+		return ResponseDto.success();
+	}
+
+	//* 비밀번호 재설정 (비밀번호 요청)
+	@Override
+	public ResponseEntity<ResponseDto> patchPassword(
+		PatchPasswordRequestDto dto, 
+		String userId) {
+
+		UserEntity userEntity = null;
+
+		try {
+			// 1.
+			String checkUserId = dto.getUserId();
+			String telNumber = dto.getTelNumber();
+
+			boolean isIdAndTelNumberMatched = userRepository.existsByUserIdAndTelNumber(checkUserId, telNumber);
+			if (!isIdAndTelNumberMatched) return ResponseDto.noExistInfo();
+
+			// 2.
+			String telAuthNumber = dto.getTelAuthNumber();
+
+			boolean isTelNumberAndTelAuthNumberMatched = telAuthRepository.existsByTelNumberAndTelAuthNumber(telNumber, telAuthNumber);
+			if (!isTelNumberAndTelAuthNumberMatched) return ResponseDto.telAuthFail();
+
+			// 3.
+			String password = dto.getPassword();
+
+			userEntity = userRepository.findByPassword(password);
+			if (userEntity == null) return ResponseDto.noExistInfo();
+
+			// 비밀번호 암호화
+			String encodedPassword = passwordEncoder.encode(password);
+			userEntity.setPassword(encodedPassword);
+
+			userRepository.save(userEntity);
+
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			return ResponseDto.databaseError();
 		}
 
 		return ResponseDto.success();

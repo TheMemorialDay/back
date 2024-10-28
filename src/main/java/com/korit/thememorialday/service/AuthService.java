@@ -41,7 +41,7 @@ public interface AuthService {
 	// 비밀번호 찾기 - 전화번호 & 인증번호 확인
 	ResponseEntity<ResponseDto> passwordAuthCheck(PasswordAuthRequestDto dto);
 	// 비밀번호 재설정
-	ResponseEntity<ResponseDto> patchPassword(PatchPasswordRequestDto dto, String password);
+	ResponseEntity<ResponseDto> patchPassword(PatchPasswordRequestDto dto, String userId);
 
 	// 회원정보 수정 시 비밀번호 확인
 	ResponseEntity<ResponseDto> userUpdatePasswordCheck(UserUpdatePasswordCheckRequestDto dto);

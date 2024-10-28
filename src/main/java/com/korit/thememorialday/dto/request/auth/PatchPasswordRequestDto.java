@@ -13,6 +13,15 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PatchPasswordRequestDto {
 	@NotBlank
+	private String name;
+	@NotBlank
+	private String userId;
+	@NotBlank
+	@Pattern(regexp="^[0-9]{11}$")
+	private String telNumber;
+	@NotBlank
+	private String telAuthNumber;
+	@NotBlank
 	@Pattern(regexp="^(?=.*[a-zA-Z])(?=.*[0-9]).{8,13}$")
 	private String password;
 }

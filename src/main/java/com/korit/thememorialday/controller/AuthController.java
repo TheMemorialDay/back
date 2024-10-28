@@ -119,7 +119,7 @@ public class AuthController {
 		return response;
 	};
 
-	//* 비밀번호 재설정
+	//* 비밀번호 재설정 (로그인 X)
 	@PatchMapping("/password-resetting")
 	public ResponseEntity<ResponseDto> passwordResetting(
 		@RequestBody @Valid PatchPasswordRequestDto requestBody
