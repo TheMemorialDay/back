@@ -56,6 +56,4 @@ public class UserEntity {
 		this.businessOpendate = dto.getBusinessOpendate();
 		this.permission = "사장";
     }
-
-	
 }
