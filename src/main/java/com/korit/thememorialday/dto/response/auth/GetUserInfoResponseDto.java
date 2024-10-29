@@ -30,7 +30,7 @@ public class GetUserInfoResponseDto extends ResponseDto {
 		this.telNumber = userEntity.getTelNumber();
 	}
 
-	public static ResponseEntity<GetUserInfoResponseDto> success(UserEntity userEntity) {
+	public static ResponseEntity<? super GetUserInfoResponseDto> success(UserEntity userEntity) {
 		GetUserInfoResponseDto responseBody = new GetUserInfoResponseDto(userEntity);
 		return ResponseEntity.status(HttpStatus.OK).body(responseBody);
 	}

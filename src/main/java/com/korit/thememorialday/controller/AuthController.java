@@ -7,7 +7,7 @@ import com.korit.thememorialday.dto.request.auth.IdCheckRequestDto;
 import com.korit.thememorialday.dto.request.auth.IdSearchAuthRequestDto;
 import com.korit.thememorialday.dto.request.auth.IdSearchRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordAuthRequestDto;
-import com.korit.thememorialday.dto.request.auth.PatchPasswordRequestDto;
+import com.korit.thememorialday.dto.request.auth.PasswordResettingRequestDto;
 import com.korit.thememorialday.dto.request.auth.PatchUserInfoRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordSearchRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignInRequestDto;
@@ -16,6 +16,7 @@ import com.korit.thememorialday.dto.request.auth.TelAuthCheckRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthRequestDto;
 import com.korit.thememorialday.dto.request.auth.UserUpdatePasswordCheckRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
+import com.korit.thememorialday.dto.response.auth.GetPasswordResponseDto;
 import com.korit.thememorialday.dto.response.auth.GetUserInfoResponseDto;
 import com.korit.thememorialday.dto.response.auth.IdSearchResponseDto;
 import com.korit.thememorialday.dto.response.auth.SignInResponseDto;
@@ -101,7 +102,7 @@ public class AuthController {
 		return response;
 	}
 
-	//* 비밀번호 찾기
+	//* 비밀번호 찾기 (아이디 + 전화번호)
 	@PostMapping("/password-search")
 	public ResponseEntity<ResponseDto> passwordSearch(
 		@RequestBody @Valid PasswordSearchRequestDto requestBody
@@ -122,9 +123,9 @@ public class AuthController {
 	//* 비밀번호 재설정 (로그인 X)
 	@PatchMapping("/password-resetting")
 	public ResponseEntity<ResponseDto> passwordResetting(
-		@RequestBody @Valid PatchPasswordRequestDto requestBody
+		@RequestBody @Valid PasswordResettingRequestDto requestBody
 	) {
-		ResponseEntity<ResponseDto> response = authService.patchPassword(requestBody, null);
+		ResponseEntity<ResponseDto> response = authService.passwordResetting(requestBody);
 		return response;
 	};
 
@@ -153,6 +154,15 @@ public class AuthController {
 		@PathVariable("userId") String userId
 	) {
 		ResponseEntity<ResponseDto> response = authService.patchUserInfo(requestBody, userId);
+		return response;
+	};
+
+	//* 비밀번호만 가져오기
+	@GetMapping("//password-search")
+	public ResponseEntity<? super GetPasswordResponseDto> getPassword(
+		String password
+	) {
+		ResponseEntity<? super GetPasswordResponseDto> response = authService.getPassword(null);
 		return response;
 	};
 	
