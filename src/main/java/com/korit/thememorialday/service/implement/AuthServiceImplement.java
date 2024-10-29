@@ -14,6 +14,7 @@ import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthCheckRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
+import com.korit.thememorialday.dto.response.auth.GetSignInResponseDto;
 import com.korit.thememorialday.dto.response.auth.IdSearchResponseDto;
 import com.korit.thememorialday.dto.response.auth.SignInResponseDto;
 import com.korit.thememorialday.entity.TelAuthEntity;
@@ -208,6 +209,21 @@ public class AuthServiceImplement implements AuthService {
 		}
 
 		return IdSearchResponseDto.success();
+	}
+
+	@Override
+	public ResponseEntity<? super GetSignInResponseDto> getSignIn(String userId) {
+		UserEntity userEntity = null;
+		
+		try {
+			userEntity = userRepository.findByUserId(userId);
+			if(userEntity == null) return ResponseDto.noExistUserId();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseDto.databaseError();
+		}
+		return GetSignInResponseDto.success(userEntity);
 	}
 	
 }

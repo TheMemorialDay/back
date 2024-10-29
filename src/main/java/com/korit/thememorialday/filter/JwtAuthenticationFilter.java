@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
-//# JWT 검증 및 Security Context에 접근 제어자 추가 필터
+// JWT 검증 및 Security Context에 접근 제어자 추가 필터
 
 @Component
 @RequiredArgsConstructor

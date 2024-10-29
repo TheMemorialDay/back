@@ -10,6 +10,7 @@ import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthCheckRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
+import com.korit.thememorialday.dto.response.auth.GetSignInResponseDto;
 import com.korit.thememorialday.dto.response.auth.IdSearchResponseDto;
 import com.korit.thememorialday.dto.response.auth.SignInResponseDto;
 
@@ -29,4 +30,7 @@ public interface AuthService {
 	ResponseEntity<ResponseDto> beforeIdSearch(IdSearchRequestDto dto);
 	// 아이디 찾기 - 전화번호 & 인증번호 확인
 	ResponseEntity<? super IdSearchResponseDto> IdSearch(IdSearchAuthRequestDto dto);
+
+	// zustand 현재 접속해 있는 유저와 일치하는지 확인하기 위함
+	ResponseEntity<? super GetSignInResponseDto> getSignIn(String userId);
 }

@@ -51,7 +51,7 @@ public class WebSecurityConfig {
 			// configurationSource 메서드 만든 후 적용
 			.cors(cors -> cors.configurationSource(configurationSource()))
 			.authorizeHttpRequests(request -> request
-				.requestMatchers("/api/v1/auth/**", "/support/notice/**", "/stores/**").permitAll()
+				.requestMatchers("/api/v1/auth/**", "/support/notice/**", "/stores/**", "/file/*").permitAll()
 				.anyRequest().authenticated()
 			)
 			.exceptionHandling(exception -> exception
@@ -102,3 +102,4 @@ public class WebSecurityConfig {
 		
 	}	
 }
+

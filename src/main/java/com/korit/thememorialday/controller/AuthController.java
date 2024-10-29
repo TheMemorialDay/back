@@ -11,6 +11,7 @@ import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthCheckRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
+import com.korit.thememorialday.dto.response.auth.GetSignInResponseDto;
 import com.korit.thememorialday.dto.response.auth.IdSearchResponseDto;
 import com.korit.thememorialday.dto.response.auth.SignInResponseDto;
 import com.korit.thememorialday.service.AuthService;
@@ -19,6 +20,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -89,6 +92,15 @@ public class AuthController {
 		@RequestBody @Valid IdSearchAuthRequestDto requestBody
 	) {
 		ResponseEntity<? super IdSearchResponseDto> response = authService.IdSearch(requestBody);
+		return response;
+	}
+
+	// 로그인 유저 정보 확인
+	@GetMapping("/get-sign-in")
+	public ResponseEntity<? super GetSignInResponseDto> getSignIn(
+		@AuthenticationPrincipal String userId
+	) {
+		ResponseEntity<? super GetSignInResponseDto> response = authService.getSignIn(userId);
 		return response;
 	}
 	

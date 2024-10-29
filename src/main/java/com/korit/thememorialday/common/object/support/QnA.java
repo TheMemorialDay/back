@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
-import com.korit.thememorialday.entity.support.QnAEntity;
+import com.korit.thememorialday.repository.resultSet.GetQnAListResultSet;
 
 import lombok.Getter;
 
@@ -18,21 +17,23 @@ public class QnA {
     private String userId;
     private String questionStatus;
     private String answerContents;
+    private String name;
 
-    private QnA(QnAEntity qnaEntity) {
-        this.questionNumber = qnaEntity.getQuestionNumber();
-        this.questionTitle = qnaEntity.getQuestionTitle();
-        this.questionContents = qnaEntity.getQuestionContents();
-        this.questionDay = qnaEntity.getQuestionDay();
-        this.userId = qnaEntity.getUserId();
-        this.questionStatus = qnaEntity.getQuestionStatus();
-        this.answerContents = qnaEntity.getAnswerContents();
+    private QnA(GetQnAListResultSet resultSet) {
+        this.questionNumber = resultSet.getQuestionNumber();
+        this.questionTitle = resultSet.getQuestionTitle();
+        this.questionContents = resultSet.getQuestionContents();
+        this.questionDay = resultSet.getQuestionDay();
+        this.userId = resultSet.getUserId();
+        this.questionStatus = resultSet.getQuestionStatus();
+        this.answerContents = resultSet.getAnswerContents();
+        this.name = resultSet.getName();
     }
 
-    public static List<QnA> getList(List<QnAEntity> qnaEntities) {
+    public static List<QnA> getList(List<GetQnAListResultSet> resultSets) {
         List<QnA> qnas = new ArrayList<>();
-        for (QnAEntity qnaEntity : qnaEntities) {
-            QnA qna = new QnA(qnaEntity);
+        for (GetQnAListResultSet resultSet : resultSets) {
+            QnA qna = new QnA(resultSet);
             qnas.add(qna);
         }
         return qnas;
