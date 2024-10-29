@@ -21,6 +21,7 @@ import lombok.ToString;
 @Table(name="user")
 @ToString
 public class UserEntity {
+	
 	@Id
 	private String userId;
 	private String password;

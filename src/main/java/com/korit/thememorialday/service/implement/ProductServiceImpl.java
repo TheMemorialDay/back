@@ -1,6 +1,7 @@
 package com.korit.thememorialday.service.implement;
 
 import com.korit.thememorialday.common.object.Product;
+import com.korit.thememorialday.dto.request.product.PatchProductRequestDto;
 import com.korit.thememorialday.dto.request.product.PostProductOptionDetailRequestDto;
 import com.korit.thememorialday.dto.request.product.PostProductOptionRequestDto;
 import com.korit.thememorialday.dto.request.product.PostProductRequestDto;
@@ -17,7 +18,6 @@ import com.korit.thememorialday.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
 
-import org.glassfish.jaxb.core.annotation.OverrideAnnotationOf;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -103,12 +103,55 @@ public class ProductServiceImpl implements ProductService {
     // List<ProductEntity> products = productRepository.findByUserId(userId);
     // return GetProductListResponseDto.success(products);
     // }
+    
+    @Override
+    public ResponseEntity<GetProductListResponseDto> getProductList(String userId) {
+        List<ProductEntity> products = productRepository.findByStoreUserId(userId);
+        
+        if (products == null || products.isEmpty()) {
+            System.out.println("상품이 없습니다."); 
+        } else {
+            System.out.println("상품 수: " + products.size());
+        }
+    
+        ResponseEntity<GetProductListResponseDto> response = GetProductListResponseDto.success(products);
+        return response;
+    }
 
     @Override
-    public ResponseEntity<GetProductListResponseDto> getProductsByUserId(String userId) {
-        List<ProductEntity> products = productRepository.findByStoreUserId(userId); // 조인된 쿼리 호출
-        return GetProductListResponseDto.success(products);
+    public ResponseEntity<? super GetProductResponseDto> getProduct(Integer productNumber) {
+
+        ProductEntity productEntity = null;
+
+        try {
+            productEntity = productRepository.findByProductNumber(productNumber);
+            if(productEntity == null) return ResponseDto.noExistProduct();
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetProductResponseDto.success(productEntity);
     }
+
+    @Override
+    public ResponseEntity<ResponseDto> patchProduct(Integer productNumber, PatchProductRequestDto dto) {
+        
+        try {
+
+            ProductEntity productEntity = productRepository.findByProductNumber(productNumber);
+            if (productEntity == null) return ResponseDto.noExistProduct();
+
+            productEntity.patch(dto);
+            productRepository.save(productEntity);
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return ResponseDto.success();
+    }
+    
 
     // @Override
     // public ResponseEntity<GetProductListResponseDto> getProductsByStoreNumber(Integer storeNumber) {

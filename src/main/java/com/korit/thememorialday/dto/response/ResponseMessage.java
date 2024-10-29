@@ -12,7 +12,8 @@ public interface ResponseMessage {
     String NO_EXIST_USER_ID = "No exist user id.";
     String NO_EXIST_NAME = "No exist name.";
 	String NO_EXIST_INFO = "No exist info.";
-    String NO_EXIST_QUESTION = "no exist question.";
+    String NO_EXIST_QUESTION = "No exist question.";
+    String NO_EXIST_PRODUCT = "No exist product.";
     // String NO_EXIST_TOOL = "No exist tool.";
     // String NO_EXIST_CUSTOMER = "No exist customer.";
     // String TOOL_INSUFFICIENT = "This tool is insufficient in number.";

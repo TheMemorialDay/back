@@ -18,4 +18,9 @@ public class ThemaEntity {
     @ManyToOne
     @JoinColumn(name = "product_number", nullable = false)
     private ProductEntity product;
+
+    public ThemaEntity(String thema, ProductEntity product) {
+        this.thema = thema;
+        this.product = product;
+    }
 }

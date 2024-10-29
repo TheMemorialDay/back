@@ -85,4 +85,9 @@ public class ResponseDto {
         ResponseDto responsBody = new ResponseDto(ResponseCode.NO_EXIST_QUESTION, ResponseMessage.NO_EXIST_QUESTION);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
     }
+
+    public static ResponseEntity<ResponseDto> noExistProduct() {
+        ResponseDto responsBody = new ResponseDto(ResponseCode.NO_EXIST_PRODUCT, ResponseMessage.NO_EXIST_PRODUCT);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
+    }
 }

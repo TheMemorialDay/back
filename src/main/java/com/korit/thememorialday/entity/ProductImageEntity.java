@@ -1,5 +1,6 @@
 package com.korit.thememorialday.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import jakarta.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "product_image")
 public class ProductImageEntity {
@@ -22,4 +24,9 @@ public class ProductImageEntity {
     @ManyToOne
     @JoinColumn(name = "product_number", nullable = false)
     private ProductEntity product;
+
+    public ProductImageEntity(String productImageUrl, ProductEntity product) {
+        this.productImageUrl = productImageUrl;
+        this.product = product;
+    }
 }

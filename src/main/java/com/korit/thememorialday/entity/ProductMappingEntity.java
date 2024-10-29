@@ -8,6 +8,9 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.korit.thememorialday.dto.request.product.PostProductOptionDetailRequestDto;
+import com.korit.thememorialday.dto.request.product.PostProductOptionRequestDto;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,4 +30,12 @@ public class ProductMappingEntity {
 
     @OneToMany(mappedBy = "productMapping", cascade = CascadeType.ALL)
     private List<ProductOptionEntity> optionDetails = new ArrayList<>();
+
+    public ProductMappingEntity(PostProductOptionRequestDto optionDto, ProductEntity product) {
+        this.productOptionName = optionDto.getProductOptionName();
+        this.product = product;
+        for (PostProductOptionDetailRequestDto detailDto : optionDto.getOptionDetails()) {
+            this.optionDetails.add(new ProductOptionEntity(detailDto.getProductCategory(), detailDto.getProductOptionPrice(), this));
+        }
+    }
 }

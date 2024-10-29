@@ -1,5 +1,6 @@
 package com.korit.thememorialday.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import jakarta.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "product_option")
 public class ProductOptionEntity {
@@ -25,4 +27,10 @@ public class ProductOptionEntity {
     @ManyToOne
     @JoinColumn(name = "option_number", nullable = false)
     private ProductMappingEntity productMapping;
+
+    public ProductOptionEntity(String productCategory, int productOptionPrice, ProductMappingEntity productMapping) {
+        this.productCategory = productCategory;
+        this.productOptionPrice = productOptionPrice;
+        this.productMapping = productMapping;
+    }
 }
