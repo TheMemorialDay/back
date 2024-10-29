@@ -6,14 +6,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-//# 아이디 찾기 요청 dto (이름, 전화번호)
+//# 회원 개인 정보 수정 요청 dto
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class IdSearchRequestDto {
+public class PatchUserInfoRequestDto {
+	@NotBlank
+	@Pattern(regexp="^(?=.*[a-zA-Z])(?=.*[0-9]).{8,13}$")
+	private String password;
 	@NotBlank
 	private String name;
+	@NotBlank
+	private String birth;
+	@NotBlank
+	private String gender;
 	@NotBlank
 	@Pattern(regexp="^[0-9]{11}$")
 	private String telNumber;

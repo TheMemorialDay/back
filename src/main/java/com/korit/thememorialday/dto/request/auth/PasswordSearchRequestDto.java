@@ -1,16 +1,21 @@
 package com.korit.thememorialday.dto.request.auth;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-//# 아이디 중복 확인 dto
+//# 비밀번호 찾기 요청 dto
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class IdCheckRequestDto {
+public class PasswordSearchRequestDto {
 	@NotBlank
 	private String userId;
+	@NotBlank
+	@Pattern(regexp="^[0-9]{11}$")
+	private String telNumber;
 }
+
