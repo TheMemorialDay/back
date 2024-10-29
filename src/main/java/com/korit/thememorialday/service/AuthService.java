@@ -15,7 +15,11 @@ import com.korit.thememorialday.dto.request.auth.TelAuthCheckRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthRequestDto;
 import com.korit.thememorialday.dto.request.auth.UserUpdatePasswordCheckRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
+
+import com.korit.thememorialday.dto.response.auth.GetSignInResponseDto;
+
 import com.korit.thememorialday.dto.response.auth.GetUserInfoResponseDto;
+
 import com.korit.thememorialday.dto.response.auth.IdSearchResponseDto;
 import com.korit.thememorialday.dto.response.auth.SignInResponseDto;
 
@@ -36,6 +40,10 @@ public interface AuthService {
 	// 아이디 찾기 - 전화번호 & 인증번호 확인
 	ResponseEntity<? super IdSearchResponseDto> IdSearch(IdSearchAuthRequestDto dto);
 
+
+	// zustand 현재 접속해 있는 유저와 일치하는지 확인하기 위함
+	ResponseEntity<? super GetSignInResponseDto> getSignIn(String userId);
+
 	// 비밀번호 찾기 - 아이디 & 전화번호
 	ResponseEntity<ResponseDto> passwordSearch(PasswordSearchRequestDto dto);
 	// 비밀번호 찾기 - 전화번호 & 인증번호 확인
@@ -50,4 +58,5 @@ public interface AuthService {
 	ResponseEntity<? super GetUserInfoResponseDto> getUserInfo(String userId);
 	// 회원 개인 정보 수정
 	ResponseEntity<ResponseDto> patchUserInfo(PatchUserInfoRequestDto dto, String userId);
+
 }

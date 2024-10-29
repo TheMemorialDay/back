@@ -11,6 +11,7 @@ import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.support.GetQnADetailResponseDto;
 import com.korit.thememorialday.dto.response.support.GetQnAListResponseDto;
 import com.korit.thememorialday.entity.support.QnAEntity;
+import com.korit.thememorialday.repository.resultSet.GetQnAListResultSet;
 import com.korit.thememorialday.repository.support.QnARepository;
 import com.korit.thememorialday.service.support.QnAService;
 
@@ -24,14 +25,14 @@ public class QnAServiceImplement implements QnAService{
 
     @Override
     public ResponseEntity<? super GetQnAListResponseDto> GetQnAList() {
-        List<QnAEntity> qnaEntities = new ArrayList<>();
+        List<GetQnAListResultSet> resultSets = new ArrayList<>();
         try{
-            qnaEntities = qnaRepository.findByOrderByQuestionNumberDesc();
+            resultSets = qnaRepository.getQnAList();
         } catch(Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
         }
-        return GetQnAListResponseDto.success(qnaEntities);
+        return GetQnAListResponseDto.success(resultSets);
     }
 
     @Override

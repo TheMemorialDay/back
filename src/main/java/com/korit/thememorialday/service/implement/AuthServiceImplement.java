@@ -19,7 +19,11 @@ import com.korit.thememorialday.dto.request.auth.TelAuthCheckRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthRequestDto;
 import com.korit.thememorialday.dto.request.auth.UserUpdatePasswordCheckRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
+
+import com.korit.thememorialday.dto.response.auth.GetSignInResponseDto;
+
 import com.korit.thememorialday.dto.response.auth.GetUserInfoResponseDto;
+
 import com.korit.thememorialday.dto.response.auth.IdSearchResponseDto;
 import com.korit.thememorialday.dto.response.auth.SignInResponseDto;
 import com.korit.thememorialday.entity.TelAuthEntity;
@@ -182,7 +186,9 @@ public class AuthServiceImplement implements AuthService {
 		String telNumber = dto.getTelNumber();
 
 		try {
+
 			UserEntity userEntity = userRepository.findByNameAndTelNumber(name, telNumber);
+
 			if (userEntity == null) return ResponseDto.noExistInfo();
 
 		} catch(Exception exception) {
@@ -358,6 +364,21 @@ public class AuthServiceImplement implements AuthService {
 		}
 
 		return ResponseDto.success();
+	}
+
+	@Override
+	public ResponseEntity<? super GetSignInResponseDto> getSignIn(String userId) {
+		UserEntity userEntity = null;
+		
+		try {
+			userEntity = userRepository.findByUserId(userId);
+			if(userEntity == null) return ResponseDto.noExistUserId();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseDto.databaseError();
+		}
+		return GetSignInResponseDto.success(userEntity);
 	}
 	
 }

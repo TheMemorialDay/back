@@ -15,7 +15,11 @@ import com.korit.thememorialday.dto.request.auth.TelAuthCheckRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthRequestDto;
 import com.korit.thememorialday.dto.request.auth.UserUpdatePasswordCheckRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
+
+import com.korit.thememorialday.dto.response.auth.GetSignInResponseDto;
+
 import com.korit.thememorialday.dto.response.auth.GetUserInfoResponseDto;
+
 import com.korit.thememorialday.dto.response.auth.IdSearchResponseDto;
 import com.korit.thememorialday.dto.response.auth.SignInResponseDto;
 import com.korit.thememorialday.service.AuthService;
@@ -24,9 +28,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
+
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -100,6 +109,16 @@ public class AuthController {
 		return response;
 	}
 
+
+	// 로그인 유저 정보 확인
+	@GetMapping("/get-sign-in")
+	public ResponseEntity<? super GetSignInResponseDto> getSignIn(
+		@AuthenticationPrincipal String userId
+	) {
+		ResponseEntity<? super GetSignInResponseDto> response = authService.getSignIn(userId);
+		return response;
+	}
+
 	//* 비밀번호 찾기
 	@PostMapping("/password-search")
 	public ResponseEntity<ResponseDto> passwordSearch(
@@ -144,5 +163,6 @@ public class AuthController {
 		ResponseEntity<? super GetUserInfoResponseDto> response = authService.getUserInfo(userId);
 		return response;
 	};
+
 	
 }
