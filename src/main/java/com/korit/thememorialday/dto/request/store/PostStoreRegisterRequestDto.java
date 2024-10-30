@@ -1,7 +1,6 @@
 package com.korit.thememorialday.dto.request.store;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PostStoreRegisterRequestDto {
 
-  @NotBlank
   private String userId;
 
   @NotBlank
@@ -42,13 +40,10 @@ public class PostStoreRegisterRequestDto {
 
   private String storeTel;
 
-  @NotNull
   private Float storeRating;
 
-  @NotNull
   private Integer reviewCount;
 
-  @NotNull
   private Integer likeCount;
 
   @NotBlank

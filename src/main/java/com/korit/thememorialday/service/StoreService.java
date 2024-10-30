@@ -6,6 +6,7 @@ import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreListResponseDto;
+import com.korit.thememorialday.dto.response.store.GetStoreOrderListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreResponseDto;
 
 public interface StoreService {
@@ -17,5 +18,7 @@ public interface StoreService {
   ResponseEntity<? super GetStoreResponseDto> getStore(Integer storeNumber);
 
   ResponseEntity<? super GetStoreListResponseDto> getStoreList();
+
+  ResponseEntity<? super GetStoreOrderListResponseDto> getStoreOrderList(Integer storeNumber);
 
 }

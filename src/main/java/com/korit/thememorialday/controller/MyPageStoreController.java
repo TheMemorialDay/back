@@ -6,7 +6,6 @@ import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.service.StoreService;
-import com.korit.thememorialday.dto.response.store.GetStoreListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreResponseDto;
 
 import jakarta.validation.Valid;
@@ -23,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RestController
 @RequestMapping("/mypage/store")
 @RequiredArgsConstructor
-public class StoreController {
+public class MyPageStoreController {
 
   private final StoreService storeService;
 
@@ -39,12 +38,6 @@ public class StoreController {
       @PathVariable("storeNumber") Integer storeNumber,
       @RequestBody @Valid PatchStoreRegisterRequestDto requestBody) {
     ResponseEntity<ResponseDto> response = storeService.patchStore(storeNumber, requestBody);
-    return response;
-  }
-
-  @GetMapping(value = { "/", "" })
-  public ResponseEntity<? super GetStoreListResponseDto> getStoreList() {
-    ResponseEntity<? super GetStoreListResponseDto> response = storeService.getStoreList();
     return response;
   }
 

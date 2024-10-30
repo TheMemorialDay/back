@@ -9,10 +9,13 @@ import org.springframework.stereotype.Service;
 import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
+import com.korit.thememorialday.entity.ProductEntity;
 import com.korit.thememorialday.entity.StoreEntity;
+import com.korit.thememorialday.repository.ProductRepository;
 import com.korit.thememorialday.repository.StoreRepository;
 import com.korit.thememorialday.service.StoreService;
 import com.korit.thememorialday.dto.response.store.GetStoreListResponseDto;
+import com.korit.thememorialday.dto.response.store.GetStoreOrderListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreResponseDto;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class StoreServiceImplement implements StoreService {
 
   private final StoreRepository storeRepository;
+  private final ProductRepository productRepository;
 
   // 가게 등록
   @Override
@@ -93,6 +97,18 @@ public class StoreServiceImplement implements StoreService {
     }
 
     return GetStoreListResponseDto.success(storeEntities);
+  }
+
+  @Override
+  public ResponseEntity<? super GetStoreOrderListResponseDto> getStoreOrderList(Integer storeNumber) {
+    // storeNumber로 ProductEntity 목록 조회
+    List<ProductEntity> productEntities = productRepository.findByStoreNumber(storeNumber);
+
+    // 응답 DTO 생성
+    GetStoreOrderListResponseDto responseDto = new GetStoreOrderListResponseDto(productEntities);
+
+    // ResponseEntity 반환
+    return ResponseEntity.ok(responseDto);
   }
 
 }

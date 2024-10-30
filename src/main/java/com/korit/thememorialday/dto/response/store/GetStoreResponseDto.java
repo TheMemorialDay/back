@@ -24,6 +24,8 @@ public class GetStoreResponseDto extends ResponseDto {
   private String storeGugun;
   private String storeDong;
   private String storeTel;
+  private String storeLatitude;
+  private String storeLongtitude;
   private Float storeRating;
   private Integer reviewCount;
   private Integer likeCount;
@@ -55,6 +57,8 @@ public class GetStoreResponseDto extends ResponseDto {
     this.storeAddress = storeEntity.getStoreAddress();
     this.storeGugun = storeEntity.getStoreGugun();
     this.storeDong = storeEntity.getStoreDong();
+    this.storeLatitude = storeEntity.getStoreLatitude();
+    this.storeLongtitude = storeEntity.getStoreLongtitude();
     this.storeTel = storeEntity.getStoreTel();
     this.storeRating = storeEntity.getStoreRating();
     this.reviewCount = storeEntity.getReviewCount();
