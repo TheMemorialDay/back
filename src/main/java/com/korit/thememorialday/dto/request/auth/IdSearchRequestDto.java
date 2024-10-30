@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-//# 아이디 찾기 요청 dto
+//# 아이디 찾기 요청 dto (이름, 전화번호)
 
 @Getter
 @Setter

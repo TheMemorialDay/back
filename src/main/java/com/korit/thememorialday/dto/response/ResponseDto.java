@@ -8,11 +8,13 @@ import lombok.Getter;
 
 //# 응답의 공통적 형태
 
+
 @Getter
 @AllArgsConstructor
 public class ResponseDto {
-	private String code;
-	private String message;
+
+  private String code;
+  private String message;
 
 	// % "static"
 	public static ResponseEntity<ResponseDto> success() {
@@ -41,6 +43,12 @@ public class ResponseDto {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
 	}
 
+	public static ResponseEntity<ResponseDto> noExistQuestion() {
+		ResponseDto responsBody = new ResponseDto(ResponseCode.NO_EXIST_QUESTION,
+				ResponseMessage.NO_EXIST_QUESTION);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
+	}
+	
 	public static ResponseEntity<ResponseDto> noExistName() {
 		ResponseDto responsBody = new ResponseDto(ResponseCode.NO_EXIST_NAME, ResponseMessage.NO_EXIST_NAME);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
@@ -76,18 +84,19 @@ public class ResponseDto {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
 	}
 
+	// 없는 정보
 	public static ResponseEntity<ResponseDto> noExistInfo() {
 		ResponseDto responseBody = new ResponseDto(ResponseCode.NO_EXIST_INFO, ResponseMessage.NO_EXIST_INFO);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
 	}
+	
+	public static ResponseEntity<ResponseDto> noExistProduct() {
+		ResponseDto responsBody = new ResponseDto(ResponseCode.NO_EXIST_PRODUCT, ResponseMessage.NO_EXIST_PRODUCT);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
+	}
 
-    public static ResponseEntity<ResponseDto> noExistQuestion() {
-        ResponseDto responsBody = new ResponseDto(ResponseCode.NO_EXIST_QUESTION, ResponseMessage.NO_EXIST_QUESTION);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
-    }
-
-    public static ResponseEntity<ResponseDto> noExistProduct() {
-        ResponseDto responsBody = new ResponseDto(ResponseCode.NO_EXIST_PRODUCT, ResponseMessage.NO_EXIST_PRODUCT);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
-    }
+	public static ResponseEntity<ResponseDto> noExistStore() {
+		ResponseDto responseBody = new ResponseDto(ResponseCode.NO_EXIST_STORE, ResponseMessage.NO_EXIST_STORE);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+	  }
 }

@@ -17,4 +17,8 @@ public class IdSearchAuthRequestDto {
 	private String telNumber;
 	@NotBlank
 	private String telAuthNumber;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 7d423b564b1ebc79ba62d4bf2545541111ace8ae

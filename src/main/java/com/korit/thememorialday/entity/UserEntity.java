@@ -1,6 +1,13 @@
 package com.korit.thememorialday.entity;
 
+<<<<<<< HEAD
 import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
+=======
+import com.korit.thememorialday.dto.request.auth.PatchPasswordRequestDto;
+import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
+import com.korit.thememorialday.dto.request.join.PatchJoinRequestDto;
+
+>>>>>>> 7d423b564b1ebc79ba62d4bf2545541111ace8ae
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -21,7 +28,6 @@ import lombok.ToString;
 @Table(name="user")
 @ToString
 public class UserEntity {
-	
 	@Id
 	private String userId;
 	private String password;
@@ -34,7 +40,9 @@ public class UserEntity {
 	private String businessNumber;
 	private String businessUrl;
 	private String permission;
+	private String businessOpendate;
 
+	// 회원가입 시 데이터베이스에 데이터를 삽입하기 위한 생성자
 	public UserEntity(SignUpRequestDto dto) {
 		this.userId = dto.getUserId();
 		this.password = dto.getPassword();
@@ -46,4 +54,11 @@ public class UserEntity {
 		this.snsId = dto.getSnsId();
 		this.permission = "일반";
 	}
+
+	// join patch 를 위한 생성자
+	public void patch(PatchJoinRequestDto dto) {
+        this.businessNumber = dto.getBusinessNumber();
+		this.businessOpendate = dto.getBusinessOpendate();
+		this.permission = "사장";
+    }
 }

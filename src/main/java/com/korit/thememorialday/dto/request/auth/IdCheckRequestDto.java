@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-//# 아이디 찾기 dto
+//# 아이디 중복 확인 dto
 
 @Getter
 @Setter

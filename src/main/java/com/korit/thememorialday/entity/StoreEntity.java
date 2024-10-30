@@ -1,6 +1,13 @@
 package com.korit.thememorialday.entity;
 
-import jakarta.persistence.*;
+import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
+import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,39 +17,107 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Entity(name = "store")
 @Table(name = "store")
 public class StoreEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer storeNumber; // 가게번호
-    private UserEntity user; // 유저 아이디
-    private String storeName; // 가게명
-    private String storeIntroduce; // 가게소개
-    private String storeParticular; // 가게 상세소개글
-    private String storeContact; // 문의하기
-    private String storeCaution; // 가게 유의사항
-    private String storeAddress; // 가게 주소
-    private String storeGugun; // 가게 구/군
-    private String storeDong; // 가게 읍/동
-    private String storeTel; // 가게 연락처
-    private Float storeRating = 0f; // 가게 평점
-    private Integer reviewCount = 0; // 리뷰 개수
-    private Integer likeCount = 0; // 찜한 횟수
-    private String storeImageUrl; // 가게 썸네일 이미지 URL
-    private String sundayOpen;
-    private String sundayLast;
-    private String mondayOpen;
-    private String mondayLast;
-    private String tuesdayOpen;
-    private String tuesdayLast;
-    private String wednesdayOpen;
-    private String wednesdayLast;
-    private String thursdayOpen;
-    private String thursdayLast;
-    private String fridayOpen;
-    private String fridayLast;
-    private String saturdayOpen;
-    private String saturdayLast;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto Increment
+  private Integer storeNumber;
+  private String userId;
+  private String storeName;
+  private String storeIntroduce;
+  private String storeParticular;
+  private String storeContact;
+  private String storeCaution;
+  private String storeAddress;
+  private String storeGugun;
+  private String storeDong;
+  private String storeLatitude;
+  private String storeLongtitude;
+  private String storeTel;
+  private Float storeRating;
+  private Integer reviewCount;
+  private Integer likeCount;
+  private String storeImageUrl;
+  private String mondayOpen;
+  private String mondayLast;
+  private String tuesdayOpen;
+  private String tuesdayLast;
+  private String wednesdayOpen;
+  private String wednesdayLast;
+  private String thursdayOpen;
+  private String thursdayLast;
+  private String fridayOpen;
+  private String fridayLast;
+  private String saturdayOpen;
+  private String saturdayLast;
+  private String sundayOpen;
+  private String sundayLast;
+
+  public StoreEntity(PostStoreRegisterRequestDto dto) { // 생성용도
+    this.userId = dto.getUserId();
+    this.storeName = dto.getStoreName();
+    this.storeIntroduce = dto.getStoreIntroduce();
+    this.storeParticular = dto.getStoreParticular();
+    this.storeContact = dto.getStoreContact();
+    this.storeCaution = dto.getStoreCaution();
+    this.storeAddress = dto.getStoreAddress();
+    this.storeGugun = dto.getStoreGugun();
+    this.storeDong = dto.getStoreDong();
+    this.storeLatitude = dto.getStoreLatitude();
+    this.storeLongtitude = dto.getStoreLongtitude();
+    this.storeTel = dto.getStoreTel();
+    this.storeRating = dto.getStoreRating();
+    this.reviewCount = dto.getReviewCount();
+    this.likeCount = dto.getLikeCount();
+    this.storeImageUrl = dto.getStoreImageUrl();
+    this.mondayOpen = dto.getMondayOpen();
+    this.mondayLast = dto.getMondayLast();
+    this.tuesdayOpen = dto.getTuesdayOpen();
+    this.tuesdayLast = dto.getThursdayLast();
+    this.wednesdayOpen = dto.getWednesdayOpen();
+    this.wednesdayLast = dto.getWednesdayLast();
+    this.thursdayOpen = dto.getThursdayOpen();
+    this.thursdayLast = dto.getThursdayLast();
+    this.fridayOpen = dto.getFridayOpen();
+    this.fridayLast = dto.getFridayLast();
+    this.saturdayOpen = dto.getSaturdayOpen();
+    this.saturdayLast = dto.getSaturdayLast();
+    this.sundayOpen = dto.getSundayOpen();
+    this.sundayLast = dto.getSundayLast();
+  }
+
+  public void patch(PatchStoreRegisterRequestDto dto) { // 수정용도
+    this.userId = dto.getUserId();
+    this.storeName = dto.getStoreName();
+    this.storeIntroduce = dto.getStoreIntroduce();
+    this.storeParticular = dto.getStoreParticular();
+    this.storeContact = dto.getStoreContact();
+    this.storeCaution = dto.getStoreCaution();
+    this.storeAddress = dto.getStoreAddress();
+    this.storeGugun = dto.getStoreGugun();
+    this.storeDong = dto.getStoreDong();
+    this.storeLatitude = dto.getStoreLatitude();
+    this.storeLongtitude = dto.getStoreLongtitude();
+    this.storeTel = dto.getStoreTel();
+    this.storeRating = dto.getStoreRating();
+    this.reviewCount = dto.getReviewCount();
+    this.likeCount = dto.getLikeCount();
+    this.storeImageUrl = dto.getStoreImageUrl();
+    this.mondayOpen = dto.getMondayOpen();
+    this.mondayLast = dto.getMondayLast();
+    this.tuesdayOpen = dto.getTuesdayOpen();
+    this.tuesdayLast = dto.getThursdayLast();
+    this.wednesdayOpen = dto.getWednesdayOpen();
+    this.wednesdayLast = dto.getWednesdayLast();
+    this.thursdayOpen = dto.getThursdayOpen();
+    this.thursdayLast = dto.getThursdayLast();
+    this.fridayOpen = dto.getFridayOpen();
+    this.fridayLast = dto.getFridayLast();
+    this.saturdayOpen = dto.getSaturdayOpen();
+    this.saturdayLast = dto.getSaturdayLast();
+    this.sundayOpen = dto.getSundayOpen();
+    this.sundayLast = dto.getSundayLast();
+  }
 }
