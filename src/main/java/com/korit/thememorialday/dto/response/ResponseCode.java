@@ -7,7 +7,7 @@ public interface ResponseCode {
 
 //# 응답 코드 상수 정의
 
-public interface ResponseCode {
+
 	String SUCCESS = "SU";
 
 	String VALIDATION_FAIL = "VF";
