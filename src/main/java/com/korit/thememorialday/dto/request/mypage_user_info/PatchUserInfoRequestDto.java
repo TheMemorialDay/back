@@ -1,4 +1,4 @@
-package com.korit.thememorialday.dto.request.auth;
+package com.korit.thememorialday.dto.request.mypage_user_info;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

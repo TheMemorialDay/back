@@ -11,20 +11,14 @@ import com.korit.thememorialday.dto.request.auth.IdSearchAuthRequestDto;
 import com.korit.thememorialday.dto.request.auth.IdSearchRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordAuthRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordResettingRequestDto;
-import com.korit.thememorialday.dto.request.auth.PatchUserInfoRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordSearchRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignInRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthCheckRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthRequestDto;
-import com.korit.thememorialday.dto.request.auth.UserUpdatePasswordCheckRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
-import com.korit.thememorialday.dto.response.auth.GetPasswordResponseDto;
 
 import com.korit.thememorialday.dto.response.auth.GetSignInResponseDto;
-
-import com.korit.thememorialday.dto.response.auth.GetUserInfoResponseDto;
-
 import com.korit.thememorialday.dto.response.auth.IdSearchResponseDto;
 import com.korit.thememorialday.dto.response.auth.SignInResponseDto;
 import com.korit.thememorialday.entity.TelAuthEntity;
@@ -311,80 +305,6 @@ public class AuthServiceImplement implements AuthService {
 		return ResponseDto.success();
 	}
 
-	// * 회원정보 수정 시 비밀번호 확인
-	@Override
-	public ResponseEntity<ResponseDto> userUpdatePasswordCheck(UserUpdatePasswordCheckRequestDto dto) {
-		String password = dto.getPassword();
-
-		try {
-			UserEntity userEntity = userRepository.findByPassword(password);
-			if (userEntity == null)
-				return ResponseDto.noExistInfo();
-
-			String encodedPassword = userEntity.getPassword();
-			boolean isMatched = passwordEncoder.matches(password, encodedPassword);
-			if (!isMatched)
-				return ResponseDto.noPermission();
-
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			return ResponseDto.databaseError();
-		}
-
-		return ResponseDto.success();
-	}
-
-	// * 회원 개인 정보 보기
-	@Override
-	public ResponseEntity<? super GetUserInfoResponseDto> getUserInfo(String userId) {
-		UserEntity userEntity = null;
-
-		try {
-			userEntity = userRepository.findByUserId(userId);
-			if (userEntity == null)
-				return ResponseDto.noExistInfo();
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			return ResponseDto.databaseError();
-		}
-
-		return GetUserInfoResponseDto.success(userEntity);
-	}
-
-	// * 회원 개인 정보 수정
-	@Override
-	public ResponseEntity<ResponseDto> patchUserInfo(
-			PatchUserInfoRequestDto dto,
-			String userId) {
-
-		try {
-
-			String password = dto.getPassword();
-			String name = dto.getName();
-			String birth = dto.getBirth();
-			String gender = dto.getGender();
-			String telNumber = dto.getTelNumber();
-
-			UserEntity userEntity = userRepository.findByUserId(userId);
-			if (userEntity == null)
-				return ResponseDto.noExistUserId();
-
-			userEntity.setPassword(password);
-			userEntity.setName(name);
-			userEntity.setBirth(birth);
-			userEntity.setGender(gender);
-			userEntity.setTelNumber(telNumber);
-
-			userRepository.save(userEntity);
-
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			ResponseDto.databaseError();
-		}
-
-		return ResponseDto.success();
-	}
-
 	// * 비밀번호 재설정
 	@Override
 	public ResponseEntity<ResponseDto> passwordResetting(PasswordResettingRequestDto dto) {
@@ -392,7 +312,7 @@ public class AuthServiceImplement implements AuthService {
 		try {
 
 			String userId = dto.getUserId();
-			String telNumber = dto.getTelAuthNumber();
+			String telNumber = dto.getTelNumber();
 			String telAuthNumber = dto.getTelAuthNumber();
 			String password = dto.getPassword();
 
@@ -404,6 +324,7 @@ public class AuthServiceImplement implements AuthService {
 			if (userEntity == null)
 				return ResponseDto.noExistUserId();
 
+			// 기존 패스워드와 새 패스워드 비교
 			String prePassword = userEntity.getPassword();
 			boolean isEquals = passwordEncoder.matches(password, prePassword);
 			if (!isEquals)
@@ -420,31 +341,6 @@ public class AuthServiceImplement implements AuthService {
 		}
 
 		return ResponseDto.success();
-
-	}
-
-	// * 비밀번호만 따로 가져오기 위한 메서드
-	@Override
-	public ResponseEntity<? super GetPasswordResponseDto> getPassword(PasswordSearchRequestDto dto) {
-		UserEntity userEntity = null;
-		String password = userEntity.getPassword();
-
-		try {
-			userEntity = userRepository.findByPassword(password);
-			if (userEntity == null)
-				return ResponseDto.noExistInfo();
-
-			String encodedPassword = userEntity.getPassword();
-			// boolean isPasswordMatched = passwordEncoder.matches(password, encodedPassword);
-			if (encodedPassword == null)
-				return ResponseDto.noPermission();
-
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			return ResponseDto.databaseError();
-		}
-
-		return GetPasswordResponseDto.success(userEntity);
 
 	}
 	

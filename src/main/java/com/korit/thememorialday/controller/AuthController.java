@@ -8,23 +8,21 @@ import com.korit.thememorialday.dto.request.auth.IdSearchAuthRequestDto;
 import com.korit.thememorialday.dto.request.auth.IdSearchRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordAuthRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordResettingRequestDto;
-import com.korit.thememorialday.dto.request.auth.PatchUserInfoRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordSearchRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignInRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthCheckRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthRequestDto;
-import com.korit.thememorialday.dto.request.auth.UserUpdatePasswordCheckRequestDto;
+import com.korit.thememorialday.dto.request.mypage_user_info.PatchUserInfoRequestDto;
+import com.korit.thememorialday.dto.request.mypage_user_info.UserUpdatePasswordCheckRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
-import com.korit.thememorialday.dto.response.auth.GetPasswordResponseDto;
 
 import com.korit.thememorialday.dto.response.auth.GetSignInResponseDto;
-
-import com.korit.thememorialday.dto.response.auth.GetUserInfoResponseDto;
-
 import com.korit.thememorialday.dto.response.auth.IdSearchResponseDto;
 import com.korit.thememorialday.dto.response.auth.SignInResponseDto;
+import com.korit.thememorialday.dto.response.mypage_user_info.GetUserInfoResponseDto;
 import com.korit.thememorialday.service.AuthService;
+import com.korit.thememorialday.service.MypageService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +32,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -47,6 +44,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequiredArgsConstructor
 public class AuthController {
 	private final AuthService authService;
+	private final MypageService mypageService;
 
 	//* 아이디 중복 확인
 	@PostMapping("/id-check")
@@ -144,43 +142,6 @@ public class AuthController {
 		@RequestBody @Valid PasswordResettingRequestDto requestBody
 	) {
 		ResponseEntity<ResponseDto> response = authService.passwordResetting(requestBody);
-		return response;
-	};
-
-	//* 회원정보 수정 시 비밀번호 확인
-	@PostMapping("/password-check")
-	public ResponseEntity<ResponseDto> userUpdatePasswordCheck(
-		@RequestBody @Valid UserUpdatePasswordCheckRequestDto reqeustBody
-	) {
-		ResponseEntity<ResponseDto> response = authService.userUpdatePasswordCheck(reqeustBody);
-		return response;
-	};
-
-	//* 회원 개인 정보 보기
-	@GetMapping("/{userId}")
-	public ResponseEntity<? super GetUserInfoResponseDto> getUserInfo(
-		@PathVariable("userId") String userId
-	) {
-		ResponseEntity<? super GetUserInfoResponseDto> response = authService.getUserInfo(userId);
-		return response;
-	};
-
-	//* 회원 개인 정보 수정
-	@PostMapping("/{userId}")
-	public ResponseEntity<ResponseDto> patchUserInfo(
-		@RequestBody @Valid PatchUserInfoRequestDto requestBody,
-		@PathVariable("userId") String userId
-	) {
-		ResponseEntity<ResponseDto> response = authService.patchUserInfo(requestBody, userId);
-		return response;
-	};
-
-	//* 비밀번호만 가져오기
-	@GetMapping("//password-search")
-	public ResponseEntity<? super GetPasswordResponseDto> getPassword(
-		String password
-	) {
-		ResponseEntity<? super GetPasswordResponseDto> response = authService.getPassword(null);
 		return response;
 	};
 	

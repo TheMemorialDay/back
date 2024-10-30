@@ -1,4 +1,4 @@
-package com.korit.thememorialday.dto.response.auth;
+package com.korit.thememorialday.dto.response.mypage_user_info;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

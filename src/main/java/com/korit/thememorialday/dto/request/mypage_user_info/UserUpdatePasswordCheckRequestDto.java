@@ -1,4 +1,4 @@
-package com.korit.thememorialday.dto.request.auth;
+package com.korit.thememorialday.dto.request.mypage_user_info;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -13,6 +13,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserUpdatePasswordCheckRequestDto {
 	@NotBlank
+	private String userId;
+	@NotBlank
 	@Pattern(regexp="^(?=.*[a-zA-Z])(?=.*[0-9]).{8,13}$")
 	private String password;
 }
+

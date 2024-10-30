@@ -29,7 +29,7 @@ public class FileController {
         return url;
     }
     
-    @GetMapping(value="/{fileName}", produces = MediaType.APPLICATION_PDF_VALUE)
+    @GetMapping(value="/{fileName}", produces={MediaType.APPLICATION_PDF_VALUE})
     public Resource getImageFile(
         @PathVariable("fileName") String fileName
     ) {
