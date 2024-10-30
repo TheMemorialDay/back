@@ -8,11 +8,13 @@ import lombok.Getter;
 
 //# 응답의 공통적 형태
 
+
 @Getter
 @AllArgsConstructor
 public class ResponseDto {
-	private String code;
-	private String message;
+
+  private String code;
+  private String message;
 
 	// % "static"
 	public static ResponseEntity<ResponseDto> success() {
@@ -33,12 +35,6 @@ public class ResponseDto {
 	public static ResponseEntity<ResponseDto> duplicatedaTelNumber() {
 		ResponseDto responsBody = new ResponseDto(ResponseCode.DUPLICATED_TEL_NUMBER,
 				ResponseMessage.DUPLICATED_TEL_NUMBER);
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
-	}
-
-	public static ResponseEntity<ResponseDto> noExistQuestion() {
-		ResponseDto responsBody = new ResponseDto(ResponseCode.NO_EXIST_QUESTION,
-				ResponseMessage.NO_EXIST_QUESTION);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
 	}
 
@@ -82,4 +78,16 @@ public class ResponseDto {
 		ResponseDto responseBody = new ResponseDto(ResponseCode.NO_EXIST_INFO, ResponseMessage.NO_EXIST_INFO);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
 	}
+
+	public static ResponseEntity<ResponseDto> noExistQuestion() {
+		ResponseDto responsBody = new ResponseDto(ResponseCode.NO_EXIST_QUESTION,
+				ResponseMessage.NO_EXIST_QUESTION);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
+	}
+  
+   public static ResponseEntity<ResponseDto> noExistStore() {
+    ResponseDto responseBody = new ResponseDto(ResponseCode.NO_EXIST_STORE, ResponseMessage.NO_EXIST_STORE);
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+  }
+
 }
