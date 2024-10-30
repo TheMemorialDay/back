@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import com.korit.thememorialday.common.object.OptionDetail;
+
 import jakarta.persistence.*;
 
 @Getter
@@ -20,6 +22,12 @@ public class ProductOptionEntity {
     private Integer optionCategoryNumber;
     private Integer optionNumber;
     private String productCategory;
-    private int productOptionPrice;
+    private Integer productOptionPrice;
+
+    public ProductOptionEntity (Integer optionNumber, OptionDetail optionDetail) {
+        this.optionNumber = optionNumber;
+        this.productCategory = optionDetail.getProductCategory();
+        this.productOptionPrice = optionDetail.getProductOptionPrice();
+    }
     
 }

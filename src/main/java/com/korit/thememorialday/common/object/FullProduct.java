@@ -1,20 +1,19 @@
-package com.korit.thememorialday.dto.response.product;
-
-import lombok.Getter;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import com.korit.thememorialday.common.object.Option;
-import com.korit.thememorialday.dto.response.ResponseCode;
-import com.korit.thememorialday.dto.response.ResponseDto;
-import com.korit.thememorialday.dto.response.ResponseMessage;
-import com.korit.thememorialday.entity.ProductEntity;
+package com.korit.thememorialday.common.object;
 
 import java.util.List;
 
+import com.korit.thememorialday.entity.ProductEntity;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Getter
-public class GetProductResponseDto extends ResponseDto {
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class FullProduct {
     private Integer productNumber;
     private String productName;
     private String productIntroduce;
@@ -26,8 +25,7 @@ public class GetProductResponseDto extends ResponseDto {
     private List<Option> options; // 옵션 리스트
     private List<String> themes; // 테마 리스트
 
-    private GetProductResponseDto(ProductEntity productEntity, List<String> productImages, List<String> themes, List<Option> options) {
-        super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
+    public FullProduct(ProductEntity productEntity, List<String> productImages, List<String> themes, List<Option> options) {
         String imageUrl = productImages.size() != 0 ? productImages.get(0) : null;
         this.productNumber = productEntity.getProductNumber();
         this.productName = productEntity.getProductName();
@@ -40,10 +38,4 @@ public class GetProductResponseDto extends ResponseDto {
         this.options = options;
         this.themes = themes;
     }
-
-    static public ResponseEntity<GetProductResponseDto> success(ProductEntity productEntity, List<String> productImages, List<String> themes, List<Option> options) {
-        GetProductResponseDto responseBody = new GetProductResponseDto(productEntity, productImages, themes, options);
-        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
-    }
-
 }

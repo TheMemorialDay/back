@@ -1,13 +1,9 @@
 package com.korit.thememorialday.entity;
 
-<<<<<<< HEAD
-import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
-=======
 import com.korit.thememorialday.dto.request.auth.PatchPasswordRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
 import com.korit.thememorialday.dto.request.join.PatchJoinRequestDto;
 
->>>>>>> 7d423b564b1ebc79ba62d4bf2545541111ace8ae
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

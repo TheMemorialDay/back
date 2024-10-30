@@ -14,16 +14,16 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
 
     ProductEntity findByProductNumber(Integer productNumber);
 
-    // List<ProductEntity> findByStoreNumber(Integer storeNumber); // 특정 store_number에 해당하는 모든 상품 조회
+    List<ProductEntity> findByStoreNumber(Integer storeNumber); // 특정 store_number에 해당하는 모든 상품 조회
 
-    @Query(
-        value = 
-            "SELECT p " +
-            "FROM ProductEntity p " +
-            "JOIN p.store s " +
-            "WHERE s.user.userId = :userId"
-    )
-    List<ProductEntity> findByStoreUserId(@Param("userId") String userId);
+    // @Query(
+    //     value = 
+    //         "SELECT p " +
+    //         "FROM ProductEntity p " +
+    //         "JOIN p.store s " +
+    //         "WHERE s.user.userId = :userId"
+    // )
+    // List<ProductEntity> findByStoreUserId(@Param("userId") String userId);
     
     
 }

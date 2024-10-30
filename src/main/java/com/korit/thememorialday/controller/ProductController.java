@@ -44,7 +44,7 @@ public class ProductController {
 
 
     @GetMapping("/{userId}")                                       // 이거 지우고 토큰 인증 로그인까지 완료되면 윗줄 써야 함
-    public ResponseEntity<GetProductListResponseDto> getProductsByStoreNumber(@PathVariable String userId) {
+    public ResponseEntity<? super GetProductListResponseDto> getProductsByStoreNumber(@PathVariable String userId) {
         return productService.getProductList(userId);
     }
     
