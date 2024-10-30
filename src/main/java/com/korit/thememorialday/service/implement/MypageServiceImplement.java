@@ -8,7 +8,6 @@ import com.korit.thememorialday.dto.request.mypage_user_info.UserUpdatePasswordC
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.mypage_user_info.GetUserInfoResponseDto;
 import com.korit.thememorialday.entity.UserEntity;
-import com.korit.thememorialday.provider.JwtProvider;
 import com.korit.thememorialday.repository.UserRepository;
 import com.korit.thememorialday.service.MypageService;
 
@@ -22,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 public class MypageServiceImplement implements MypageService {
 
 	private final UserRepository userRepository;
-	private final JwtProvider jwtProvider;
 
 	private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
