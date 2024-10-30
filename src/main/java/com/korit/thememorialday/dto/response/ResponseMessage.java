@@ -11,6 +11,7 @@ public interface ResponseMessage {
 	String NO_EXIST_USER_ID = "No exist user id.";
 	String NO_EXIST_INFO = "No exist info.";
 	String NO_EXIST_QUESTION = "no exist question.";
+  String NO_EXIST_STORE = "No exist store.";
 
 	String TEL_AUTH_FAIL = "Tel number authentication failed.";
 	String SIGN_IN_FAIL = "Sign in failed.";
@@ -21,4 +22,5 @@ public interface ResponseMessage {
 	String MESSAGE_SEND_FAIL = "Auth number send failed.";
 	String TOKEN_CREATE_FAIL = "Token creation failed.";
 	String DATABASE_ERROR = "Database error.";
+
 }
