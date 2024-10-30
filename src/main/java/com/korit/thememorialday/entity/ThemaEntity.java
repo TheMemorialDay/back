@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import com.korit.thememorialday.entity.pk.ThemaPk;
+
 import jakarta.persistence.*;
 
 @Getter
@@ -11,16 +13,12 @@ import jakarta.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "thema")
+@IdClass(ThemaPk.class)
 public class ThemaEntity {
+    
     @Id
     private String thema;
-
-    @ManyToOne
-    @JoinColumn(name = "product_number", nullable = false)
-    private ProductEntity product;
-
-    public ThemaEntity(String thema, ProductEntity product) {
-        this.thema = thema;
-        this.product = product;
-    }
+    @Id
+    private Integer productNumber;
+    
 }

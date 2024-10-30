@@ -20,15 +20,4 @@ public class GetProductListResponseDto extends ResponseDto {
     
     private List<GetProductResponseDto> products;
 
-    public GetProductListResponseDto(List<ProductEntity> productEntities) {
-        super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-        this.products = productEntities.stream()
-                .map(GetProductResponseDto::new)
-                .collect(Collectors.toList());
-    }
-
-    public static ResponseEntity<GetProductListResponseDto> success(List<ProductEntity> productEntities) {
-        GetProductListResponseDto responseBody = new GetProductListResponseDto(productEntities);
-        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
-    }
 }

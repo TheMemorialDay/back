@@ -1,6 +1,7 @@
 package com.korit.thememorialday.dto.response.product;
 
 
+import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.entity.ProductMappingEntity;
 
 import lombok.Getter;
@@ -13,14 +14,8 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @NoArgsConstructor
-public class GetProductOptionResponseDto {
+public class GetProductOptionResponseDto extends ResponseDto {
     private String productOptionName;
     private List<GetProductOptionDetailResponseDto> optionDetails;
 
-    public GetProductOptionResponseDto(ProductMappingEntity productMappingEntity) {
-        this.productOptionName = productMappingEntity.getProductOptionName();
-        this.optionDetails = productMappingEntity.getOptionDetails().stream()
-                .map(GetProductOptionDetailResponseDto::new)
-                .collect(Collectors.toList());
-    }
 }

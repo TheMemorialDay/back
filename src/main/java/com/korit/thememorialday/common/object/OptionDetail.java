@@ -1,18 +1,17 @@
-package com.korit.thememorialday.dto.request.product;
+package com.korit.thememorialday.common.object;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PatchProductOptionDetailRequestDto {
+public class OptionDetail {
     @NotBlank(message = "옵션 종류는 필수입니다.")
     private String productCategory;
 

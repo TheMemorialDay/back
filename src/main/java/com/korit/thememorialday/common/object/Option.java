@@ -1,22 +1,22 @@
-package com.korit.thememorialday.dto.request.product;
+package com.korit.thememorialday.common.object;
 
+import java.util.List;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PatchProductOptionRequestDto {
+public class Option {
     @NotBlank(message = "옵션 이름은 필수입니다.")
     private String productOptionName;
 
     @NotNull(message = "옵션 세부사항 리스트는 비어있을 수 없습니다.")
-    private List<PostProductOptionDetailRequestDto> optionDetails;
+    private List<OptionDetail> optionDetails;
 }

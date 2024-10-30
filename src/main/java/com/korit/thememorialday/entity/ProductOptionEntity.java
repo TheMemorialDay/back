@@ -14,23 +14,12 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "product_option")
 public class ProductOptionEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer optionCategoryNumber;
-
-    @Column(name = "product_category", nullable = false)
+    private Integer optionNumber;
     private String productCategory;
-
-    @Column(name = "product_option_price", nullable = false)
     private int productOptionPrice;
-
-    @ManyToOne
-    @JoinColumn(name = "option_number", nullable = false)
-    private ProductMappingEntity productMapping;
-
-    public ProductOptionEntity(String productCategory, int productOptionPrice, ProductMappingEntity productMapping) {
-        this.productCategory = productCategory;
-        this.productOptionPrice = productOptionPrice;
-        this.productMapping = productMapping;
-    }
+    
 }

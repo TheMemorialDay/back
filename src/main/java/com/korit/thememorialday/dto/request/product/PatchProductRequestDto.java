@@ -9,6 +9,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
+import com.korit.thememorialday.common.object.Option;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,7 +30,7 @@ public class PatchProductRequestDto {
     private String productTag;
 
     @NotNull(message = "옵션 리스트는 비어있을 수 없습니다.")
-    private List<PostProductOptionRequestDto> options;
+    private List<Option> options;
 
     @NotNull(message = "이미지 URL 리스트는 비어있을 수 없습니다.")
     private List<String> productImages;
