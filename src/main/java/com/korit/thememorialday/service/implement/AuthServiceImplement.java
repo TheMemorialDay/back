@@ -68,7 +68,9 @@ public class AuthServiceImplement implements AuthService {
 		try {
 			boolean isExistedTelNumber = userRepository.existsByTelNumber(telNumber);
 			if (isExistedTelNumber)
-				return ResponseDto.duplicatedaTelNumber();
+
+			return ResponseDto.duplicatedaTelNumber();
+
 		} catch (Exception exception) {
 			exception.printStackTrace();
 			return ResponseDto.databaseError();
@@ -79,8 +81,7 @@ public class AuthServiceImplement implements AuthService {
 
 		// smsProvider 만든 후 작성
 		boolean isSendSuccess = smsProvider.sendMessage(telNumber, telAuthNumber);
-		if (!isSendSuccess)
-			return ResponseDto.messageSendFail();
+		if (!isSendSuccess) return ResponseDto.messageSendFail();
 
 		try {
 			// 전화번호인증 엔터티 & 리포지토리 생성 먼저
@@ -104,8 +105,7 @@ public class AuthServiceImplement implements AuthService {
 
 		try {
 			boolean isMatched = telAuthRepository.existsByTelNumberAndTelAuthNumber(telNumber, telAuthNumber);
-			if (!isMatched)
-				return ResponseDto.telAuthFail();
+			if (!isMatched) return ResponseDto.telAuthFail();
 		} catch (Exception exception) {
 			exception.printStackTrace();
 			return ResponseDto.databaseError();

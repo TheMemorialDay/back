@@ -2,6 +2,8 @@ package com.korit.thememorialday.service;
 
 import org.springframework.http.ResponseEntity;
 
+import com.korit.thememorialday.dto.request.auth.TelAuthCheckRequestDto;
+import com.korit.thememorialday.dto.request.auth.TelAuthRequestDto;
 import com.korit.thememorialday.dto.request.mypage_user_info.PatchUserInfoRequestDto;
 import com.korit.thememorialday.dto.request.mypage_user_info.UserUpdatePasswordCheckRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
@@ -14,9 +16,14 @@ public interface MypageService {
 	// 회원정보 수정 시 비밀번호 확인
 	ResponseEntity<? super GetUserInfoResponseDto> userUpdatePasswordCheck(UserUpdatePasswordCheckRequestDto dto, String userId);
 	
-	// 회원 개인 정보 보기
-	// ResponseEntity<? super GetUserInfoResponseDto> getUserInfo(String userId);
+	// 회원 개인 정보 수정 전 전화번호 인증
+	ResponseEntity<ResponseDto> userUpdateTelAuth(TelAuthRequestDto dto);
+	// 회원 개인 정보 수정 전 전화번호 + 인증번호 확인
+	ResponseEntity<ResponseDto> userUpdateTelAuthCheck(TelAuthCheckRequestDto dto);
+
 	// 회원 개인 정보 수정
 	ResponseEntity<ResponseDto> patchUserInfo(PatchUserInfoRequestDto dto, String userId);
-
+	
+	// 회원 개인 정보 보기
+	// ResponseEntity<? super GetUserInfoResponseDto> getUserInfo(String userId);
 }

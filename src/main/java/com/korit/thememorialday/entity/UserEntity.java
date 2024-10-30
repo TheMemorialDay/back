@@ -3,6 +3,7 @@ package com.korit.thememorialday.entity;
 
 import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
 import com.korit.thememorialday.dto.request.join.PatchJoinRequestDto;
+import com.korit.thememorialday.dto.request.mypage_user_info.PatchUserInfoRequestDto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -56,4 +57,13 @@ public class UserEntity {
 		this.businessOpendate = dto.getBusinessOpendate();
 		this.permission = "사장";
     }
+
+	// 회원 수정을 위한 생성자
+	public void patch(PatchUserInfoRequestDto dto) {
+		this.password = dto.getPassword();
+		this.name = dto.getName();
+		this.birth = dto.getBirth();
+		this.gender = dto.getGender();
+		this.telNumber = dto.getTelNumber();
+	}
 }
