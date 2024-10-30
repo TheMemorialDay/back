@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FileController {
 
+
   private final FileService fileService;
 
   @PostMapping("/upload")
@@ -28,7 +29,7 @@ public class FileController {
     return url;
   }
 
-  @GetMapping(value = "/{fileName}", produces = { MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE })
+  @GetMapping(value = "/{fileName}", produces = { MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.APPLICATION_PDF_VALUE })
   public Resource getImageFile(
       @PathVariable("fileName") String fileName) {
     Resource resource = fileService.getFile(fileName);

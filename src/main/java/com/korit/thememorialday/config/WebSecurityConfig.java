@@ -19,74 +19,83 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.korit.thememorialday.dto.response.ResponseCode;
 import com.korit.thememorialday.dto.response.ResponseMessage;
 import com.korit.thememorialday.filter.JwtAuthenticationFilter;
+import com.korit.thememorialday.handler.OAuth2SuccessHandler;
+import com.korit.thememorialday.service.implement.OAuth2UserServiceImplement;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+//# Spring Web 보안 설정
 
-// Sprint web 보안 설정
 @Configurable
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
-  private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-  // private final OAuth2UserServiceImplement oAuth2UserService;
-  // private final OAuth2SuccessHandler oAuth2SuccessHandler;
-  @Bean
-  protected SecurityFilterChain configure(HttpSecurity security) throws Exception {
-    security
-        // basic 인증 방식 미사용
-        .httpBasic(HttpBasicConfigurer::disable)
-        // session 미사용(유지 X)
-        .sessionManagement(sessionManagement -> sessionManagement
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        // CSRF 취약점 대비 미지정
-        .csrf(CsrfConfigurer::disable)
-        // CORS 정책 설정
-        .cors(cors -> cors.configurationSource(configurationSource()))
-        // URL 패턴 및 http 메서드에 따라 인증 및 인가 여부 지정
-        .authorizeHttpRequests(request -> request
-            .requestMatchers("/mypage/**", "/", "/file/**", "/stores/**").permitAll()
-            .anyRequest().authenticated())
-        // 인증 및 인가 작업 중 발생하는 예외 처리
-        .exceptionHandling(exception -> exception
-            .authenticationEntryPoint(new AuthenticationFailEntryPoint()))
-        // oAuth2 login 적용
-        // .oauth2Login(oauth2 -> oauth2
-        // .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
-        // .authorizationEndpoint(endpoint ->
-        // endpoint.baseUri("/api/v1/auth/sns-sign-in"))
-        // .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
-        // .successHandler(oAuth2SuccessHandler)
-        // )
-        // 필터 등록
-        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-    return security.build();
-  }
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
+	private final OAuth2UserServiceImplement oAuth2UserServiceImplement;
+	private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
-  @Bean
-  protected CorsConfigurationSource configurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.addAllowedOrigin("*");
-    configuration.addAllowedHeader("*");
-    configuration.addAllowedMethod("*");
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
-  }
+	@Bean
+	protected SecurityFilterChain configure(HttpSecurity security) throws Exception {
+		security
+			.httpBasic(HttpBasicConfigurer::disable)
+			.sessionManagement(sessionManagement -> sessionManagement
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.csrf(CsrfConfigurer::disable)
+			// configurationSource 메서드 만든 후 적용
+			.cors(cors -> cors.configurationSource(configurationSource()))
+			.authorizeHttpRequests(request -> request
+				.requestMatchers("/api/v1/auth/**", "/support/notice/**", "/stores/**", "/file/*", "/mypage/**", "/").permitAll()
+				.anyRequest().authenticated()
+			)
+			.exceptionHandling(exception -> exception
+				// AuthenticationFailEntryPoint 만든 후 적용
+				.authenticationEntryPoint(new AuthenticationFailEntryPoint())
+			)
+
+			//* OAuth2 로그인 적용
+			.oauth2Login(oauth2 -> oauth2
+				.redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
+				.authorizationEndpoint(endpoint -> endpoint.baseUri("/api/v1/auth/sns-sign-in"))
+				// OAuth 서비스 만든 후 적용
+				.userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserServiceImplement))
+				.successHandler(oAuth2SuccessHandler)
+			)
+
+			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+			return security.build();
+	}
+
+	// CORS 설정
+	protected CorsConfigurationSource configurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.addAllowedOrigin("*");
+		configuration.addAllowedHeader("*");
+		configuration.addAllowedMethod("*");
+
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+
+		return source;
+	}
+
+	// 인증 및 인가 작업 중 발생하는 예외 처리
+	class AuthenticationFailEntryPoint implements AuthenticationEntryPoint {
+
+		@Override
+		public void commence(HttpServletRequest request, HttpServletResponse response,
+				AuthenticationException authException) throws IOException, ServletException {
+			
+			authException.printStackTrace();
+			response.setContentType("application/json");
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.getWriter()
+					.write("{\"code\": \"" + ResponseCode.AUTHENTICATION_FAIL + "\", \"message\": \"" + ResponseMessage.AUTHENTICATION_FAIL + "\"}");
+		}
+		
+	}	
 }
 
-class AuthenticationFailEntryPoint implements AuthenticationEntryPoint {
-  @Override
-  public void commence(HttpServletRequest request, HttpServletResponse response,
-      AuthenticationException authException) throws IOException, ServletException {
-    authException.printStackTrace();
-    response.setContentType("application/json");
-    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-    response.getWriter().write(
-        "{ \"code\": \"" + ResponseCode.AUTHENTICATION_FAIL + "\", \"message\": \""
-            + ResponseMessage.AUTHENTICATION_FAIL + "\" }");
-  }
-}
