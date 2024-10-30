@@ -16,7 +16,12 @@ public class ProductMappingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer optionNumber;
-    private Integer productNubmer;
+    private Integer productNumber;
     private String productOptionName;
+
+    public ProductMappingEntity(Integer productNubmer, String productOptionName) {
+        this.productNumber = productNubmer;
+        this.productOptionName = productOptionName;
+    }
     
 }

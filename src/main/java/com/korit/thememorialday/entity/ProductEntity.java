@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import com.korit.thememorialday.dto.request.product.PatchProductRequestDto;
 import com.korit.thememorialday.dto.request.product.PostProductRequestDto;
 
 @Getter
@@ -32,6 +33,14 @@ public class ProductEntity {
 
     public ProductEntity(PostProductRequestDto dto, Integer storeNubmer) {
         this.storeNumber = storeNubmer;
+        this.productName = dto.getProductName();
+        this.productIntroduce = dto.getProductIntroduce();
+        this.productPrice = dto.getProductPrice();
+        this.productToday = dto.isProductToday();
+        this.productTag = dto.getProductTag();
+    }
+
+    public void patch(PatchProductRequestDto dto) {
         this.productName = dto.getProductName();
         this.productIntroduce = dto.getProductIntroduce();
         this.productPrice = dto.getProductPrice();

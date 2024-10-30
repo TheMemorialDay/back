@@ -21,5 +21,8 @@ public class ProductImageEntity {
     private Integer productNumber;
     private String productImageUrl;
 
-    
+    public ProductImageEntity(Integer productNumber, String productImageUrl) {
+        this.productImageUrl = productImageUrl;
+        this.productNumber = productNumber;
+    }
 }

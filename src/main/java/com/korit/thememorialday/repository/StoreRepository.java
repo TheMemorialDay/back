@@ -64,4 +64,6 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Integer> {
       "WHERE S.store_number = :storeNumber", nativeQuery = true)
   GetStoreOrderResultSet getStoreOrderList(@Param("storeNumber") Integer storeNumber);
 
+  StoreEntity findByUserId(String userId);
+
 }
