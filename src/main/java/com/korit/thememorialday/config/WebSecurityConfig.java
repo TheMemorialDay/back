@@ -1,7 +1,6 @@
 package com.korit.thememorialday.config;
 
 import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,18 +16,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 import com.korit.thememorialday.dto.response.ResponseCode;
 import com.korit.thememorialday.dto.response.ResponseMessage;
 import com.korit.thememorialday.filter.JwtAuthenticationFilter;
 import com.korit.thememorialday.handler.OAuth2SuccessHandler;
 import com.korit.thememorialday.service.implement.OAuth2UserServiceImplement;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-
 //# Spring Web 보안 설정
 
 @Configurable
@@ -51,7 +47,7 @@ public class WebSecurityConfig {
 			// configurationSource 메서드 만든 후 적용
 			.cors(cors -> cors.configurationSource(configurationSource()))
 			.authorizeHttpRequests(request -> request
-				.requestMatchers("/api/v1/auth/**", "/support/notice/**", "/stores/**", "/file/*").permitAll()
+				.requestMatchers("/api/v1/auth/**", "/support/notice/**", "/stores/**", "/file/*", "/mypage/**", "/").permitAll()
 				.anyRequest().authenticated()
 			)
 			.exceptionHandling(exception -> exception
@@ -102,3 +98,4 @@ public class WebSecurityConfig {
 		
 	}	
 }
+
