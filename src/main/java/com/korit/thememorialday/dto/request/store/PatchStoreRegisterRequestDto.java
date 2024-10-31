@@ -42,13 +42,13 @@ public class PatchStoreRegisterRequestDto {
 
   private String storeTel;
 
-  @NotNull
+  
   private Float storeRating;
 
-  @NotNull
+  
   private Integer reviewCount;
 
-  @NotNull
+  
   private Integer likeCount;
 
   @NotBlank
