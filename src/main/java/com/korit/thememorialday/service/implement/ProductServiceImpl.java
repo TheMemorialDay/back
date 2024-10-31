@@ -3,7 +3,6 @@ package com.korit.thememorialday.service.implement;
 import com.korit.thememorialday.common.object.FullProduct;
 import com.korit.thememorialday.common.object.Option;
 import com.korit.thememorialday.common.object.OptionDetail;
-import com.korit.thememorialday.common.object.Product;
 import com.korit.thememorialday.dto.request.product.PatchProductRequestDto;
 import com.korit.thememorialday.dto.request.product.PostProductRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
@@ -27,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;

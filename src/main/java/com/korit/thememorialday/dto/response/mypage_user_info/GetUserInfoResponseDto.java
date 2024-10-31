@@ -14,7 +14,6 @@ import lombok.Getter;
 
 @Getter
 public class GetUserInfoResponseDto extends ResponseDto {
-	private String password;
 	private String name;
 	private String birth;
 	private String gender;
@@ -23,7 +22,6 @@ public class GetUserInfoResponseDto extends ResponseDto {
 
 	private GetUserInfoResponseDto(UserEntity userEntity) {
 		super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-		this.password = userEntity.getPassword();
 		this.name = userEntity.getName();
 		this.birth = userEntity.getBirth();
 		this.gender = userEntity.getGender();

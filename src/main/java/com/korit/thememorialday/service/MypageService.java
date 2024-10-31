@@ -17,9 +17,9 @@ public interface MypageService {
 	ResponseEntity<? super GetUserInfoResponseDto> userUpdatePasswordCheck(UserUpdatePasswordCheckRequestDto dto, String userId);
 	
 	// 회원 개인 정보 수정 전 전화번호 인증
-	ResponseEntity<ResponseDto> userUpdateTelAuth(TelAuthRequestDto dto);
+	ResponseEntity<ResponseDto> userUpdateTelAuth(TelAuthRequestDto dto, String userId);
 	// 회원 개인 정보 수정 전 전화번호 + 인증번호 확인
-	ResponseEntity<ResponseDto> userUpdateTelAuthCheck(TelAuthCheckRequestDto dto);
+	ResponseEntity<ResponseDto> userUpdateTelAuthCheck(TelAuthCheckRequestDto dto, String userId);
 
 	// 회원 개인 정보 수정
 	ResponseEntity<ResponseDto> patchUserInfo(PatchUserInfoRequestDto dto, String userId);

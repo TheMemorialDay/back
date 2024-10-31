@@ -67,9 +67,7 @@ public class AuthServiceImplement implements AuthService {
 
 		try {
 			boolean isExistedTelNumber = userRepository.existsByTelNumber(telNumber);
-			if (isExistedTelNumber)
-
-			return ResponseDto.duplicatedaTelNumber();
+			if (isExistedTelNumber) return ResponseDto.duplicatedaTelNumber();
 
 		} catch (Exception exception) {
 			exception.printStackTrace();
@@ -252,14 +250,6 @@ public class AuthServiceImplement implements AuthService {
 			boolean isMatched = userRepository.existsByUserIdAndTelNumber(userId, telNumber);
 			if (!isMatched)
 				return ResponseDto.noExistInfo();
-
-			// UserEntity userEntity = userRepository.findByPassword(password);
-			// if (userEntity == null) return ResponseDto.noExistInfo();
-
-			// String encodedPassword = userEntity.getPassword();
-			// boolean isPasswordMatched = passwordEncoder.matches(password,
-			// encodedPassword);
-			// if (encodedPassword == null) return ResponseDto.noPermission();
 
 		} catch (Exception exception) {
 			exception.printStackTrace();

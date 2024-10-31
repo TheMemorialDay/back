@@ -43,10 +43,9 @@ public class MypageServiceImplement implements MypageService {
 
 		try {
 
-			String pickUserId = dto.getUserId();
 			String password = dto.getPassword();
 
-			userEntity = userRepository.findByUserId(pickUserId);
+			userEntity = userRepository.findByUserId(userId);
 			if (userEntity == null) return ResponseDto.noExistInfo();
 
 			String prePassword = userEntity.getPassword();
@@ -60,25 +59,6 @@ public class MypageServiceImplement implements MypageService {
 
 		return GetUserInfoResponseDto.success(userEntity);
 	}
-
-	// * 회원 개인 정보 보기
-	// @Override
-	// public ResponseEntity<? super GetUserInfoResponseDto> getUserInfo(String userId) {
-
-	// 	UserEntity userEntity = null;
-
-	// 	try {
-	// 		userEntity = userRepository.findByUserId(userId);
-	// 		if (userEntity == null)
-	// 			return ResponseDto.noExistInfo();
-	// 	} catch (Exception exception) {
-	// 		exception.printStackTrace();
-	// 		return ResponseDto.databaseError();
-	// 	}
-
-	// 	return GetUserInfoResponseDto.success(userEntity);
-
-	// }
 
 	// * 회원 개인 정보 수정
 	@Override
@@ -105,7 +85,10 @@ public class MypageServiceImplement implements MypageService {
 
 	//* 정보 수정 때 전화번호 확인
 	@Override
-	public ResponseEntity<ResponseDto> userUpdateTelAuth(TelAuthRequestDto dto) {
+	public ResponseEntity<ResponseDto> userUpdateTelAuth(
+		TelAuthRequestDto dto, 
+		String userId) {
+
 		String telNumber = dto.getTelNumber();
 
 		try {
@@ -139,11 +122,17 @@ public class MypageServiceImplement implements MypageService {
 
 	//* 정보 수정 때 전화번호 + 인증번호 확인
 	@Override
-	public ResponseEntity<ResponseDto> userUpdateTelAuthCheck(TelAuthCheckRequestDto dto) {
+	public ResponseEntity<ResponseDto> userUpdateTelAuthCheck(
+		TelAuthCheckRequestDto dto, 
+		String userId) {
+			
 		String telNumber = dto.getTelNumber();
 		String telAuthNumber = dto.getTelAuthNumber();
 
 		try {
+			UserEntity userEntity = userRepository.findByUserId(userId);
+			if (userEntity == null) return ResponseDto.noExistUserId();
+			
 			boolean isMatched = telAuthRepository.existsByTelNumberAndTelAuthNumber(telNumber, telAuthNumber);
 			if (!isMatched) return ResponseDto.telAuthFail();
 

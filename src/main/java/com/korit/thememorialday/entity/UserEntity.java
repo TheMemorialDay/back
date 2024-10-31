@@ -2,6 +2,7 @@ package com.korit.thememorialday.entity;
 
 
 import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
+import com.korit.thememorialday.dto.request.auth.TelAuthRequestDto;
 import com.korit.thememorialday.dto.request.join.PatchJoinRequestDto;
 import com.korit.thememorialday.dto.request.mypage_user_info.PatchUserInfoRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
@@ -63,7 +64,6 @@ public class UserEntity {
 
 	// 회원 수정을 위한 생성자
 	public void patch(PatchUserInfoRequestDto dto) {
-		this.password = dto.getPassword();
 		this.name = dto.getName();
 		this.birth = dto.getBirth();
 		this.gender = dto.getGender();

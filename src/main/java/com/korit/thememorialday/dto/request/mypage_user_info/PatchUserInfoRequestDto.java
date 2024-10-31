@@ -13,9 +13,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PatchUserInfoRequestDto {
 	@NotBlank
-	@Pattern(regexp="^(?=.*[a-zA-Z])(?=.*[0-9]).{8,13}$")
-	private String password;
-	@NotBlank
 	private String name;
 	@NotBlank
 	private String birth;
