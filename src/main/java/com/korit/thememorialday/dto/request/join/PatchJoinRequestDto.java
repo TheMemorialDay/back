@@ -11,4 +11,5 @@ public class PatchJoinRequestDto {
     private String permission;
     private String businessNumber;
     private String businessOpendate;
+    private String businessUrl;
 }
