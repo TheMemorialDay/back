@@ -10,12 +10,15 @@ import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
 
 import com.korit.thememorialday.dto.response.ResponseDto;
+import com.korit.thememorialday.dto.response.auth.GetSignInResponseDto;
 import com.korit.thememorialday.entity.ProductEntity;
 import com.korit.thememorialday.entity.StoreEntity;
+import com.korit.thememorialday.entity.UserEntity;
 import com.korit.thememorialday.repository.ProductRepository;
 import com.korit.thememorialday.repository.StoreRepository;
 import com.korit.thememorialday.service.StoreService;
 import com.korit.thememorialday.dto.response.store.GetStoreListResponseDto;
+import com.korit.thememorialday.dto.response.store.GetStoreNumberResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreOrderListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreResponseDto;
 
@@ -130,4 +133,16 @@ public class StoreServiceImplement implements StoreService {
     return GetStoreResponseDto.success(storeEntity);
   }
 
+  public ResponseEntity<? super GetStoreNumberResponseDto> getStoreNumber(String userId) {
+    StoreEntity storeEntity = null;
+    try {
+      storeEntity = storeRepository.findByUserId(userId);
+      if (storeEntity == null)
+        return ResponseDto.noExistStore();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+    return GetStoreNumberResponseDto.success(storeEntity);
+  }
 }
