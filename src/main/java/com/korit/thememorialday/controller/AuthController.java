@@ -8,7 +8,7 @@ import com.korit.thememorialday.dto.request.auth.IdSearchTelNumberAuthRequestDto
 import com.korit.thememorialday.dto.request.auth.IdSearchNameTelNumberRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordAuthRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordResettingRequestDto;
-import com.korit.thememorialday.dto.request.auth.PasswordSearchRequestDto;
+import com.korit.thememorialday.dto.request.auth.PasswordResettingIdAndTelNumberRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignInRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthCheckRequestDto;
@@ -121,21 +121,21 @@ public class AuthController {
 		return response;
 	}
 
-	//* 비밀번호 찾기 (아이디 + 전화번호)
+	//* 비밀번호 재설정 전 (아이디 + 전화번호)
 	@PostMapping("/password-search")
 	public ResponseEntity<ResponseDto> passwordSearch(
-		@RequestBody @Valid PasswordSearchRequestDto requestBody
+		@RequestBody @Valid PasswordResettingIdAndTelNumberRequestDto requestBody
 	) {
-		ResponseEntity<ResponseDto> response = authService.passwordSearch(requestBody);
+		ResponseEntity<ResponseDto> response = authService.passwordResettingIdTelCheck(requestBody);
 		return response;
 	};
 
-	//* 비밀번호 찾기 시 인증 확인
+	//* 비밀번호 재설정 전 전화번호 + 인증번호 확인
 	@PostMapping("/password-search-tel-auth-check")
 	public ResponseEntity<ResponseDto> passwordAuthCheck(
 		@RequestBody @Valid PasswordAuthRequestDto requestBody
 	) {
-		ResponseEntity<ResponseDto> response = authService.passwordAuthCheck(requestBody);
+		ResponseEntity<ResponseDto> response = authService.passwordResettingAuthCheck(requestBody);
 		return response;
 	};
 

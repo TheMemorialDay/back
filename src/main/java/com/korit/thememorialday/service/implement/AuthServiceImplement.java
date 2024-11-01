@@ -11,7 +11,7 @@ import com.korit.thememorialday.dto.request.auth.IdSearchTelNumberAuthRequestDto
 import com.korit.thememorialday.dto.request.auth.IdSearchNameTelNumberRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordAuthRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordResettingRequestDto;
-import com.korit.thememorialday.dto.request.auth.PasswordSearchRequestDto;
+import com.korit.thememorialday.dto.request.auth.PasswordResettingIdAndTelNumberRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignInRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthCheckRequestDto;
@@ -254,14 +254,13 @@ public class AuthServiceImplement implements AuthService {
 
 	// * 비밀번호 찾기 (아이디 & 전화번호로 존재 확인)
 	@Override
-	public ResponseEntity<ResponseDto> passwordSearch(PasswordSearchRequestDto dto) {
+	public ResponseEntity<ResponseDto> passwordResettingIdTelCheck(PasswordResettingIdAndTelNumberRequestDto dto) {
 		String userId = dto.getUserId();
 		String telNumber = dto.getTelNumber();
 
 		try {
-			boolean isMatched = userRepository.existsByUserIdAndTelNumber(userId, telNumber);
-			if (!isMatched)
-				return ResponseDto.noExistInfo();
+			UserEntity IdAndTelNumber = userRepository.findByUserIdAndTelNumber(userId, telNumber);
+			if (IdAndTelNumber == null) return ResponseDto.noExistInfo();
 
 		} catch (Exception exception) {
 			exception.printStackTrace();
@@ -290,14 +289,13 @@ public class AuthServiceImplement implements AuthService {
 
 	// * 비밀번호를 위한 인증 확인 (전화번호 + 인증번호)
 	@Override
-	public ResponseEntity<ResponseDto> passwordAuthCheck(PasswordAuthRequestDto dto) {
+	public ResponseEntity<ResponseDto> passwordResettingAuthCheck(PasswordAuthRequestDto dto) {
 		String telNumber = dto.getTelNumber();
 		String telAuthNumber = dto.getTelAuthNumber();
 
 		try {
 			boolean isMatched = telAuthRepository.existsByTelNumberAndTelAuthNumber(telNumber, telAuthNumber);
-			if (!isMatched)
-				return ResponseDto.telAuthFail();
+			if (!isMatched) return ResponseDto.telAuthFail();
 
 		} catch (Exception exception) {
 			exception.printStackTrace();

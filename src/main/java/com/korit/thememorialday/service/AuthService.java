@@ -7,7 +7,7 @@ import com.korit.thememorialday.dto.request.auth.IdSearchTelNumberAuthRequestDto
 import com.korit.thememorialday.dto.request.auth.IdSearchNameTelNumberRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordAuthRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordResettingRequestDto;
-import com.korit.thememorialday.dto.request.auth.PasswordSearchRequestDto;
+import com.korit.thememorialday.dto.request.auth.PasswordResettingIdAndTelNumberRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignInRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthCheckRequestDto;
@@ -42,11 +42,11 @@ public interface AuthService {
 	// zustand 현재 접속해 있는 유저와 일치하는지 확인하기 위함
 	ResponseEntity<? super GetSignInResponseDto> getSignIn(String userId);
 
-	// 비밀번호 찾기 - 아이디 & 전화번호
-	ResponseEntity<ResponseDto> passwordSearch(PasswordSearchRequestDto dto);
+	// 비밀번호 재설정 전 - 아이디 & 전화번호
+	ResponseEntity<ResponseDto> passwordResettingIdTelCheck(PasswordResettingIdAndTelNumberRequestDto dto);
 
-	// 비밀번호 찾기 - 전화번호 & 인증번호 확인
-	ResponseEntity<ResponseDto> passwordAuthCheck(PasswordAuthRequestDto dto);
+	// 비밀번호 재설정 전 - 전화번호 & 인증번호 확인
+	ResponseEntity<ResponseDto> passwordResettingAuthCheck(PasswordAuthRequestDto dto);
 	
 	// 비밀번호 재설정
 	ResponseEntity<ResponseDto> passwordResetting(PasswordResettingRequestDto dto);

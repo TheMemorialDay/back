@@ -7,13 +7,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-//# 비밀번호 찾기 요청 dto
+//# 비밀번호 재설정 전 아이디 & 전화번호 확인 요청 dto
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PasswordSearchRequestDto {
+public class PasswordResettingIdAndTelNumberRequestDto {
 	@NotBlank
 	private String userId;
 	@NotBlank
