@@ -21,6 +21,7 @@ public class GetStoreResponseDto extends ResponseDto {
   private String storeContact;
   private String storeCaution;
   private String storeAddress;
+  private String storeDetailAddress;
   private String storeGugun;
   private String storeDong;
   private String storeTel;
@@ -55,6 +56,7 @@ public class GetStoreResponseDto extends ResponseDto {
     this.storeContact = storeEntity.getStoreContact();
     this.storeCaution = storeEntity.getStoreCaution();
     this.storeAddress = storeEntity.getStoreAddress();
+    this.storeDetailAddress = storeEntity.getStoreDetailAddress();
     this.storeGugun = storeEntity.getStoreGugun();
     this.storeDong = storeEntity.getStoreDong();
     this.storeLatitude = storeEntity.getStoreLatitude();
