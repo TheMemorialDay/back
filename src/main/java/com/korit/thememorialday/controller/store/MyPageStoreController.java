@@ -1,9 +1,10 @@
-package com.korit.thememorialday.controller;
+package com.korit.thememorialday.controller.store;
 
 import org.springframework.web.bind.annotation.RestController;
 
 import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
+
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.service.StoreService;
 import com.korit.thememorialday.dto.response.store.GetStoreResponseDto;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/mypage/store")
@@ -33,7 +35,7 @@ public class MyPageStoreController {
     return response;
   }
 
-  @PatchMapping("/{storeNumber}")
+  @PatchMapping(value = "/{storeNumber}")
   public ResponseEntity<ResponseDto> patchStore(
       @PathVariable("storeNumber") Integer storeNumber,
       @RequestBody @Valid PatchStoreRegisterRequestDto requestBody) {
@@ -41,11 +43,17 @@ public class MyPageStoreController {
     return response;
   }
 
-  @GetMapping("/{storeNumber}")
+  @GetMapping(value = "/{storeNumber}")
   public ResponseEntity<? super GetStoreResponseDto> getStore(
       @PathVariable("storeNumber") Integer storeNumber) {
     ResponseEntity<? super GetStoreResponseDto> reponse = storeService.getStore(storeNumber);
     return reponse;
   }
 
+  @GetMapping(value = { "/", "" })
+  public ResponseEntity<? super GetStoreResponseDto> getStoreInfo(
+      @RequestParam("userId") String userId) {
+    ResponseEntity<? super GetStoreResponseDto> reponse = storeService.getStore(userId);
+    return reponse;
+  }
 }

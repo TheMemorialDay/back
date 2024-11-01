@@ -8,6 +8,7 @@ import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.product.GetProductListResponseDto;
 import com.korit.thememorialday.dto.response.product.GetProductResponseDto;
 
+
 public interface ProductService {
     ResponseEntity<ResponseDto> postProduct(PostProductRequestDto dto, Integer storeNubmer);
     ResponseEntity<? super GetProductListResponseDto> getProductList(String userId);
@@ -15,5 +16,6 @@ public interface ProductService {
     ResponseEntity<ResponseDto> patchProduct(Integer productNumber, PatchProductRequestDto dto);
     // ResponseEntity<? super GetProductResponseDto> getProduct(Integer productNumber);
     // ResponseEntity<ResponseDto> deleteProduct(Integer productNumber);
+    
 }
 

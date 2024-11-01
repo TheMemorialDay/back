@@ -9,6 +9,7 @@ import com.korit.thememorialday.dto.request.product.PostProductRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.product.GetProductListResponseDto;
 import com.korit.thememorialday.dto.response.product.GetProductResponseDto;
+import com.korit.thememorialday.dto.response.store.GetStoreNumberResponseDto;
 import com.korit.thememorialday.entity.ProductEntity;
 import com.korit.thememorialday.entity.ProductImageEntity;
 import com.korit.thememorialday.entity.ProductMappingEntity;

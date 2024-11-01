@@ -15,6 +15,8 @@ public interface GetStoreResultSet {
 
   String getStoreAddress();
 
+  String getStoreDetailAddress();
+
   String getStoreGugun();
 
   String getStoreDong();
