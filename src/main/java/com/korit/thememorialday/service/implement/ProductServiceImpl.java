@@ -94,14 +94,6 @@ public class ProductServiceImpl implements ProductService {
         return ResponseDto.success();
 
     }
-
-    // @Override
-    // public ResponseEntity<GetProductListResponseDto> getProductsByStoreNumber(Integer storeNumber) {
-    // // 현재 로그인한 유저의 ID를 가져온다고 가정
-    // String userId = ...; // 현재 로그인한 유저의 ID를 가져오는 방법
-    // List<ProductEntity> products = productRepository.findByUserId(userId);
-    // return GetProductListResponseDto.success(products);
-    // }
     
     @Override
     public ResponseEntity<? super GetProductListResponseDto> getProductList(String userId) {
