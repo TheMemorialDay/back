@@ -317,18 +317,15 @@ public class AuthServiceImplement implements AuthService {
 			String password = dto.getPassword();
 
 			boolean isAuth = telAuthRepository.existsByTelNumberAndTelAuthNumber(telNumber, telAuthNumber);
-			if (!isAuth)
-				return ResponseDto.telAuthFail();
+			if (!isAuth) return ResponseDto.telAuthFail();
 
 			UserEntity userEntity = userRepository.findByUserId(userId);
-			if (userEntity == null)
-				return ResponseDto.noExistUserId();
+			if (userEntity == null) return ResponseDto.noExistUserId();
 
 			// 기존 패스워드와 새 패스워드 비교
 			String prePassword = userEntity.getPassword();
 			boolean isEquals = passwordEncoder.matches(password, prePassword);
-			if (!isEquals)
-				return ResponseDto.validationFail();
+			if (isEquals) return ResponseDto.validationFail();
 
 			String encodedPassword = passwordEncoder.encode(password);
 			userEntity.setPassword(encodedPassword);

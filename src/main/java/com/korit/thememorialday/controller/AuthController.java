@@ -104,7 +104,7 @@ public class AuthController {
 	}
 
 	//* 최종 아이디 찾기 (프론트에서 아이디 찾기 버튼 누를 시)
-	@GetMapping("/id-search-result")
+	@PostMapping("/id-search-result")
 	public ResponseEntity<? super IdSearchResponseDto> idSearch(
 		@RequestBody @Valid IdSearchNameTelNumberRequestDto requestBody
 	) {
