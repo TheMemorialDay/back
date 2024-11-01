@@ -31,6 +31,7 @@ public class StoreEntity {
   private String storeContact;
   private String storeCaution;
   private String storeAddress;
+  private String storeDetailAddress;
   private String storeGugun;
   private String storeDong;
   private String storeLatitude;
@@ -63,6 +64,7 @@ public class StoreEntity {
     this.storeContact = dto.getStoreContact();
     this.storeCaution = dto.getStoreCaution();
     this.storeAddress = dto.getStoreAddress();
+    this.storeDetailAddress = dto.getStoreDetailAddress();
     this.storeGugun = dto.getStoreGugun();
     this.storeDong = dto.getStoreDong();
     this.storeLatitude = dto.getStoreLatitude();
@@ -96,6 +98,7 @@ public class StoreEntity {
     this.storeContact = dto.getStoreContact();
     this.storeCaution = dto.getStoreCaution();
     this.storeAddress = dto.getStoreAddress();
+    this.storeDetailAddress = dto.getStoreDetailAddress();
     this.storeGugun = dto.getStoreGugun();
     this.storeDong = dto.getStoreDong();
     this.storeLatitude = dto.getStoreLatitude();

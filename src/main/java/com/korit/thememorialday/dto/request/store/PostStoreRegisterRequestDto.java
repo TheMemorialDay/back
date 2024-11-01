@@ -27,6 +27,9 @@ public class PostStoreRegisterRequestDto {
   private String storeAddress;
 
   @NotBlank
+  private String storeDetailAddress;
+
+  @NotBlank
   private String storeGugun;
 
   @NotBlank

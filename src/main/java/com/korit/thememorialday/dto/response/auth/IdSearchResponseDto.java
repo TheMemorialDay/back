@@ -9,7 +9,7 @@ import com.korit.thememorialday.entity.UserEntity;
 
 import lombok.Getter;
 
-//# 아이디 찾기 응답 dto
+//# 아이디 찾기 응답 dto 
 
 @Getter
 public class IdSearchResponseDto extends ResponseDto {

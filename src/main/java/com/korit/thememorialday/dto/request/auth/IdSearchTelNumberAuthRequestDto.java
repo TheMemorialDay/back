@@ -6,12 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-//# 아이디 찾기의 인증번호 확인 dto
+//# 아이디 찾기의 인증번호 확인 dto (전화번호 + 인증번호)
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class IdSearchAuthRequestDto {
+public class IdSearchTelNumberAuthRequestDto {
 	@NotBlank
 	@Pattern(regexp="^[0-9]{11}$")
 	private String telNumber;

@@ -11,7 +11,4 @@ import com.korit.thememorialday.entity.TelAuthEntity;
 public interface TelAuthRepository extends JpaRepository<TelAuthEntity, String> {
 	// 전화번호 + 인증번호 확인
 	boolean existsByTelNumberAndTelAuthNumber(String telNumber, String telAuthNumber);
-
-	// 아이디 찾기 (인증번호 확인)
-	boolean existsByTelAuthNumber(String telAuthNumber);
 }

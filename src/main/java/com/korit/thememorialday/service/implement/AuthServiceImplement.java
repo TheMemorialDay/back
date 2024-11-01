@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.korit.thememorialday.common.util.AuthNumberCreator;
 import com.korit.thememorialday.dto.request.auth.IdCheckRequestDto;
-import com.korit.thememorialday.dto.request.auth.IdSearchAuthRequestDto;
-import com.korit.thememorialday.dto.request.auth.IdSearchRequestDto;
+import com.korit.thememorialday.dto.request.auth.IdSearchTelNumberAuthRequestDto;
+import com.korit.thememorialday.dto.request.auth.IdSearchNameTelNumberRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordAuthRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordResettingRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordSearchRequestDto;
@@ -179,9 +179,9 @@ public class AuthServiceImplement implements AuthService {
 		return SignInResponseDto.success(accessToken);
 	}
 
-	// * 첫단계 아이디 찾기
+	// * 첫단계 아이디 찾기 (이름 + 전화번호)
 	@Override
-	public ResponseEntity<ResponseDto> beforeIdSearch(IdSearchRequestDto dto) {
+	public ResponseEntity<ResponseDto> idSearchNameTelCheck(IdSearchNameTelNumberRequestDto dto) {
 		String name = dto.getName();
 		String telNumber = dto.getTelNumber();
 
@@ -215,22 +215,34 @@ public class AuthServiceImplement implements AuthService {
 		return ResponseDto.success();
 	}
 
-	// * 아이디 찾기
+	//* 아이디 찾기 (전화번호 + 인증번호)
 	@Override
-	public ResponseEntity<? super IdSearchResponseDto> IdSearch(IdSearchAuthRequestDto dto) {
+	public ResponseEntity<ResponseDto> idSearchTelAuthCheck(IdSearchTelNumberAuthRequestDto dto) {
 		String telNumber = dto.getTelNumber();
 		String telAuthNumber = dto.getTelAuthNumber();
+
+		try {
+			boolean isMatched = telAuthRepository.existsByTelNumberAndTelAuthNumber(telNumber, telAuthNumber);
+			if (!isMatched) return ResponseDto.telAuthFail();
+		} catch (Exception exception) {
+			exception.printStackTrace();
+			return ResponseDto.databaseError();
+		}
+
+		return ResponseDto.success();
+	}
+
+	// * 아이디 찾기 (정보 결과 나오는)
+	@Override
+	public ResponseEntity<? super IdSearchResponseDto> getIdSearch(IdSearchNameTelNumberRequestDto dto) {
+		String name = dto.getName();
+		String telNumber = dto.getTelNumber();
 
 		UserEntity userEntity = null;
 
 		try {
-			boolean isMatched = telAuthRepository.existsByTelNumberAndTelAuthNumber(telNumber, telAuthNumber);
-			if (!isMatched)
-				return ResponseDto.telAuthFail();
-
-			userEntity = userRepository.findByTelNumber(telNumber);
-			if (userEntity == null)
-				return ResponseDto.noExistInfo();
+			userEntity = userRepository.findByNameAndTelNumber(name, telNumber);
+			if (userEntity == null) return ResponseDto.noExistInfo();
 
 		} catch (Exception exception) {
 			exception.printStackTrace();

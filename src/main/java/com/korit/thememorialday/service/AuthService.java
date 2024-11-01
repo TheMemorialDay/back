@@ -3,8 +3,8 @@ package com.korit.thememorialday.service;
 import org.springframework.http.ResponseEntity;
 
 import com.korit.thememorialday.dto.request.auth.IdCheckRequestDto;
-import com.korit.thememorialday.dto.request.auth.IdSearchAuthRequestDto;
-import com.korit.thememorialday.dto.request.auth.IdSearchRequestDto;
+import com.korit.thememorialday.dto.request.auth.IdSearchTelNumberAuthRequestDto;
+import com.korit.thememorialday.dto.request.auth.IdSearchNameTelNumberRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordAuthRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordResettingRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordSearchRequestDto;
@@ -30,10 +30,13 @@ public interface AuthService {
 	// 로그인
 	ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto);
 	
+	//* 아이디 찾기 */
 	// 아이디 찾기 - 이름 & 전화번호 확인
-	ResponseEntity<ResponseDto> beforeIdSearch(IdSearchRequestDto dto);
+	ResponseEntity<ResponseDto> idSearchNameTelCheck(IdSearchNameTelNumberRequestDto dto);
 	// 아이디 찾기 - 전화번호 & 인증번호 확인
-	ResponseEntity<? super IdSearchResponseDto> IdSearch(IdSearchAuthRequestDto dto);
+	ResponseEntity<ResponseDto> idSearchTelAuthCheck(IdSearchTelNumberAuthRequestDto dto);
+	// 아이디 찾기 - 결과물 (로그인 x, 이름 전화번호로 일치하는 유저 가져오기 시도)
+	ResponseEntity<? super IdSearchResponseDto> getIdSearch(IdSearchNameTelNumberRequestDto dto);
 
 
 	// zustand 현재 접속해 있는 유저와 일치하는지 확인하기 위함

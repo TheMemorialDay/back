@@ -4,8 +4,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.korit.thememorialday.dto.request.auth.IdCheckRequestDto;
-import com.korit.thememorialday.dto.request.auth.IdSearchAuthRequestDto;
-import com.korit.thememorialday.dto.request.auth.IdSearchRequestDto;
+import com.korit.thememorialday.dto.request.auth.IdSearchTelNumberAuthRequestDto;
+import com.korit.thememorialday.dto.request.auth.IdSearchNameTelNumberRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordAuthRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordResettingRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordSearchRequestDto;
@@ -85,21 +85,30 @@ public class AuthController {
 		return response;
 	}
 
-	//* 아이디 찾기 시도
-	@PostMapping("/id-search")
+	//* 아이디 찾기 시도 (이름 + 전화번호) (프론트에서 전송버튼 누를 시)
+	@PostMapping("/id-search-first")
 	public ResponseEntity<ResponseDto> beforeIdSearch(
-		@RequestBody @Valid IdSearchRequestDto requestBody
+		@RequestBody @Valid IdSearchNameTelNumberRequestDto requestBody
 	) {
-		ResponseEntity<ResponseDto> response = authService.beforeIdSearch(requestBody);
+		ResponseEntity<ResponseDto> response = authService.idSearchNameTelCheck(requestBody);
 		return response;
 	}
 
-	//* 최종 아이디 찾기
-	@PostMapping("/id-search-result")
-	public ResponseEntity<? super IdSearchResponseDto> idSearch(
-		@RequestBody @Valid IdSearchAuthRequestDto requestBody
+	//* 아이디 찾기 (전화번호 + 인증번호) (프론트에서 확인버튼 누를 시)
+	@PostMapping("/id-search-middle")
+	public ResponseEntity<ResponseDto> idSearchtelAuthCheck(
+		@RequestBody @Valid IdSearchTelNumberAuthRequestDto requestBody
 	) {
-		ResponseEntity<? super IdSearchResponseDto> response = authService.IdSearch(requestBody);
+		ResponseEntity<ResponseDto> response = authService.idSearchTelAuthCheck(requestBody);
+		return response;
+	}
+
+	//* 최종 아이디 찾기 (프론트에서 아이디 찾기 버튼 누를 시)
+	@GetMapping("/id-search-result")
+	public ResponseEntity<? super IdSearchResponseDto> idSearch(
+		@RequestBody @Valid IdSearchNameTelNumberRequestDto requestBody
+	) {
+		ResponseEntity<? super IdSearchResponseDto> response = authService.getIdSearch(requestBody);
 		return response;
 	}
 

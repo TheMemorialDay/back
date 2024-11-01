@@ -18,6 +18,8 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Integer> {
 
   List<StoreEntity> findByOrderByStoreNumberDesc();
 
+  StoreEntity findByUserId(String userId);
+
   @Query(value = "SELECT " +
       "    S.store_number as storeNumber, " +
       "    S.store_name as storeName, " +
@@ -26,6 +28,7 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Integer> {
       "    S.store_contact as storeContact, " +
       "    S.store_caution as storeCaution, " +
       "    S.store_address as storeAddress, " +
+      "    S.store_detail_address as storeDetailAddress, " +
       "    S.store_gugun as storeGugun, " +
       "    S.store_dong as storeDong, " +
       "    S.store_latitude as storeLatitude, " +
@@ -63,7 +66,5 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Integer> {
       "ON S.store_number = P.store_number " +
       "WHERE S.store_number = :storeNumber", nativeQuery = true)
   GetStoreOrderResultSet getStoreOrderList(@Param("storeNumber") Integer storeNumber);
-
-  StoreEntity findByUserId(String userId);
 
 }

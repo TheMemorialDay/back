@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class IdSearchRequestDto {
+public class IdSearchNameTelNumberRequestDto {
 	@NotBlank
 	private String name;
 	@NotBlank
