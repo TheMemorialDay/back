@@ -1,10 +1,5 @@
 package com.korit.thememorialday.dto.response;
 
-
-// ResponseDTO의 code 상수
-
-public interface ResponseCode {
-
 //# 응답 코드 상수 정의
 
 public interface ResponseCode {
@@ -16,7 +11,7 @@ public interface ResponseCode {
 	String NO_EXIST_USER_ID = "NI";
 	String NO_EXIST_INFO = "NF";
 	String NO_EXIST_QUESTION = "NQ";
-  String NO_EXIST_STORE = "NS";
+	String NO_EXIST_STORE = "NS";
 
 	String TEL_AUTH_FAIL = "TAF";
 	String SIGN_IN_FAIL = "SF";

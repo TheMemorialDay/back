@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
+
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.entity.ProductEntity;
 import com.korit.thememorialday.entity.StoreEntity;
@@ -109,6 +110,24 @@ public class StoreServiceImplement implements StoreService {
 
     // ResponseEntity 반환
     return ResponseEntity.ok(responseDto);
+  }
+
+  @Override
+  public ResponseEntity<? super GetStoreResponseDto> getStore(String userId) {
+
+    StoreEntity storeEntity = null;
+
+    try {
+      storeEntity = storeRepository.findByUserId(userId);
+      if (userId == null)
+        return ResponseDto.noExistStore();
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetStoreResponseDto.success(storeEntity);
   }
 
 }

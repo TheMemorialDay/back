@@ -1,4 +1,4 @@
-package com.korit.thememorialday.controller;
+package com.korit.thememorialday.controller.store;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
