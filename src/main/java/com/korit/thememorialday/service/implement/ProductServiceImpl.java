@@ -271,6 +271,21 @@ public class ProductServiceImpl implements ProductService {
 
         return ResponseDto.success();
     }
+
+    @Override
+    public ResponseEntity<ResponseDto> deleteProduct(Integer productNumber) {
+        try {
+            ProductEntity productEntity = productRepository.findByProductNumber(productNumber);
+            if (productEntity == null) return ResponseDto.noExistProduct();
+
+            productRepository.delete(productEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return ResponseDto.success();
+    }
 }
 
     // @Override
