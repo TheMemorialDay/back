@@ -67,7 +67,7 @@ public class StoreMainController {
   }
 
   //* store main search - 가게명 검색 가게 리스트 보기
-  @PostMapping(value = { "/", "" })
+  @PostMapping(value = "/store-name-list")
   public ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainSearchList(
     @RequestBody @Valid PostStoreMainSearchRequestDto requestBody
   ) {
