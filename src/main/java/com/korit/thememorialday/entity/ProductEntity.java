@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,5 +49,14 @@ public class ProductEntity {
         this.productToday = dto.isProductToday();
         this.productTag = dto.getProductTag();
     }
+
+    //* 상품명 검색해서 가게를 불러오기 위한 거
+    @ManyToOne
+    @JoinColumn(name="store_number")
+    private StoreEntity store;
+
+    public StoreEntity getStore() {
+        return store;
+    };
 
 }

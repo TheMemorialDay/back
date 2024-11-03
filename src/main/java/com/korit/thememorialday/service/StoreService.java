@@ -1,8 +1,11 @@
 package com.korit.thememorialday.service;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 
 import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
+import com.korit.thememorialday.dto.request.store.PostStoreByProductMainSearchRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreMainSearchRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
@@ -29,6 +32,14 @@ public interface StoreService {
   ResponseEntity<? super GetStoreNumberResponseDto> getStoreNumber(String userId);
 
   //* stores main page - 가게명으로 가게 검색
-  ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainSearchList(PostStoreMainSearchRequestDto dto);
+  ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainSearchList(
+      PostStoreMainSearchRequestDto dto
+    );
+  //* stores main search - 상품명으로 가게 검색
+  ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreByProductNameMainSearch(
+      PostStoreByProductMainSearchRequestDto dto
+    );
 
+  //* store main pickup filter - 픽업가능요일 필터링
+  ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoresByAvailableDays(List<String> days);
 }

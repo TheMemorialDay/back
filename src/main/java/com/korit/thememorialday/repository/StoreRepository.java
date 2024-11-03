@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.fasterxml.jackson.databind.util.ArrayBuilders.BooleanBuilder;
 import com.korit.thememorialday.entity.StoreEntity;
 import com.korit.thememorialday.repository.resultSet.GetStoreOrderResultSet;
 import com.korit.thememorialday.repository.resultSet.GetStoreResultSet;
@@ -70,5 +71,8 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Integer> {
   //* store main page - 가게명으로 가게 검색
   // List<StoreEntity> findByStoreNameContaining();
   List<StoreEntity> findByStoreNameContaining(String storeName);
+
+  //* store main day select - 픽업가능요일 선택해서 가게 불러오기
+  List<StoreEntity> findByDays(BooleanBuilder builder);
 
 }

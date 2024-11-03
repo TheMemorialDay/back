@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.korit.thememorialday.dto.request.store.PostStoreByProductMainSearchRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreMainSearchRequestDto;
 import com.korit.thememorialday.dto.response.store.GetStoreListMainSearchResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreListResponseDto;
@@ -67,12 +68,21 @@ public class StoreMainController {
   }
 
   //* store main search - 가게명 검색 가게 리스트 보기
-  @PostMapping(value = "/store-name-list")
+  @PostMapping(value = "/search-by-store-name")
   public ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainSearchList(
     @RequestBody @Valid PostStoreMainSearchRequestDto requestBody
   ) {
     ResponseEntity<? super GetStoreListMainSearchResponseDto> response = storeService.getStoreMainSearchList(requestBody);
     return response;
   }
+
+  //* store main search - 상품명 검색 가게 리스트 보기
+  @PostMapping(value = "/search-by-product-name")
+  public ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreByProductNameMainSearch(
+    @RequestBody @Valid PostStoreByProductMainSearchRequestDto requestBody
+  ) {
+    ResponseEntity<? super GetStoreListMainSearchResponseDto> response = storeService.getStoreByProductNameMainSearch(requestBody);
+    return response;
+  };
 
 }
