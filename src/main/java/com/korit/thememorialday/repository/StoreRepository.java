@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import com.korit.thememorialday.entity.StoreEntity;
 import com.korit.thememorialday.repository.resultSet.GetStoreOrderResultSet;
 import com.korit.thememorialday.repository.resultSet.GetStoreResultSet;
-import com.korit.thememorialday.repository.resultSet.GetStoresAndProductsResultSet;
 
 @Repository
 public interface StoreRepository extends JpaRepository<StoreEntity, Integer> {
@@ -68,20 +67,8 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Integer> {
       "WHERE S.store_number = :storeNumber", nativeQuery = true)
   GetStoreOrderResultSet getStoreOrderList(@Param("storeNumber") Integer storeNumber);
 
-  //* 가게 & 상품명으로 가게 검색
-  @Query(
-    value=
-      "SELECT " +
-      "S.store_name as storeName " +
-      "P.product_name as productName " +
-      "FROM store S LEFT product P " +
-      "ON S.store_number = P.store_number " +
-      "WHERE S.store_name = :storeName " +
-      "AND P.product.name = :productName ",
-    nativeQuery=true 
-  )
-  GetStoresAndProductsResultSet getStoresAndProductsList(
-    @Param("storeName") String storeName,
-    @Param("productName") String productName);
+  //* store main page - 가게명으로 가게 검색
+  // List<StoreEntity> findByStoreNameContaining();
+  List<StoreEntity> findByStoreNameContaining(String storeName);
 
 }

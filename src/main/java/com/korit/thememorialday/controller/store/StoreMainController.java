@@ -3,14 +3,19 @@ package com.korit.thememorialday.controller.store;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.korit.thememorialday.dto.request.store.PostStoreMainSearchRequestDto;
+import com.korit.thememorialday.dto.response.store.GetStoreListMainSearchResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreOrderListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreResponseDto;
 import com.korit.thememorialday.service.StoreService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -61,6 +66,13 @@ public class StoreMainController {
     return reponse;
   }
 
- 
+  //* store main search - 가게명 검색 가게 리스트 보기
+  @PostMapping(value = { "/", "" })
+  public ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainSearchList(
+    @RequestBody @Valid PostStoreMainSearchRequestDto requestBody
+  ) {
+    ResponseEntity<? super GetStoreListMainSearchResponseDto> response = storeService.getStoreMainSearchList(requestBody);
+    return response;
+  }
 
 }

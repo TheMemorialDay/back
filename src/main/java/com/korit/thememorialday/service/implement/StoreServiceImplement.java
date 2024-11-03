@@ -7,16 +7,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
+import com.korit.thememorialday.dto.request.store.PostStoreMainSearchRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
 
 import com.korit.thememorialday.dto.response.ResponseDto;
-import com.korit.thememorialday.dto.response.auth.GetSignInResponseDto;
 import com.korit.thememorialday.entity.ProductEntity;
 import com.korit.thememorialday.entity.StoreEntity;
-import com.korit.thememorialday.entity.UserEntity;
 import com.korit.thememorialday.repository.ProductRepository;
 import com.korit.thememorialday.repository.StoreRepository;
 import com.korit.thememorialday.service.StoreService;
+import com.korit.thememorialday.dto.response.store.GetStoreListMainSearchResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreNumberResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreOrderListResponseDto;
@@ -144,5 +144,24 @@ public class StoreServiceImplement implements StoreService {
       return ResponseDto.databaseError();
     }
     return GetStoreNumberResponseDto.success(storeEntity);
+  }
+
+  //* store main search - 가게명 검색 가게리스트 보기
+  @Override
+  public ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainSearchList(PostStoreMainSearchRequestDto dto) {
+    
+    List<StoreEntity> storeEntities = new ArrayList<>();
+
+    try {
+
+      storeEntities = storeRepository.findByStoreNameContaining(dto.getStoreName());
+
+    } catch(Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetStoreListMainSearchResponseDto.success(storeEntities);
+
   }
 }
