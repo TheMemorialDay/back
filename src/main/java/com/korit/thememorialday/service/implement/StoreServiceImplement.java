@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+
 import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
 
@@ -92,7 +93,7 @@ public class StoreServiceImplement implements StoreService {
     List<StoreEntity> storeEntities = new ArrayList<>();
 
     try {
-
+      
       storeEntities = storeRepository.findByOrderByStoreNumberDesc();
 
     } catch (Exception exception) {
@@ -145,4 +146,6 @@ public class StoreServiceImplement implements StoreService {
     }
     return GetStoreNumberResponseDto.success(storeEntity);
   }
+
+  
 }

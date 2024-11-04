@@ -6,9 +6,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.korit.thememorialday.dto.response.store.GetProductDetailResponseDto;
+import com.korit.thememorialday.dto.response.store.GetProductPreviewListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreOrderListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreResponseDto;
+import com.korit.thememorialday.service.ProductService;
 import com.korit.thememorialday.service.StoreService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class StoreMainController {
 
   private final StoreService storeService;
+  private final ProductService productService;
 
   @GetMapping(value = { "/", "" })
   public ResponseEntity<? super GetStoreListResponseDto> getStoreList() {
@@ -61,6 +65,22 @@ public class StoreMainController {
     return reponse;
   }
 
- 
+  @GetMapping(value = "/{storeNumber}/order/list")
+  public ResponseEntity<? super GetProductPreviewListResponseDto> getProductPreviewList(
+    @PathVariable("storeNumber") Integer storeNumber
+  ) {
+      ResponseEntity<? super GetProductPreviewListResponseDto> response = productService.getProductPreviewList(storeNumber);
+      return response;
+  }
+
+  @GetMapping(value = "/{storeNumber}/order/{productNumber}")
+  public ResponseEntity<? super GetProductDetailResponseDto> getOrderProductDetail(
+    @PathVariable("storeNumber") Integer storeNumber,
+    @PathVariable("productNumber") Integer productNumber
+  ) {
+    ResponseEntity<? super GetProductDetailResponseDto> response = productService.getOrderProductDetail(productNumber, storeNumber);
+    return response;
+  }
+
 
 }
