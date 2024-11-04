@@ -13,15 +13,16 @@ import com.korit.thememorialday.entity.StoreEntity;
 
 import lombok.Getter;
 
-//# stores 페이지에서 가게명으로 검색 가게들 가져오기 위한 dto
+//* stores 페이지에서 가게명 & 상품명 검색으로 가게들 가져오기 위한 dto
 
 @Getter
 public class GetStoreListMainSearchResponseDto extends ResponseDto {
-	private List<StoresMainSearch> storesMainSearchs;
+	// stores : react responseDTO랑 이름 동일하게
+	private List<StoresMainSearch> stores;
 
 	private GetStoreListMainSearchResponseDto(List<StoreEntity> storeEntities) {
 		super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-		this.storesMainSearchs = StoresMainSearch.getList(storeEntities);
+		this.stores = StoresMainSearch.getList(storeEntities);
 	}
 
 	public static ResponseEntity<GetStoreListMainSearchResponseDto> success(List<StoreEntity> storeEntities) {

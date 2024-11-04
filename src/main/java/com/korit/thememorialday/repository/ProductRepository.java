@@ -14,7 +14,4 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
 
     List<ProductEntity> findByStoreNumber(Integer storeNumber); // 특정 store_number에 해당하는 모든 상품 조회
 
-    //* store main page - 상품명으로 가게 검색
-    List<ProductEntity> findByProductNameContaining(String productName);    
-    
 }

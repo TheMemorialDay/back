@@ -2,15 +2,12 @@ package com.korit.thememorialday.service.implement;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.util.ArrayBuilders.BooleanBuilder;
 import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
-import com.korit.thememorialday.dto.request.store.PostStoreByProductMainSearchRequestDto;
-import com.korit.thememorialday.dto.request.store.PostStoreMainSearchRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
 
 import com.korit.thememorialday.dto.response.ResponseDto;
@@ -26,13 +23,6 @@ import com.korit.thememorialday.dto.response.store.GetStoreOrderListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreResponseDto;
 
 import lombok.RequiredArgsConstructor;
-
-// import com.querydsl.core.BooleanBuilder;
-import com.querydsl.jpa.JPAExpressions;
-// import com.querydsl.jpa.impl.JPAQueryFactory;
-// import com.korit.thememorialday.QStoreEntity;
-// import com.yourproject.entity.StoreEntity;
-
 
 @Service
 @RequiredArgsConstructor
@@ -156,40 +146,16 @@ public class StoreServiceImplement implements StoreService {
     return GetStoreNumberResponseDto.success(storeEntity);
   }
 
-  //* store main search - 가게명 검색 가게리스트 보기
+  //* store main search - storeName & productName 으로 검색
   @Override
-  public ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainSearchList(PostStoreMainSearchRequestDto dto) {
-    
+  public ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainSearch(
+    String storeName, String productName) {
+
     List<StoreEntity> storeEntities = new ArrayList<>();
 
     try {
 
-      storeEntities = storeRepository.findByStoreNameContaining(dto.getStoreName());
-
-    } catch(Exception exception) {
-      exception.printStackTrace();
-      return ResponseDto.databaseError();
-    }
-
-    return GetStoreListMainSearchResponseDto.success(storeEntities);
-
-  }
-
-  //* store main search - 상품명으로 검색 가게리스트 보기
-  @Override
-  public ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreByProductNameMainSearch(
-      PostStoreByProductMainSearchRequestDto dto) {
-    
-        List<StoreEntity> storeEntities = new ArrayList<>();
-
-    try {
-
-      // 상품명으로 상품 검색 후, 각 상품에 연결된 가게를 가져와 중복 제거
-      storeEntities = productRepository.findByProductNameContaining(dto.getProductName())
-                                        .stream()
-                                        .map(ProductEntity::getStore) // ProductEntity에서 StoreEntity 추출
-                                        .distinct()
-                                        .collect(Collectors.toList());
+      storeEntities = storeRepository.getStoreByMainSearch(storeName, productName);
 
     } catch (Exception exception) {
       exception.printStackTrace();
@@ -202,8 +168,27 @@ public class StoreServiceImplement implements StoreService {
 
   //* store main filter - pickup days select - 가게리스트 보기
   @Override
-  public ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoresByAvailableDays(List<String> days) {
-    BooleanBuilder builder = new BooleanBuilder();
-    return null;
+  public ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoresByOpenDays() {
+
+    List<StoreEntity> storeEntities = new ArrayList<>();
+
+    try {
+
+      storeEntities = storeRepository.getStoreByOpenMonday();
+      storeEntities = storeRepository.getStoreByOpenTuesDay();
+      storeEntities = storeRepository.getStoreByOpenWednesDay();
+      storeEntities = storeRepository.getStoreByOpenThursDay();
+      storeEntities = storeRepository.getStoreByOpenFriDay();
+      storeEntities = storeRepository.getStoreByOpenSaturDay();
+      storeEntities = storeRepository.getStoreByOpenSunDay();
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetStoreListMainSearchResponseDto.success(storeEntities);
+
   }
+
 }

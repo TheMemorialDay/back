@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
-import com.korit.thememorialday.dto.request.store.PostStoreByProductMainSearchRequestDto;
-import com.korit.thememorialday.dto.request.store.PostStoreMainSearchRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreListMainSearchResponseDto;
@@ -31,15 +29,9 @@ public interface StoreService {
 
   ResponseEntity<? super GetStoreNumberResponseDto> getStoreNumber(String userId);
 
-  //* stores main page - 가게명으로 가게 검색
-  ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainSearchList(
-      PostStoreMainSearchRequestDto dto
-    );
-  //* stores main search - 상품명으로 가게 검색
-  ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreByProductNameMainSearch(
-      PostStoreByProductMainSearchRequestDto dto
-    );
+  //* stores main search - storeName & productName 으로 검색
+  ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainSearch(String storeName, String productName);
 
   //* store main pickup filter - 픽업가능요일 필터링
-  ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoresByAvailableDays(List<String> days);
+  ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoresByOpenDays();
 }

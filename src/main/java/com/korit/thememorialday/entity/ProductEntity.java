@@ -1,5 +1,6 @@
 package com.korit.thememorialday.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,8 +34,8 @@ public class ProductEntity {
     private boolean productToday;
     private String productTag;
 
-    public ProductEntity(PostProductRequestDto dto, Integer storeNubmer) {
-        this.storeNumber = storeNubmer;
+    public ProductEntity(PostProductRequestDto dto, Integer storeNumber) {
+        this.storeNumber = storeNumber;
         this.productName = dto.getProductName();
         this.productIntroduce = dto.getProductIntroduce();
         this.productPrice = dto.getProductPrice();
@@ -49,14 +50,5 @@ public class ProductEntity {
         this.productToday = dto.isProductToday();
         this.productTag = dto.getProductTag();
     }
-
-    //* 상품명 검색해서 가게를 불러오기 위한 거
-    @ManyToOne
-    @JoinColumn(name="store_number")
-    private StoreEntity store;
-
-    public StoreEntity getStore() {
-        return store;
-    };
 
 }

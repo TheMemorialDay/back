@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.korit.thememorialday.entity.StoreEntity;
+import com.korit.thememorialday.repository.resultSet.GetStoresMainSearchByProductNameResultSet;
 
 import lombok.Getter;
 
@@ -13,9 +14,9 @@ import lombok.Getter;
 public class StoresMainSearch {
 	private Integer storeNumber;
 	private String storeImageUrl;
-	private String store_name;
-	private String store_gugun;
-	private String store_dong;
+	private String storeName;
+	private String storeGugun;
+	private String storeDong;
 	private Float storeRating;
     private Integer reviewCount;
     private Integer likeCount; 
@@ -23,9 +24,9 @@ public class StoresMainSearch {
 	private StoresMainSearch(StoreEntity storeEntity) {
 		this.storeNumber = storeEntity.getStoreNumber();
 		this.storeImageUrl = storeEntity.getStoreImageUrl();
-		this.store_name = storeEntity.getStoreName();
-		this.store_gugun = storeEntity.getStoreGugun();
-		this.store_dong = storeEntity.getStoreDong();
+		this.storeName = storeEntity.getStoreName();
+		this.storeGugun = storeEntity.getStoreGugun();
+		this.storeDong = storeEntity.getStoreDong();
 		this.storeRating = storeEntity.getStoreRating();
 		this.reviewCount = storeEntity.getReviewCount();
 		this.likeCount = storeEntity.getLikeCount();

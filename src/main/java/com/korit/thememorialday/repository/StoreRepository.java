@@ -7,10 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.fasterxml.jackson.databind.util.ArrayBuilders.BooleanBuilder;
 import com.korit.thememorialday.entity.StoreEntity;
 import com.korit.thememorialday.repository.resultSet.GetStoreOrderResultSet;
 import com.korit.thememorialday.repository.resultSet.GetStoreResultSet;
+import com.korit.thememorialday.repository.resultSet.GetStoresMainSearchByProductNameResultSet;
 
 @Repository
 public interface StoreRepository extends JpaRepository<StoreEntity, Integer> {
@@ -68,11 +68,58 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Integer> {
       "WHERE S.store_number = :storeNumber", nativeQuery = true)
   GetStoreOrderResultSet getStoreOrderList(@Param("storeNumber") Integer storeNumber);
 
-  //* store main page - 가게명으로 가게 검색
-  // List<StoreEntity> findByStoreNameContaining();
-  List<StoreEntity> findByStoreNameContaining(String storeName);
-
+  //* store main search - 가게명 & 상품명 검색해서 가게 불러오기
+  @Query(value = 
+    "SELECT DISTINCT * FROM store " +
+    "WHERE store_name LIKE %:storeName% " +
+    "OR store_number IN ( " +
+    "SELECT store_number FROM product " +
+    "WHERE product_name LIKE %:productName%)", nativeQuery = true)
+    List<StoreEntity> getStoreByMainSearch(
+      @Param("storeName") String storeName,
+      @Param("productName") String productName
+      );
+  
   //* store main day select - 픽업가능요일 선택해서 가게 불러오기
-  List<StoreEntity> findByDays(BooleanBuilder builder);
+  // 월
+  @Query(value = 
+    "SELECT * FROM store " +
+    "WHERE monday_open != '휴무일'", nativeQuery = true)
+  List<StoreEntity> getStoreByOpenMonday();
 
+  // 화
+  @Query(value = 
+    "SELECT * FROM store " +
+    "WHERE tuesday_open != '휴무일'", nativeQuery = true)
+  List<StoreEntity> getStoreByOpenTuesDay();
+
+  // 수
+  @Query(value = 
+    "SELECT * FROM store " +
+    "WHERE wednesday_open != '휴무일'", nativeQuery = true)
+  List<StoreEntity> getStoreByOpenWednesDay();
+
+  // 목
+  @Query(value = 
+    "SELECT * FROM store " +
+    "WHERE thursday_open != '휴무일'", nativeQuery = true)
+  List<StoreEntity> getStoreByOpenThursDay();
+
+  // 금
+  @Query(value = 
+    "SELECT * FROM store " +
+    "WHERE friday_open != '휴무일'", nativeQuery = true)
+  List<StoreEntity> getStoreByOpenFriDay();
+
+  // 토
+  @Query(value = 
+    "SELECT * FROM store " +
+    "WHERE saturday_open != '휴무일'", nativeQuery = true)
+  List<StoreEntity> getStoreByOpenSaturDay();
+
+  // 일
+  @Query(value = 
+    "SELECT * FROM store " +
+    "WHERE sunday_open != '휴무일'", nativeQuery = true)
+  List<StoreEntity> getStoreByOpenSunDay();
 }
