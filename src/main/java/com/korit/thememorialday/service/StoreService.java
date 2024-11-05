@@ -27,4 +27,5 @@ public interface StoreService {
 
   ResponseEntity<? super GetStoreNumberResponseDto> getStoreNumber(String userId);
 
+  
 }

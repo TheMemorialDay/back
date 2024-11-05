@@ -25,4 +25,8 @@ public class ProductImageEntity {
         this.productImageUrl = productImageUrl;
         this.productNumber = productNumber;
     }
+
+    // public ProductImageEntity(String productImageUrl) {
+    //     this.productImageUrl = productImageUrl;
+    // }
 }
