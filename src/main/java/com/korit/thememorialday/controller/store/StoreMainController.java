@@ -63,7 +63,7 @@ public class StoreMainController {
     return reponse;
   }
 
-  //* store main search - 병합
+  //* store main search - 가게명 & 상품명 검색 후 가게 리스트 가져오기
   @GetMapping(value = "/search-main")
   public ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainSearch(
     @RequestParam(name="storeName", defaultValue="") String storeName,
@@ -73,13 +73,6 @@ public class StoreMainController {
     ResponseEntity<? super GetStoreListMainSearchResponseDto> response = storeService.getStoreMainSearch(storeName, productName);
     return response;
 
-  };
-
-  //* store main filter open day
-  @GetMapping(value = "/selected-day")
-  public ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainFilterDays() {
-    ResponseEntity<? super GetStoreListMainSearchResponseDto> response = storeService.getStoresByOpenDays();
-    return response;
   };
 
 }

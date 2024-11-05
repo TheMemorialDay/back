@@ -31,7 +31,4 @@ public interface StoreService {
 
   //* stores main search - storeName & productName 으로 검색
   ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainSearch(String storeName, String productName);
-
-  //* store main pickup filter - 픽업가능요일 필터링
-  ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoresByOpenDays();
 }

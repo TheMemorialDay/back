@@ -166,29 +166,4 @@ public class StoreServiceImplement implements StoreService {
 
   }
 
-  //* store main filter - pickup days select - 가게리스트 보기
-  @Override
-  public ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoresByOpenDays() {
-
-    List<StoreEntity> storeEntities = new ArrayList<>();
-
-    try {
-
-      storeEntities = storeRepository.getStoreByOpenMonday();
-      storeEntities = storeRepository.getStoreByOpenTuesDay();
-      storeEntities = storeRepository.getStoreByOpenWednesDay();
-      storeEntities = storeRepository.getStoreByOpenThursDay();
-      storeEntities = storeRepository.getStoreByOpenFriDay();
-      storeEntities = storeRepository.getStoreByOpenSaturDay();
-      storeEntities = storeRepository.getStoreByOpenSunDay();
-
-    } catch (Exception exception) {
-      exception.printStackTrace();
-      return ResponseDto.databaseError();
-    }
-
-    return GetStoreListMainSearchResponseDto.success(storeEntities);
-
-  }
-
 }

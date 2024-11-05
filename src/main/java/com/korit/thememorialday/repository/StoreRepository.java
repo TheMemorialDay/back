@@ -79,47 +79,4 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Integer> {
       @Param("storeName") String storeName,
       @Param("productName") String productName
       );
-  
-  //* store main day select - 픽업가능요일 선택해서 가게 불러오기
-  // 월
-  @Query(value = 
-    "SELECT * FROM store " +
-    "WHERE monday_open != '휴무일'", nativeQuery = true)
-  List<StoreEntity> getStoreByOpenMonday();
-
-  // 화
-  @Query(value = 
-    "SELECT * FROM store " +
-    "WHERE tuesday_open != '휴무일'", nativeQuery = true)
-  List<StoreEntity> getStoreByOpenTuesDay();
-
-  // 수
-  @Query(value = 
-    "SELECT * FROM store " +
-    "WHERE wednesday_open != '휴무일'", nativeQuery = true)
-  List<StoreEntity> getStoreByOpenWednesDay();
-
-  // 목
-  @Query(value = 
-    "SELECT * FROM store " +
-    "WHERE thursday_open != '휴무일'", nativeQuery = true)
-  List<StoreEntity> getStoreByOpenThursDay();
-
-  // 금
-  @Query(value = 
-    "SELECT * FROM store " +
-    "WHERE friday_open != '휴무일'", nativeQuery = true)
-  List<StoreEntity> getStoreByOpenFriDay();
-
-  // 토
-  @Query(value = 
-    "SELECT * FROM store " +
-    "WHERE saturday_open != '휴무일'", nativeQuery = true)
-  List<StoreEntity> getStoreByOpenSaturDay();
-
-  // 일
-  @Query(value = 
-    "SELECT * FROM store " +
-    "WHERE sunday_open != '휴무일'", nativeQuery = true)
-  List<StoreEntity> getStoreByOpenSunDay();
 }
