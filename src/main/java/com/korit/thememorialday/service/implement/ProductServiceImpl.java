@@ -331,6 +331,12 @@ public class ProductServiceImpl implements ProductService {
             List<ThemaEntity> themaEntities = themaRepostiroy.findByProductNumber(productNumber);
             List<ProductMappingEntity> productMappingEntities = productMappingRepository.findByProductNumber(productNumber);
 
+            // List<ProductOptionEntity> productOptionEntity = null;
+            // List<ProductMappingEntity> productMapping = productMappingRepository.findByProductNumber(productNumber);
+            // for(ProductMappingEntity productMappingEntity: productMappingEntities) {
+            //     productOptionEntity = productOptionRepository.findByOptionNumber(productMappingEntity.getOptionNumber());
+            // }
+
             List<String> productImages = new ArrayList<>();
             List<String> themes = new ArrayList<>();
             List<Option> options = new ArrayList<>();
@@ -347,6 +353,7 @@ public class ProductServiceImpl implements ProductService {
 
                 Integer optionNumber = productMappingEntity.getOptionNumber();
                 String productOptionName = productMappingEntity.getProductOptionName();
+                
 
                 List<ProductOptionEntity> productOptionEntities = productOptionRepository.findByOptionNumber(optionNumber);
                 List<OptionDetail> optionDetails = new ArrayList<>();

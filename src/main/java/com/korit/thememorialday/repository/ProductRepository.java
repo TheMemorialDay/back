@@ -57,7 +57,9 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
                 "pi.product_image_url, " +
                 "pm.product_option_name, " +
                 "po.product_category, " +
-                "po.product_option_price " +
+                "po.product_option_price, " +
+                "po.option_category_number, " +
+                "po.option_number " +
             "FROM TheMemorialDayDB.product AS p " +
             "JOIN TheMemorialDayDB.store AS s ON p.store_number = s.store_number " +
             "LEFT JOIN TheMemorialDayDB.thema AS t ON p.product_number = t.product_number " +
