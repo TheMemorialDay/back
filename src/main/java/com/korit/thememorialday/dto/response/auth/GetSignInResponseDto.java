@@ -14,14 +14,14 @@ import lombok.Getter;
 public class GetSignInResponseDto extends ResponseDto{
     
     private String userId;
-    private String userName;
+    private String name;
     private String telNumber;
     private String permission;
 
     public GetSignInResponseDto(UserEntity userEntity) {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         this.userId = userEntity.getUserId();
-        this.userName = userEntity.getName();
+        this.name = userEntity.getName();
         this.telNumber = userEntity.getTelNumber();
         this.permission = userEntity.getPermission();
     }

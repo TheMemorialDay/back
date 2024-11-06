@@ -289,6 +289,7 @@ public class ProductServiceImpl implements ProductService {
                 Integer productNumber = product.getProductNumber();
                 String productName = product.getProductName();
                 Integer productPrice = product.getProductPrice();
+                boolean productToday = product.isProductToday();
 
                 List<String> productImages = new ArrayList<>();
                 List<ProductImageEntity> productImageEntities = productImageRepository.findByProductNumber(productNumber);
@@ -304,7 +305,7 @@ public class ProductServiceImpl implements ProductService {
                 for(ThemaEntity themaEntity: themaEntities) {
                     themes.add(themaEntity.getThema());
                 }
-                PreviewProduct fullProduct = new PreviewProduct(productNumber, productName, productPrice, imageUrl, themes);
+                PreviewProduct fullProduct = new PreviewProduct(productNumber, productName, productPrice, imageUrl, themes, productToday);
                 previewProducts.add(fullProduct);
             }
 
@@ -330,12 +331,6 @@ public class ProductServiceImpl implements ProductService {
             List<ProductImageEntity> productImageEntities = productImageRepository.findByProductNumber(productNumber);
             List<ThemaEntity> themaEntities = themaRepostiroy.findByProductNumber(productNumber);
             List<ProductMappingEntity> productMappingEntities = productMappingRepository.findByProductNumber(productNumber);
-
-            // List<ProductOptionEntity> productOptionEntity = null;
-            // List<ProductMappingEntity> productMapping = productMappingRepository.findByProductNumber(productNumber);
-            // for(ProductMappingEntity productMappingEntity: productMappingEntities) {
-            //     productOptionEntity = productOptionRepository.findByOptionNumber(productMappingEntity.getOptionNumber());
-            // }
 
             List<String> productImages = new ArrayList<>();
             List<String> themes = new ArrayList<>();
