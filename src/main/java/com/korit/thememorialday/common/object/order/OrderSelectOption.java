@@ -19,6 +19,6 @@ public class OrderSelectOption {
     public OrderSelectOption(OrderSelectOptionEntity orderSelectOptionEntity) {
 
         this.optionNumber = orderSelectOptionEntity.getOptionNumber();
-        this.orderCategoryNumber = orderSelectOptionEntity.getOrderCategoryNumber();
+        this.orderCategoryNumber = orderSelectOptionEntity.getOptionCategoryNumber();
     }
 }

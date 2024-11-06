@@ -24,11 +24,11 @@ public class OrderSelectOptionEntity {
     
     private String orderCode;
     private Integer optionNumber;
-    private Integer orderCategoryNumber;
+    private Integer optionCategoryNumber;
 
     public OrderSelectOptionEntity(String orderCode, Integer optionNumber, Integer optionCategoryNumber) {
         this.orderCode = orderCode;
         this.optionNumber = optionNumber;
-        this.orderCategoryNumber = optionCategoryNumber;
+        this.optionCategoryNumber = optionCategoryNumber;
     }
 }
