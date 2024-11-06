@@ -69,4 +69,23 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
     )
     List<OrderProductDetail> findOrderProductDetailByProductNumber(Integer productNumber);
 
+    @Query(
+        value = 
+            "SELECT p.product_name " +
+            "FROM TheMemorialDayDB.product AS p " +
+            "WHERE p.product_number = :productNumber", 
+        nativeQuery = true
+    )
+    String findProductNameByProductNumber(Integer productNumber);
+
+    @Query(
+        value = 
+            "SELECT pi.product_image_url " +
+            "FROM TheMemorialDayDB.product_image AS pi " +
+            "WHERE pi.product_number = :productNumber " +
+            "ORDER BY pi.product_image_url ASC " +
+            "LIMIT 1", 
+        nativeQuery = true
+    )    String findFirstImageUrlByProductNumber(Integer productNumber);
+
 }

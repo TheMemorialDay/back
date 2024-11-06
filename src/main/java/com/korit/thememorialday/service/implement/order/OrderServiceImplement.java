@@ -1,9 +1,11 @@
 package com.korit.thememorialday.service.implement.order;
 
+import com.korit.thememorialday.common.object.order.FullOrder;
 import com.korit.thememorialday.common.object.order.OrderSelectOption;
 import com.korit.thememorialday.dto.request.order.PostOrderRequestDto;
 import com.korit.thememorialday.dto.request.order.PostOrderSelectOptionRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
+import com.korit.thememorialday.dto.response.order.GetOrderListResponseDto;
 import com.korit.thememorialday.entity.order.OrderEntity;
 import com.korit.thememorialday.entity.order.OrderSelectOptionEntity;
 import com.korit.thememorialday.repository.ProductOptionRepository;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +30,8 @@ public class OrderServiceImplement implements OrderService {
 
     private final OrderRepository orderRepository;
     private final OrderSelectOptionRepository orderSelectOptionRepository;
+    private final StoreRepository storeRepository;
+    private final ProductRepository productRepository;
 
     @Override                                                       
     public ResponseEntity<ResponseDto> postOrder(PostOrderRequestDto dto, String userId, Integer storeNumber, Integer productNumber) {
@@ -40,10 +45,10 @@ public class OrderServiceImplement implements OrderService {
             List<OrderSelectOptionEntity> optionEntities = new ArrayList<>();
             for (OrderSelectOption orderSelectOption : orderSelectOptions) {
 
-                Integer optionNumber = orderSelectOption.getOptionNumber();
-                Integer orderCategoryNumber = orderSelectOption.getOrderCategoryNumber();
+                // Integer optionNumber = orderSelectOption.getOptionNumber();
+                Integer optionCategoryNumber = orderSelectOption.getOptionCategoryNumber();
                 
-                OrderSelectOptionEntity optionEntity = new OrderSelectOptionEntity(orderCode, optionNumber, orderCategoryNumber);
+                OrderSelectOptionEntity optionEntity = new OrderSelectOptionEntity(orderCode, optionCategoryNumber);         // optionNumber 안 받기로 해당 줄에서 지웠습니다
                 optionEntities.add(optionEntity);
             }
             orderSelectOptionRepository.saveAll(optionEntities);
@@ -57,30 +62,28 @@ public class OrderServiceImplement implements OrderService {
 
 
     // mypage에서 get 할 때 사용할 예정
-    // @Override
-    // public ResponseEntity<GetOrderListResponseDto> getOrderList(String userId) {
-    //     try {
-    //         // 사용자 ID로 주문 목록 조회
-    //         List<OrderEntity> orderEntities = orderRepository.findByUserId(userId);
-    //         List<Order> orders = Order.getList(orderEntities);
+@Override
+public ResponseEntity<GetOrderListResponseDto> getOrderList(String userId) {
+    List<OrderEntity> orders = orderRepository.findByUserId(userId);
+    List<FullOrder> fullOrders = new ArrayList<>();
 
-    //         // 주문에 포함된 옵션 정보 추가
-    //         for (Order order : orders) {
-    //             List<OrderSelectOptionEntity> optionEntities = orderSelectOptionRepository.findByOrderCode(order.getOrderCode());
-    //             List<OrderSelectOption> options = new ArrayList<>();
-    //             for (OrderSelectOptionEntity optionEntity : optionEntities) {
-    //                 options.add(new OrderSelectOption(optionEntity));
-    //             }
-    //             order.setOptions(options);
-    //         }
+    for (OrderEntity order : orders) {
+        String storeName = storeRepository.findStoreNameByStoreNumber(order.getStoreNumber());
+        String productName = productRepository.findProductNameByProductNumber(order.getProductNumber());
+        String productImageUrl = productRepository.findFirstImageUrlByProductNumber(order.getProductNumber());
 
-    //         return GetOrderListResponseDto.success(orders);
+        // 옵션 정보 조회
+        List<OrderSelectOptionEntity> optionEntities = orderSelectOptionRepository.findByOrderCode(order.getOrderCode());
+        List<OrderSelectOption> options = optionEntities.stream()
+                .map(OrderSelectOption :: new)
+                .collect(Collectors.toList());
 
-    //     } catch (Exception exception) {
-    //         exception.printStackTrace();
-    //         return ResponseDto.databaseError();
-    //     }
-    // }
+        // FullOrder 객체 생성 후 리스트에 추가
+        fullOrders.add(new FullOrder(order, options, storeName, productName, productImageUrl));
+    }
+
+    return GetOrderListResponseDto.success(fullOrders);
+}
 
 
     @Transactional

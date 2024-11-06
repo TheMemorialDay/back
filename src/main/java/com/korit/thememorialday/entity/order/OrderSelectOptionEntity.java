@@ -26,9 +26,9 @@ public class OrderSelectOptionEntity {
     private Integer optionNumber;
     private Integer optionCategoryNumber;
 
-    public OrderSelectOptionEntity(String orderCode, Integer optionNumber, Integer optionCategoryNumber) {
+    public OrderSelectOptionEntity(String orderCode, Integer optionCategoryNumber) {            // optionNumber 안 받기로 해당 줄에서 지웠습니다
         this.orderCode = orderCode;
-        this.optionNumber = optionNumber;
+        // this.optionNumber = optionNumber;            // optionNumber 안 받기로 해당 줄에서 지웠습니다
         this.optionCategoryNumber = optionCategoryNumber;
     }
 }

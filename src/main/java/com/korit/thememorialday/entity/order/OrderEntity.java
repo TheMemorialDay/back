@@ -53,8 +53,6 @@ public class OrderEntity {
         this.totalPrice = dto.getTotalPrice();
         this.orderTime = LocalDateTime.now();
         this.optionSelect = optionSelect;
-
-        System.out.println("Generated Order Code: " + orderCode);
     }
 
     private String generateOrderCode() {

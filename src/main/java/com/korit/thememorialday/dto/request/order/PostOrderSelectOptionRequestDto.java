@@ -14,6 +14,5 @@ public class PostOrderSelectOptionRequestDto {
     @NotNull(message = "옵션 번호는 필수입니다.")
     private Integer optionNumber;
 
-    @NotNull(message = "옵션 종류 번호는 필수입니다.")
-    private Integer orderCategoryNumber;
+    // private Integer orderCategoryNumber;      // optionNumber 안 받기로 해당 줄에서 지웠습니다
 }

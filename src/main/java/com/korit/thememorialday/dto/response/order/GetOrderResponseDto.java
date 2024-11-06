@@ -1,8 +1,13 @@
-// package com.korit.thememorialday.dto.response.order;
+package com.korit.thememorialday.dto.response.order;
 
-// public class GetOrderResponseDto {
+import java.util.List;
 
-// }
+import com.korit.thememorialday.common.object.order.FullOrder;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-
-// mypage에서 get 할 때 사용할 예정
+@Getter
+@AllArgsConstructor
+public class GetOrderResponseDto {
+    private List<FullOrder> orders;
+}

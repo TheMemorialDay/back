@@ -14,11 +14,11 @@ import lombok.Setter;
 public class OrderSelectOption {
 
     private Integer optionNumber;
-    private Integer orderCategoryNumber;
+    private Integer optionCategoryNumber;
 
     public OrderSelectOption(OrderSelectOptionEntity orderSelectOptionEntity) {
 
-        this.optionNumber = orderSelectOptionEntity.getOptionNumber();
-        this.orderCategoryNumber = orderSelectOptionEntity.getOptionCategoryNumber();
+        // this.optionNumber = orderSelectOptionEntity.getOptionNumber();       // optionNumber 안 받기로 해당 줄에서 지웠습니다
+        this.optionCategoryNumber = orderSelectOptionEntity.getOptionCategoryNumber();
     }
 }
