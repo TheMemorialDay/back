@@ -155,4 +155,6 @@ public class StoreServiceImplement implements StoreService {
     }
     return GetStoreNumberResponseDto.success(storeEntity);
   }
+
+  
 }
