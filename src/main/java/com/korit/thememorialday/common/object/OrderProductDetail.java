@@ -3,6 +3,7 @@ import java.util.List;
 
 
 import com.korit.thememorialday.entity.ProductEntity;
+import com.korit.thememorialday.entity.ProductOptionEntity;
 import com.korit.thememorialday.entity.StoreEntity;
 
 import lombok.AllArgsConstructor;
