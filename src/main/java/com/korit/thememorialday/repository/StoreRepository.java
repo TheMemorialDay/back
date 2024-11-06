@@ -46,7 +46,7 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Integer> {
       "    S.thursday_open as thursdayOpen, " +
       "    S.thursday_last as thursdayLast, " +
       "    S.friday_open as fridayOpen, " +
-      "    S.friday_last as frißdayLast, " +
+      "    S.friday_last as fridayLast, " +
       "    S.saturday_open as saturdayOpen, " +
       "    S.saturday_last as saturdayLast, " +
       "FROM store S LEFT JOIN user U " +

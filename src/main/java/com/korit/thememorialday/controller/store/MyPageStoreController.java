@@ -51,7 +51,7 @@ public class MyPageStoreController {
   }
 
   @GetMapping(value = { "/", "" })
-  public ResponseEntity<? super GetStoreResponseDto> getStoreInfo(
+  public ResponseEntity<? super GetStoreResponseDto> getStore(
       @RequestParam("userId") String userId) {
     ResponseEntity<? super GetStoreResponseDto> reponse = storeService.getStore(userId);
     return reponse;

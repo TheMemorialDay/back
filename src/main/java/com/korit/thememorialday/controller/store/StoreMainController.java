@@ -29,8 +29,8 @@ public class StoreMainController {
   @GetMapping(value = "/{storeNumber}")
   public ResponseEntity<? super GetStoreResponseDto> getStore(
       @PathVariable("storeNumber") Integer storeNumber) {
-    ResponseEntity<? super GetStoreResponseDto> reponse = storeService.getStore(storeNumber);
-    return reponse;
+    ResponseEntity<? super GetStoreResponseDto> response = storeService.getStore(storeNumber);
+    return response;
   }
 
   @GetMapping(value = { "/{storeNumber}/order" })
@@ -43,24 +43,22 @@ public class StoreMainController {
   @GetMapping(value = "/{storeNumber}/information")
   public ResponseEntity<? super GetStoreResponseDto> getStoreInformation(
       @PathVariable("storeNumber") Integer storeNumber) {
-    ResponseEntity<? super GetStoreResponseDto> reponse = storeService.getStore(storeNumber);
-    return reponse;
+    ResponseEntity<? super GetStoreResponseDto> response = storeService.getStore(storeNumber);
+    return response;
   }
 
   @GetMapping(value = "/{storeNumber}/contact")
   public ResponseEntity<? super GetStoreResponseDto> getStoreContact(
       @PathVariable("storeNumber") Integer storeNumber) {
-    ResponseEntity<? super GetStoreResponseDto> reponse = storeService.getStore(storeNumber);
-    return reponse;
+    ResponseEntity<? super GetStoreResponseDto> response = storeService.getStore(storeNumber);
+    return response;
   }
 
   @GetMapping(value = "/{storeNumber}/review")
   public ResponseEntity<? super GetStoreResponseDto> getStoreReview(
       @PathVariable("storeNumber") Integer storeNumber) {
-    ResponseEntity<? super GetStoreResponseDto> reponse = storeService.getStore(storeNumber);
-    return reponse;
+    ResponseEntity<? super GetStoreResponseDto> response = storeService.getStore(storeNumber);
+    return response;
   }
-
- 
 
 }
