@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class OrderSelectOption {
 
-    private Integer optionNumber;
+    // private Integer optionNumber;
     private Integer optionCategoryNumber;
 
     public OrderSelectOption(OrderSelectOptionEntity orderSelectOptionEntity) {
