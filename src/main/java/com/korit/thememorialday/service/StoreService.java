@@ -12,6 +12,7 @@ import com.korit.thememorialday.dto.response.store.GetStoreListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreNumberResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreOrderListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreResponseDto;
+import com.korit.thememorialday.dto.response.store.GetStoreDetailListResponseDto;
 
 public interface StoreService {
 
@@ -32,4 +33,5 @@ public interface StoreService {
   //* stores main search - storeName & productName 으로 검색
   ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainSearch(String storeName, String productName);
   
+  ResponseEntity<? super GetStoreDetailListResponseDto> getStoreDetailList();
 }
