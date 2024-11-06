@@ -9,7 +9,6 @@ import com.korit.thememorialday.common.object.Store;
 import com.korit.thememorialday.dto.response.ResponseCode;
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.ResponseMessage;
-import com.korit.thememorialday.entity.StoreEntity;
 
 import lombok.Getter;
 
@@ -18,13 +17,13 @@ public class GetStoreListResponseDto extends ResponseDto {
 
   private List<Store> stores;
 
-  private GetStoreListResponseDto(List<StoreEntity> storeEntities) {
+  private GetStoreListResponseDto(List<Store> stores) {
     super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-    this.stores = Store.getList(storeEntities);
+    this.stores = stores;
   }
 
-  public static ResponseEntity<GetStoreListResponseDto> success(List<StoreEntity> storeEntities) {
-    GetStoreListResponseDto responseBody = new GetStoreListResponseDto(storeEntities);
+  public static ResponseEntity<GetStoreListResponseDto> success(List<Store> stores) {
+    GetStoreListResponseDto responseBody = new GetStoreListResponseDto(stores);
     return ResponseEntity.status(HttpStatus.OK).body(responseBody);
   }
 
