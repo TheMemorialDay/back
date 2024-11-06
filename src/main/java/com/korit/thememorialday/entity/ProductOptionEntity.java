@@ -25,6 +25,7 @@ public class ProductOptionEntity {
     private Integer productOptionPrice;
 
     public ProductOptionEntity (Integer optionNumber, OptionDetail optionDetail) {
+        this.optionCategoryNumber = optionDetail.getOptionCategoryNumber();
         this.optionNumber = optionNumber;
         this.productCategory = optionDetail.getProductCategory();
         this.productOptionPrice = optionDetail.getProductOptionPrice();

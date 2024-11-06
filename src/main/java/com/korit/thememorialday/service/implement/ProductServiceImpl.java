@@ -289,6 +289,7 @@ public class ProductServiceImpl implements ProductService {
                 Integer productNumber = product.getProductNumber();
                 String productName = product.getProductName();
                 Integer productPrice = product.getProductPrice();
+                boolean productToday = product.isProductToday();
 
                 List<String> productImages = new ArrayList<>();
                 List<ProductImageEntity> productImageEntities = productImageRepository.findByProductNumber(productNumber);
@@ -304,7 +305,7 @@ public class ProductServiceImpl implements ProductService {
                 for(ThemaEntity themaEntity: themaEntities) {
                     themes.add(themaEntity.getThema());
                 }
-                PreviewProduct fullProduct = new PreviewProduct(productNumber, productName, productPrice, imageUrl, themes);
+                PreviewProduct fullProduct = new PreviewProduct(productNumber, productName, productPrice, imageUrl, themes, productToday);
                 previewProducts.add(fullProduct);
             }
 
@@ -347,6 +348,7 @@ public class ProductServiceImpl implements ProductService {
 
                 Integer optionNumber = productMappingEntity.getOptionNumber();
                 String productOptionName = productMappingEntity.getProductOptionName();
+                
 
                 List<ProductOptionEntity> productOptionEntities = productOptionRepository.findByOptionNumber(optionNumber);
                 List<OptionDetail> optionDetails = new ArrayList<>();
