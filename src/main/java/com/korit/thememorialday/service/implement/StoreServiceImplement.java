@@ -6,15 +6,17 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-
+import com.korit.thememorialday.common.object.Store;
 import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
 
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.auth.GetSignInResponseDto;
+import com.korit.thememorialday.entity.LikeEntity;
 import com.korit.thememorialday.entity.ProductEntity;
 import com.korit.thememorialday.entity.StoreEntity;
 import com.korit.thememorialday.entity.UserEntity;
+import com.korit.thememorialday.repository.LikeRepository;
 import com.korit.thememorialday.repository.ProductRepository;
 import com.korit.thememorialday.repository.StoreRepository;
 import com.korit.thememorialday.service.StoreService;
@@ -29,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class StoreServiceImplement implements StoreService {
 
+  private final LikeRepository likeRepository;
   private final StoreRepository storeRepository;
   private final ProductRepository productRepository;
 
@@ -90,18 +93,24 @@ public class StoreServiceImplement implements StoreService {
   @Override
   public ResponseEntity<? super GetStoreListResponseDto> getStoreList() {
 
-    List<StoreEntity> storeEntities = new ArrayList<>();
+    List<Store> stores = new ArrayList<>();
 
     try {
-      
-      storeEntities = storeRepository.findByOrderByStoreNumberDesc();
+
+      List<StoreEntity> storeEntities = storeRepository.findByOrderByStoreNumberDesc();
+      for (StoreEntity storeEntity : storeEntities) {
+        Integer storeNumber = storeEntity.getStoreNumber();
+        List<LikeEntity> likeEntities = likeRepository.findByStoreNumber(storeNumber);
+        Store store = new Store(storeEntity, likeEntities);
+        stores.add(store);
+      }
 
     } catch (Exception exception) {
       exception.printStackTrace();
       return ResponseDto.databaseError();
     }
 
-    return GetStoreListResponseDto.success(storeEntities);
+    return GetStoreListResponseDto.success(stores);
   }
 
   @Override

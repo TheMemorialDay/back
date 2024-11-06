@@ -3,6 +3,7 @@ package com.korit.thememorialday.common.object;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.korit.thememorialday.entity.LikeEntity;
 import com.korit.thememorialday.entity.StoreEntity;
 
 import lombok.Getter;
@@ -42,8 +43,12 @@ public class Store {
   private String saturdayLast;
   private String sundayOpen;
   private String sundayLast;
+  private List<String> likeList;
 
-  private Store(StoreEntity storeEntity) {
+  public Store(StoreEntity storeEntity, List<LikeEntity> likeEntities) {
+    List<String> likeList = new ArrayList<>();
+    for (LikeEntity likeEntity : likeEntities)
+      likeList.add(likeEntity.getUserId());
     this.storeNumber = storeEntity.getStoreNumber();
     this.userId = storeEntity.getUserId();
     this.storeName = storeEntity.getStoreName();
@@ -76,15 +81,6 @@ public class Store {
     this.saturdayLast = storeEntity.getSaturdayLast();
     this.sundayOpen = storeEntity.getSundayOpen();
     this.sundayLast = storeEntity.getSundayLast();
-  }
-
-  public static List<Store> getList(List<StoreEntity> storeEntites) {
-
-    List<Store> stores = new ArrayList<>();
-    for (StoreEntity storeEntity : storeEntites) {
-      Store store = new Store(storeEntity);
-      stores.add(store);
-    }
-    return stores;
+    this.likeList = likeList;
   }
 }
