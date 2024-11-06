@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import com.korit.thememorialday.entity.StoreEntity;
 import com.korit.thememorialday.repository.resultSet.GetStoreOrderResultSet;
 import com.korit.thememorialday.repository.resultSet.GetStoreResultSet;
-import com.korit.thememorialday.repository.resultSet.GetStoresMainSearchByProductNameResultSet;
 
 @Repository
 public interface StoreRepository extends JpaRepository<StoreEntity, Integer> {
@@ -47,7 +46,7 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Integer> {
       "    S.thursday_open as thursdayOpen, " +
       "    S.thursday_last as thursdayLast, " +
       "    S.friday_open as fridayOpen, " +
-      "    S.friday_last as frißdayLast, " +
+      "    S.friday_last as fridayLast, " +
       "    S.saturday_open as saturdayOpen, " +
       "    S.saturday_last as saturdayLast, " +
       "FROM store S LEFT JOIN user U " +
@@ -79,4 +78,11 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Integer> {
       @Param("storeName") String storeName,
       @Param("productName") String productName
       );
+
+  @Query(value = "SELECT " +
+      "S.store_number AS storeNumber, " +
+      "S.store_name AS storeName " + 
+      "FROM store S " +
+      "WHERE S.store_number = :storeNumber", nativeQuery = true)
+  String findStoreNameByStoreNumber(@Param("storeNumber") Integer storeNumber);
 }

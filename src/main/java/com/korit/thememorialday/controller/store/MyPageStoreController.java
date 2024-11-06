@@ -46,14 +46,14 @@ public class MyPageStoreController {
   @GetMapping(value = "/{storeNumber}")
   public ResponseEntity<? super GetStoreResponseDto> getStore(
       @PathVariable("storeNumber") Integer storeNumber) {
-    ResponseEntity<? super GetStoreResponseDto> reponse = storeService.getStore(storeNumber);
-    return reponse;
+    ResponseEntity<? super GetStoreResponseDto> response = storeService.getStore(storeNumber);
+    return response;
   }
 
   @GetMapping(value = { "/", "" })
-  public ResponseEntity<? super GetStoreResponseDto> getStoreInfo(
+  public ResponseEntity<? super GetStoreResponseDto> getStore(
       @RequestParam("userId") String userId) {
-    ResponseEntity<? super GetStoreResponseDto> reponse = storeService.getStore(userId);
-    return reponse;
+    ResponseEntity<? super GetStoreResponseDto> response = storeService.getStore(userId);
+    return response;
   }
 }

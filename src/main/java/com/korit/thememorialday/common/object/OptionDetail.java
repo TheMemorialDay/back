@@ -20,7 +20,11 @@ public class OptionDetail {
     @NotNull(message = "옵션 가격은 필수입니다.")
     private Integer productOptionPrice;
 
+    @NotNull(message = "옵션 카테고리 번호")
+    private Integer optionCategoryNumber;
+
     public OptionDetail(ProductOptionEntity productOptionEntity) {
+        this.optionCategoryNumber = productOptionEntity.getOptionCategoryNumber();
         this.productCategory = productOptionEntity.getProductCategory();
         this.productOptionPrice = productOptionEntity.getProductOptionPrice();
     }

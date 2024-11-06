@@ -98,4 +98,9 @@ public class ResponseDto {
 		ResponseDto responseBody = new ResponseDto(ResponseCode.NO_EXIST_STORE, ResponseMessage.NO_EXIST_STORE);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
 	}
+
+	public static ResponseEntity<ResponseDto> noExistOrder() {
+		ResponseDto responseBody = new ResponseDto(ResponseCode.NO_EXIST_ORDER, ResponseMessage.NO_EXIST_ORDER);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+	}
 }

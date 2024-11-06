@@ -31,4 +31,5 @@ public interface StoreService {
 
   //* stores main search - storeName & productName 으로 검색
   ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainSearch(String storeName, String productName);
+  
 }

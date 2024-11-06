@@ -1,6 +1,7 @@
 package com.korit.thememorialday.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,9 +40,7 @@ public class ProductController {
     }
 
     @GetMapping("/{userId}")                                       // 이거 지우고 토큰 인증 로그인까지 완료되면 윗줄 써야 함
-    public ResponseEntity<? super GetProductListResponseDto> getProductsByStoreNumber(
-        @PathVariable String userId
-    ) {
+    public ResponseEntity<? super GetProductListResponseDto> getProductsByStoreNumber(@PathVariable("userId") String userId) {
         return productService.getProductList(userId);
     }
 
@@ -66,6 +65,14 @@ public class ProductController {
         @RequestBody @Valid PatchProductRequestDto requestBody
     ) {
         ResponseEntity<ResponseDto> response = productService.patchProduct(productNumber, requestBody);
+        return response;
+    }
+
+    @DeleteMapping("/{productNumber}")
+    public ResponseEntity<ResponseDto> deleteProduct(
+        @PathVariable("productNumber") Integer productNumber
+    ) {
+        ResponseEntity<ResponseDto> response = productService.deleteProduct(productNumber);
         return response;
     }
 
