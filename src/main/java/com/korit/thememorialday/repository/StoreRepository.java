@@ -67,4 +67,11 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Integer> {
       "WHERE S.store_number = :storeNumber", nativeQuery = true)
   GetStoreOrderResultSet getStoreOrderList(@Param("storeNumber") Integer storeNumber);
 
+  @Query(value = "SELECT " +
+      "S.store_number AS storeNumber, " +
+      "S.store_name AS storeName " + 
+      "FROM store S " +
+      "WHERE S.store_number = :storeNumber", nativeQuery = true)
+  String findStoreNameByStoreNumber(@Param("storeNumber") Integer storeNumber);
+
 }
