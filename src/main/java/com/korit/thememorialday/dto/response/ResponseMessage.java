@@ -15,6 +15,7 @@ public interface ResponseMessage {
   String NO_EXIST_QUESTION = "No exist question.";
   String NO_EXIST_PRODUCT = "No exist product.";
   String NO_EXIST_STORE = "No exist store.";
+  String NO_EXIST_ORDER = "No exist order.";
   // String NO_EXIST_TOOL = "No exist tool.";
   // String NO_EXIST_CUSTOMER = "No exist customer.";
   // String TOOL_INSUFFICIENT = "This tool is insufficient in number.";

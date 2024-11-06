@@ -369,7 +369,23 @@ public class ProductServiceImpl implements ProductService {
         }
         return GetProductDetailResponseDto.success(orderProductDetails);
     }
-    
+
+    @Override
+    public ResponseEntity<ResponseDto> deleteProduct(Integer productNumber) {
+        try {
+            ProductEntity productEntity = productRepository.findByProductNumber(productNumber);
+            if (productEntity == null) return ResponseDto.noExistProduct();
+
+            productRepository.delete(productEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return ResponseDto.success();
+    }
+}
+
 
     // @Override
     // public ResponseEntity<GetProductListResponseDto> getProductsByStoreNumber(Integer storeNumber) {
@@ -385,4 +401,3 @@ public class ProductServiceImpl implements ProductService {
     //     }
     //     return GetProductResponseDto.success(product);
     // }
-}
