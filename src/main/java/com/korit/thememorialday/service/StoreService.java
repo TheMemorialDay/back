@@ -10,6 +10,7 @@ import com.korit.thememorialday.dto.response.store.GetStoreListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreNumberResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreOrderListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreResponseDto;
+import com.korit.thememorialday.dto.response.store.GetStoreDetailListResponseDto;
 
 public interface StoreService {
 
@@ -27,5 +28,5 @@ public interface StoreService {
 
   ResponseEntity<? super GetStoreNumberResponseDto> getStoreNumber(String userId);
 
-  
+  ResponseEntity<? super GetStoreDetailListResponseDto> getStoreDetailList();
 }

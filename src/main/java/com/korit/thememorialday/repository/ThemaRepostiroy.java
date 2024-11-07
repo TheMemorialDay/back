@@ -13,6 +13,8 @@ public interface ThemaRepostiroy extends JpaRepository<ThemaEntity, ThemaPk> {
 
     List<ThemaEntity> findByProductNumber(Integer productNubmer);
 
+    // List<ThemaEntity> findByStoreNumber(Integer StoreNumber);
+
     @Transactional
     void deleteByProductNumber(Integer productNumber);
 }
