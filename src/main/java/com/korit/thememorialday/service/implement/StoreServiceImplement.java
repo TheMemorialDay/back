@@ -7,19 +7,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.korit.thememorialday.common.object.Store;
+import com.korit.thememorialday.common.object.StoreDetail;
 import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
 
 import com.korit.thememorialday.dto.response.ResponseDto;
-import com.korit.thememorialday.dto.response.auth.GetSignInResponseDto;
 import com.korit.thememorialday.entity.LikeEntity;
 import com.korit.thememorialday.entity.ProductEntity;
 import com.korit.thememorialday.entity.StoreEntity;
-import com.korit.thememorialday.entity.UserEntity;
+import com.korit.thememorialday.entity.ThemaEntity;
 import com.korit.thememorialday.repository.LikeRepository;
 import com.korit.thememorialday.repository.ProductRepository;
 import com.korit.thememorialday.repository.StoreRepository;
+import com.korit.thememorialday.repository.ThemaRepostiroy;
 import com.korit.thememorialday.service.StoreService;
+import com.korit.thememorialday.dto.response.store.GetStoreDetailListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreNumberResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreOrderListResponseDto;
@@ -34,6 +36,7 @@ public class StoreServiceImplement implements StoreService {
   private final LikeRepository likeRepository;
   private final StoreRepository storeRepository;
   private final ProductRepository productRepository;
+  private final ThemaRepostiroy themaRepostiory;
 
   // 가게 등록
   @Override
@@ -156,5 +159,34 @@ public class StoreServiceImplement implements StoreService {
     return GetStoreNumberResponseDto.success(storeEntity);
   }
 
-  
+  @Override
+  public ResponseEntity<? super GetStoreDetailListResponseDto> getStoreDetailList() {
+
+    List<StoreDetail> stores = new ArrayList<>();
+
+    try {
+      List<StoreEntity> storeEntities = storeRepository.findByOrderByStoreNumberDesc();
+
+      for (StoreEntity storeEntity : storeEntities) {
+        Integer storeNumber = storeEntity.getStoreNumber();
+        List<LikeEntity> likeEntities = likeRepository.findByStoreNumber(storeNumber);
+        List<ProductEntity> productEntities = productRepository.findByStoreNumber(storeNumber);
+
+        // productEntities의 각 productNumber에 대해 ThemaEntity를 조회
+        List<ThemaEntity> themaEntities = new ArrayList<>();
+        for (ProductEntity productEntity : productEntities) {
+          List<ThemaEntity> themasForProduct = themaRepostiory.findByProductNumber(productEntity.getProductNumber());
+          themaEntities.addAll(themasForProduct);
+        }
+        StoreDetail store = new StoreDetail(storeEntity, likeEntities, productEntities, themaEntities);
+        stores.add(store);
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+    return GetStoreDetailListResponseDto.success(stores);
+  }
+
 }
