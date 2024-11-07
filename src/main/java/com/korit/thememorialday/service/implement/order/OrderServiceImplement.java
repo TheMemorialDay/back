@@ -66,23 +66,26 @@ public class OrderServiceImplement implements OrderService {
         return ResponseDto.success();
     }
 
-    // mypage에서 get 할 때 사용할 예정
-    @Override
-    public ResponseEntity<GetOrderListResponseDto> getOrderList(String userId) {
-        List<OrderEntity> orders = orderRepository.findByUserId(userId);
-        List<FullOrder> fullOrders = new ArrayList<>();
 
-        for (OrderEntity order : orders) {
-            String storeName = storeRepository.findStoreNameByStoreNumber(order.getStoreNumber());
-            String productName = productRepository.findProductNameByProductNumber(order.getProductNumber());
-            String productImageUrl = productRepository.findFirstImageUrlByProductNumber(order.getProductNumber());
+@Override
+public ResponseEntity<GetOrderListResponseDto> getOrderList(String userId) {
+    List<OrderEntity> orders = orderRepository.findByUserId(userId);
+    List<FullOrder> fullOrders = new ArrayList<>();
 
-            // 옵션 정보 조회
-            List<OrderSelectOptionEntity> optionEntities = orderSelectOptionRepository
-                    .findByOrderCode(order.getOrderCode());
-            List<OrderSelectOption> options = optionEntities.stream()
-                    .map(OrderSelectOption::new)
-                    .collect(Collectors.toList());
+    for (OrderEntity order : orders) {
+        String storeName = storeRepository.findStoreNameByStoreNumber(order.getStoreNumber());
+        String productName = productRepository.findProductNameByProductNumber(order.getProductNumber());
+        String productImageUrl = productRepository.findFirstImageUrlByProductNumber(order.getProductNumber());
+        
+        // 옵션 정보 조회
+        List<OrderSelectOptionEntity> optionEntities = orderSelectOptionRepository.findByOrderCode(order.getOrderCode());
+        List<OrderSelectOption> options = optionEntities.stream()
+        .map(optionEntity -> {
+            String productCategory = productRepository.findProductCategoryByOptionCategoryNumber(optionEntity.getOptionCategoryNumber());
+            return new OrderSelectOption(optionEntity, productCategory);  // productCategory 추가
+        })
+
+                .collect(Collectors.toList());
 
             // FullOrder 객체 생성 후 리스트에 추가
             fullOrders.add(new FullOrder(order, options, storeName, productName, productImageUrl));
