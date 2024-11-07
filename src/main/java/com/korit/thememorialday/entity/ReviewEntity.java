@@ -24,7 +24,7 @@ public class ReviewEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer reivewNumber;
+    private Integer reviewNumber;
     private String orderCode;
     private Integer reviewRating;
     private Date reviewDay;
@@ -32,6 +32,17 @@ public class ReviewEntity {
     private String storeName;
     private String productName;
     private String userId;
+
+    public ReviewEntity(ReviewEntity reviewEntity) {
+        this.reviewNumber = reviewEntity.getReviewNumber();
+        this.orderCode = reviewEntity.getOrderCode();
+        this.reviewRating = reviewEntity.getReviewRating();
+        this.reviewDay = reviewEntity.getReviewDay();
+        this.reviewContents = reviewEntity.getReviewContents();
+        this.storeName = reviewEntity.getStoreName();
+        this.productName = reviewEntity.getProductName();
+        this.userId = reviewEntity.getUserId();
+    }
 
     public ReviewEntity(PostReviewRequestDto dto) {
         this.orderCode = dto.getOrderCode();
