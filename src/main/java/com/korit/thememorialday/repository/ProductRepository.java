@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.korit.thememorialday.common.object.OrderProductDetail;
@@ -81,5 +82,15 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
             "LIMIT 1", 
         nativeQuery = true
     )    String findFirstImageUrlByProductNumber(Integer productNumber);
+
+    @Query(
+        value = 
+            "SELECT po.product_category " +
+            "FROM TheMemorialDayDB.product_option AS po " +
+            "WHERE po.option_category_number = :optionCategoryNumber", 
+        nativeQuery = true
+    )
+    String findProductCategoryByOptionCategoryNumber(@Param("optionCategoryNumber") Integer optionCategoryNumber);
+
 
 }

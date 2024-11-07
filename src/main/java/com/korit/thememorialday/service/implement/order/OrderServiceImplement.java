@@ -2,23 +2,20 @@ package com.korit.thememorialday.service.implement.order;
 
 import com.korit.thememorialday.common.object.order.FullOrder;
 import com.korit.thememorialday.common.object.order.OrderSelectOption;
+import com.korit.thememorialday.dto.request.order.PatchOrderStatusDto;
 import com.korit.thememorialday.dto.request.order.PostOrderRequestDto;
-import com.korit.thememorialday.dto.request.order.PostOrderSelectOptionRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.order.GetOrderListResponseDto;
 import com.korit.thememorialday.entity.order.OrderEntity;
 import com.korit.thememorialday.entity.order.OrderSelectOptionEntity;
-import com.korit.thememorialday.repository.ProductOptionRepository;
 import com.korit.thememorialday.repository.ProductRepository;
 import com.korit.thememorialday.repository.StoreRepository;
-import com.korit.thememorialday.repository.UserRepository;
 import com.korit.thememorialday.repository.order.OrderRepository;
 import com.korit.thememorialday.repository.order.OrderSelectOptionRepository;
 import com.korit.thememorialday.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +63,7 @@ public class OrderServiceImplement implements OrderService {
         return ResponseDto.success();
     }
 
-    // mypage에서 get 할 때 사용할 예정
+    // 주문내역
     @Override
     public ResponseEntity<GetOrderListResponseDto> getOrderList(String userId) {
         List<OrderEntity> orders = orderRepository.findByUserIdOrderByOrderTimeDesc(userId);
@@ -81,7 +78,12 @@ public class OrderServiceImplement implements OrderService {
             List<OrderSelectOptionEntity> optionEntities = orderSelectOptionRepository
                     .findByOrderCode(order.getOrderCode());
             List<OrderSelectOption> options = optionEntities.stream()
-                    .map(OrderSelectOption::new)
+                    .map(optionEntity -> {
+                        String productCategory = productRepository
+                                .findProductCategoryByOptionCategoryNumber(optionEntity.getOptionCategoryNumber());
+                        return new OrderSelectOption(optionEntity, productCategory); // productCategory 추가
+                    })
+
                     .collect(Collectors.toList());
 
             // FullOrder 객체 생성 후 리스트에 추가
@@ -91,16 +93,15 @@ public class OrderServiceImplement implements OrderService {
         return GetOrderListResponseDto.success(fullOrders);
     }
 
-    @Transactional
     @Override
-    public ResponseEntity<ResponseDto> cancelOrder(String orderCode) {
+    public ResponseEntity<ResponseDto> patchOrderStatus(String orderCode, PatchOrderStatusDto dto) {
+
         try {
             OrderEntity orderEntity = orderRepository.findByOrderCode(orderCode);
             if (orderEntity == null)
                 return ResponseDto.noExistOrder();
 
-            // 삭제 대신 상태를 '취소됨'으로 업데이트
-            orderEntity.setOrderStatus("취소됨");
+            orderEntity.patch(dto);
             orderRepository.save(orderEntity);
 
         } catch (Exception exception) {
@@ -108,5 +109,34 @@ public class OrderServiceImplement implements OrderService {
             return ResponseDto.databaseError();
         }
         return ResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<GetOrderListResponseDto> getOrderManageList(Integer storeNumber) {
+        List<OrderEntity> orders = orderRepository.findByStoreNumber(storeNumber);
+        List<FullOrder> fullOrders = new ArrayList<>();
+
+        for (OrderEntity order : orders) {
+            String storeName = storeRepository.findStoreNameByStoreNumber(order.getStoreNumber());
+            String productName = productRepository.findProductNameByProductNumber(order.getProductNumber());
+            String productImageUrl = productRepository.findFirstImageUrlByProductNumber(order.getProductNumber());
+
+            // 옵션 정보 조회
+            List<OrderSelectOptionEntity> optionEntities = orderSelectOptionRepository
+                    .findByOrderCode(order.getOrderCode());
+            List<OrderSelectOption> options = optionEntities.stream()
+                    .map(optionEntity -> {
+                        String productCategory = productRepository
+                                .findProductCategoryByOptionCategoryNumber(optionEntity.getOptionCategoryNumber());
+                        return new OrderSelectOption(optionEntity, productCategory); // productCategory 추가
+                    })
+
+                    .collect(Collectors.toList());
+
+            // FullOrder 객체 생성 후 리스트에 추가
+            fullOrders.add(new FullOrder(order, options, storeName, productName, productImageUrl));
+        }
+
+        return GetOrderListResponseDto.success(fullOrders);
     }
 }

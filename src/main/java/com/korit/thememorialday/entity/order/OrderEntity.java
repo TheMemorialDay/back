@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
+import com.korit.thememorialday.dto.request.order.PatchOrderStatusDto;
 import com.korit.thememorialday.dto.request.order.PostOrderRequestDto;
 
 import jakarta.persistence.Column;
@@ -48,7 +49,7 @@ public class OrderEntity {
         this.userId = userId;
         this.productContents = dto.getProductContents();
         this.pickupTime = dto.getPickupTime();
-        this.orderStatus = "승인대기중";
+        this.orderStatus = "승인 대기중";
         this.productCount = dto.getProductCount();
         this.totalPrice = dto.getTotalPrice();
         this.orderTime = LocalDateTime.now();
@@ -61,6 +62,13 @@ public class OrderEntity {
         int randomNumber = random.nextInt(100000);
         System.out.println(datePart + String.format("%05d", randomNumber));
         return datePart + String.format("%05d", randomNumber);
+    }
+
+    public void patch(PatchOrderStatusDto dto) {
+        this.orderCode = dto.getOrderCode();
+        this.orderStatus = dto.getOrderStatus();
+        this.cancelCode = dto.getCancelCode();
+        this.cancelReason = dto.getCancelReason();
     }
 
 }
