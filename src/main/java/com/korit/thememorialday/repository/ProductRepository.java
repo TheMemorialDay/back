@@ -91,4 +91,14 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
         nativeQuery = true
     )    String findFirstImageUrlByProductNumber(Integer productNumber);
 
+    @Query(
+        value = 
+            "SELECT po.product_category " +
+            "FROM TheMemorialDayDB.product_option AS po " +
+            "WHERE po.option_category_number = :optionCategoryNumber", 
+        nativeQuery = true
+    )
+    String findProductCategoryByOptionCategoryNumber(@Param("optionCategoryNumber") Integer optionCategoryNumber);
+
+
 }

@@ -61,7 +61,6 @@ public class OrderServiceImplement implements OrderService {
     }
 
 
-    // mypage에서 get 할 때 사용할 예정
 @Override
 public ResponseEntity<GetOrderListResponseDto> getOrderList(String userId) {
     List<OrderEntity> orders = orderRepository.findByUserId(userId);
@@ -71,11 +70,15 @@ public ResponseEntity<GetOrderListResponseDto> getOrderList(String userId) {
         String storeName = storeRepository.findStoreNameByStoreNumber(order.getStoreNumber());
         String productName = productRepository.findProductNameByProductNumber(order.getProductNumber());
         String productImageUrl = productRepository.findFirstImageUrlByProductNumber(order.getProductNumber());
-
+        
         // 옵션 정보 조회
         List<OrderSelectOptionEntity> optionEntities = orderSelectOptionRepository.findByOrderCode(order.getOrderCode());
         List<OrderSelectOption> options = optionEntities.stream()
-                .map(OrderSelectOption :: new)
+        .map(optionEntity -> {
+            String productCategory = productRepository.findProductCategoryByOptionCategoryNumber(optionEntity.getOptionCategoryNumber());
+            return new OrderSelectOption(optionEntity, productCategory);  // productCategory 추가
+        })
+
                 .collect(Collectors.toList());
 
         // FullOrder 객체 생성 후 리스트에 추가
