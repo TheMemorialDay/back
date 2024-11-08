@@ -34,7 +34,7 @@ public class StoreDetail {
   private String storeLatitude;
   private String storeLongtitude;
   private String storeTel;
-  private Float storeRating;
+  private Double reviewRating;
   private Integer reviewCount;
   private Integer likeCount;
   private String storeImageUrl;
@@ -58,7 +58,7 @@ public class StoreDetail {
   private List<List<String>> themes;
 
   public StoreDetail(StoreEntity storeEntity, List<LikeEntity> likeEntities, List<ProductEntity> productEntities,
-      List<ThemaEntity> themaEntities) {
+      List<ThemaEntity> themaEntities, Integer reviewCount, Double reviewRating) {
     List<String> likeList = new ArrayList<>();
     for (LikeEntity likeEntity : likeEntities)
       likeList.add(likeEntity.getUserId());
@@ -98,8 +98,8 @@ public class StoreDetail {
     this.storeLatitude = storeEntity.getStoreLatitude();
     this.storeLongtitude = storeEntity.getStoreLongtitude();
     this.storeTel = storeEntity.getStoreTel();
-    this.storeRating = storeEntity.getStoreRating();
-    this.reviewCount = storeEntity.getReviewCount();
+    this.reviewRating = reviewRating;
+    this.reviewCount = reviewCount;
     this.likeCount = storeEntity.getLikeCount();
     this.storeImageUrl = storeEntity.getStoreImageUrl();
     this.mondayOpen = storeEntity.getMondayOpen();
