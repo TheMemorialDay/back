@@ -113,7 +113,7 @@ public class OrderServiceImplement implements OrderService {
 
     @Override
     public ResponseEntity<GetOrderListResponseDto> getOrderManageList(Integer storeNumber) {
-        List<OrderEntity> orders = orderRepository.findByStoreNumber(storeNumber);
+        List<OrderEntity> orders = orderRepository.findByStoreNumberOrderByOrderTimeDesc(storeNumber);
         List<FullOrder> fullOrders = new ArrayList<>();
 
         for (OrderEntity order : orders) {

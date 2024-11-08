@@ -28,6 +28,3 @@ public class GetOrderListResponseDto extends ResponseDto {
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 }
-
-
-// mypage에서 get 할 때 사용할 예정
