@@ -68,10 +68,19 @@ public class MypageServiceImplement implements MypageService {
 
 		try {
 
+			String name  = dto.getName();
+			String birth = dto.getBirth();
+			String gender = dto.getGender();
+			String telNumber = dto.getTelNumber();
+
 			UserEntity userEntity = userRepository.findByUserId(userId);
 			if (userEntity == null) return ResponseDto.noExistUserId();
 
-			userEntity.patch(dto);
+			userEntity.setName(name);
+			userEntity.setBirth(birth);
+			userEntity.setGender(gender);
+			userEntity.setTelNumber(telNumber);
+
 			userRepository.save(userEntity);
 
 		} catch (Exception exception) {
