@@ -11,4 +11,6 @@ import com.korit.thememorialday.entity.ReviewEntity;
 public interface ReviewRepository extends JpaRepository<ReviewEntity, Integer>{
     List<ReviewEntity> findByUserIdOrderByReviewDayDesc(String userId);
     List<ReviewEntity> findByStoreNameOrderByReviewDayDesc(String storeName);
+    Integer countByStoreName(String storeName);
+    List<ReviewEntity> findByStoreName(String storeName);
 }

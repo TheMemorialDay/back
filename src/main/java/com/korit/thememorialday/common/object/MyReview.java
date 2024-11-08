@@ -13,6 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class MyReview {
+    private Integer storeNumber;
     private String storeName;
     private Integer reviewRating;
     private Date reviewDay;
@@ -20,7 +21,8 @@ public class MyReview {
     private String productName;
     private List<String> imageUrls;
 
-    public MyReview(ReviewEntity reviewEntity, List<String> reviewPhotoUrls) {
+    public MyReview(Integer storeNumber, ReviewEntity reviewEntity, List<String> reviewPhotoUrls) {
+        this.storeNumber = storeNumber;
         this.reviewRating = reviewEntity.getReviewRating();
         this.reviewDay = reviewEntity.getReviewDay();
         this.reviewContents = reviewEntity.getReviewContents();

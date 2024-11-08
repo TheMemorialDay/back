@@ -47,6 +47,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
             "p.product_introduce, " +
             "p.product_price, " +
             "p.product_today, " +
+            "p.product_tag, " +
             "s.store_caution, " +
             "t.thema, " +
             "pi.product_image_url, " +
