@@ -2,10 +2,13 @@ package com.korit.thememorialday.service.implement.order;
 
 import com.korit.thememorialday.common.object.order.FullOrder;
 import com.korit.thememorialday.common.object.order.OrderSelectOption;
+import com.korit.thememorialday.common.object.sales.SalesData;
 import com.korit.thememorialday.dto.request.order.PostOrderRequestDto;
 import com.korit.thememorialday.dto.request.order.PostOrderSelectOptionRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.order.GetOrderListResponseDto;
+import com.korit.thememorialday.dto.response.sales.GetSalesResponseDto;
+import com.korit.thememorialday.entity.ProductEntity;
 import com.korit.thememorialday.entity.order.OrderEntity;
 import com.korit.thememorialday.entity.order.OrderSelectOptionEntity;
 import com.korit.thememorialday.repository.ProductOptionRepository;
@@ -20,8 +23,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,12 +56,7 @@ public class OrderServiceImplement implements OrderService {
                 // Integer optionNumber = orderSelectOption.getOptionNumber();
                 Integer optionCategoryNumber = orderSelectOption.getOptionCategoryNumber();
 
-                OrderSelectOptionEntity optionEntity = new OrderSelectOptionEntity(orderCode, optionCategoryNumber); // optionNumber
-                                                                                                                     // 안
-                                                                                                                     // 받기로
-                                                                                                                     // 해당
-                                                                                                                     // 줄에서
-                                                                                                                     // 지웠습니다
+                OrderSelectOptionEntity optionEntity = new OrderSelectOptionEntity(orderCode, optionCategoryNumber); 
                 optionEntities.add(optionEntity);
             }
             orderSelectOptionRepository.saveAll(optionEntities);
@@ -93,6 +95,52 @@ public ResponseEntity<GetOrderListResponseDto> getOrderList(String userId) {
 
         return GetOrderListResponseDto.success(fullOrders);
     }
+
+    @Override
+    @Transactional
+    public ResponseEntity<GetSalesResponseDto> getSales(Integer storeNumber) {
+        List<OrderEntity> orders = orderRepository.findByStoreNumber(storeNumber);
+        
+        if (orders.isEmpty()) {
+            return GetSalesResponseDto.success(Collections.emptyList());
+        }
+
+        List<String> orderCodes = orders.stream().map(OrderEntity::getOrderCode).collect(Collectors.toList());
+        List<OrderSelectOptionEntity> optionEntities = orderSelectOptionRepository.findByOrderCodeIn(orderCodes);
+
+        Map<Integer, String> productCategoryMap = optionEntities.stream()
+            .collect(Collectors.toMap(
+                OrderSelectOptionEntity::getOptionCategoryNumber,
+                option -> productRepository.findProductCategoryByOptionCategoryNumber(option.getOptionCategoryNumber()),
+                (existing, replacement) -> existing // 중복 키 발생 시 기존 값을 유지
+            ));
+
+        Map<String, List<OrderSelectOption>> optionsMap = optionEntities.stream()
+            .collect(Collectors.groupingBy(
+                OrderSelectOptionEntity::getOrderCode,
+                Collectors.mapping(
+                    option -> new OrderSelectOption(
+                        option.getOptionCategoryNumber(),
+                        productCategoryMap.get(option.getOptionCategoryNumber())),
+                    Collectors.toList())));
+
+        List<FullOrder> fullOrders = orders.stream().map(order -> {
+            String productName = productRepository.findProductNameByProductNumber(order.getProductNumber());
+            String productImageUrl = productRepository.findFirstImageUrlByProductNumber(order.getProductNumber());
+            List<OrderSelectOption> options = optionsMap.getOrDefault(order.getOrderCode(), new ArrayList<>());
+
+            return new FullOrder(
+                order,
+                options,
+                storeRepository.findStoreNameByStoreNumber(order.getStoreNumber()),
+                productName,
+                productImageUrl);
+        }).collect(Collectors.toList());
+
+        return GetSalesResponseDto.success(fullOrders);
+    }
+    
+
 
     @Transactional
     @Override
