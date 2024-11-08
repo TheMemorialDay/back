@@ -1,5 +1,9 @@
 package com.korit.thememorialday.entity;
 
+import java.util.List;
+
+import com.korit.thememorialday.dto.request.review.PostReviewRequestDto;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,7 +18,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Entity(name="review_photo")
 @Table(name="review_photo")
 public class ReviewPhotoEntity {
     
@@ -23,4 +27,9 @@ public class ReviewPhotoEntity {
     private Integer reviewPhotoNumber;
     private Integer reviewNumber;
     private String reviewPhotoUrl;
+
+    public ReviewPhotoEntity(Integer reviewNumber, String imageUrl) {
+        this.reviewNumber = reviewNumber;
+        this.reviewPhotoUrl = imageUrl;
+    }
 }

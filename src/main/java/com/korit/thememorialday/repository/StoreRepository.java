@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.korit.thememorialday.common.object.OrderProductDetail;
 import com.korit.thememorialday.common.object.StoreDetail;
 import com.korit.thememorialday.entity.StoreEntity;
 import com.korit.thememorialday.repository.resultSet.GetStoreOrderResultSet;
@@ -21,6 +20,8 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Integer> {
   List<StoreEntity> findByOrderByStoreNumberDesc();
 
   StoreEntity findByUserId(String userId);
+
+  StoreEntity findByStoreName(String storeName);
 
   @Query(value = "SELECT " +
       "    S.store_number as storeNumber, " +

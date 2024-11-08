@@ -1,6 +1,7 @@
 package com.korit.thememorialday.dto.request.review;
 
 import java.util.Date;
+import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,4 +33,6 @@ public class PostReviewRequestDto {
 
     @NotNull
     private String userId;
+
+    private List<String> imageUrls;
 }

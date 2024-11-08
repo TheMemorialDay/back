@@ -24,9 +24,12 @@ public class FullOrder {
     private String pickupTime;
     private Integer totalPrice;
     private String productImageUrl;
+    private String cancelCode;
+    private String cancelReason;
     private List<OrderSelectOption> options;
 
-    public FullOrder(OrderEntity order, List<OrderSelectOption> options, String storeName, String productName, String productImageUrl) {
+    public FullOrder(OrderEntity order, List<OrderSelectOption> options, String storeName, String productName,
+            String productImageUrl) {
         this.orderCode = order.getOrderCode();
         this.orderStatus = order.getOrderStatus();
         this.storeNumber = order.getStoreNumber();
@@ -38,9 +41,7 @@ public class FullOrder {
         this.totalPrice = order.getTotalPrice();
         this.options = options;
         this.productImageUrl = productImageUrl;
+        this.cancelCode = order.getCancelCode();
+        this.cancelReason = order.getCancelReason();
     }
 }
-
-
-
-// mypage에서 get 할 때 사용하셔도 됩니당
