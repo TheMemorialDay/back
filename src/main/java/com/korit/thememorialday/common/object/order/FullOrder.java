@@ -23,6 +23,8 @@ public class FullOrder {
     private String pickupTime;
     private Integer totalPrice;
     private String productImageUrl;
+    private String cancelCode;
+    private String cancelReason;
     private List<OrderSelectOption> options;
 
     public FullOrder(OrderEntity order, List<OrderSelectOption> options, String storeName, String productName,
@@ -37,5 +39,7 @@ public class FullOrder {
         this.totalPrice = order.getTotalPrice();
         this.options = options;
         this.productImageUrl = productImageUrl;
+        this.cancelCode = order.getCancelCode();
+        this.cancelReason = order.getCancelReason();
     }
 }
