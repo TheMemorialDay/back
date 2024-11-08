@@ -6,7 +6,6 @@ import com.korit.thememorialday.dto.request.order.PatchOrderStatusDto;
 import com.korit.thememorialday.dto.request.order.PostOrderRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.order.GetOrderListResponseDto;
-import com.korit.thememorialday.dto.response.order.GetOrderResponseDto;
 import com.korit.thememorialday.dto.response.sales.GetSalesResponseDto;
 
 public interface OrderService {
@@ -14,9 +13,8 @@ public interface OrderService {
             Integer productNumber);
 
     ResponseEntity<GetOrderListResponseDto> getOrderList(String userId);
-    ResponseEntity<ResponseDto> cancelOrder(String orderCode);
-    ResponseEntity<GetSalesResponseDto> getSales(Integer storeNumber);
 
+    ResponseEntity<GetSalesResponseDto> getSales(Integer storeNumber);
 
     ResponseEntity<GetOrderListResponseDto> getOrderManageList(Integer storeNumber);
 
