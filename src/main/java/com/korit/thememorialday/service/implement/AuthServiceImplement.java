@@ -21,10 +21,12 @@ import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.auth.GetSignInResponseDto;
 import com.korit.thememorialday.dto.response.auth.IdSearchResponseDto;
 import com.korit.thememorialday.dto.response.auth.SignInResponseDto;
+import com.korit.thememorialday.entity.StoreEntity;
 import com.korit.thememorialday.entity.TelAuthEntity;
 import com.korit.thememorialday.entity.UserEntity;
 import com.korit.thememorialday.provider.JwtProvider;
 import com.korit.thememorialday.provider.SmsProvider;
+import com.korit.thememorialday.repository.StoreRepository;
 import com.korit.thememorialday.repository.TelAuthRepository;
 import com.korit.thememorialday.repository.UserRepository;
 import com.korit.thememorialday.service.AuthService;
@@ -39,6 +41,7 @@ public class AuthServiceImplement implements AuthService {
 
 	private final UserRepository userRepository;
 	private final TelAuthRepository telAuthRepository;
+	private final StoreRepository storeRepository;
 
 	// 암호화 방식 주입
 	private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -79,7 +82,8 @@ public class AuthServiceImplement implements AuthService {
 
 		// smsProvider 만든 후 작성
 		boolean isSendSuccess = smsProvider.sendMessage(telNumber, telAuthNumber);
-		if (!isSendSuccess) return ResponseDto.messageSendFail();
+		if (!isSendSuccess)
+			return ResponseDto.messageSendFail();
 
 		try {
 			// 전화번호인증 엔터티 & 리포지토리 생성 먼저
@@ -295,7 +299,8 @@ public class AuthServiceImplement implements AuthService {
 
 		try {
 			boolean isMatched = telAuthRepository.existsByTelNumberAndTelAuthNumber(telNumber, telAuthNumber);
-			if (!isMatched) return ResponseDto.telAuthFail();
+			if (!isMatched)
+				return ResponseDto.telAuthFail();
 
 		} catch (Exception exception) {
 			exception.printStackTrace();
@@ -340,20 +345,28 @@ public class AuthServiceImplement implements AuthService {
 		return ResponseDto.success();
 
 	}
-	
+
 	@Override
 	public ResponseEntity<? super GetSignInResponseDto> getSignIn(String userId) {
 		UserEntity userEntity = null;
-		
+		Integer storeNumber = null;
+
 		try {
 			userEntity = userRepository.findByUserId(userId);
-			if(userEntity == null) return ResponseDto.noExistUserId();
+			if (userEntity == null)
+				return ResponseDto.noExistUserId();
+
+			boolean isBoss = userEntity.getPermission().equals("사장");
+			if (isBoss) {
+				StoreEntity storeEntity = storeRepository.findByUserId(userId);
+				storeNumber = storeEntity.getStoreNumber();
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseDto.databaseError();
 		}
-		return GetSignInResponseDto.success(userEntity);
+		return GetSignInResponseDto.success(userEntity, storeNumber);
 	}
-	
+
 }

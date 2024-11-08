@@ -25,7 +25,8 @@ public class FullOrder {
     private String productImageUrl;
     private List<OrderSelectOption> options;
 
-    public FullOrder(OrderEntity order, List<OrderSelectOption> options, String storeName, String productName, String productImageUrl) {
+    public FullOrder(OrderEntity order, List<OrderSelectOption> options, String storeName, String productName,
+            String productImageUrl) {
         this.orderCode = order.getOrderCode();
         this.orderStatus = order.getOrderStatus();
         this.orderTime = order.getOrderTime().toString();
@@ -38,7 +39,3 @@ public class FullOrder {
         this.productImageUrl = productImageUrl;
     }
 }
-
-
-
-// mypage에서 get 할 때 사용하셔도 됩니당
