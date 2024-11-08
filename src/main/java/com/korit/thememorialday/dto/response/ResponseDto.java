@@ -103,4 +103,10 @@ public class ResponseDto {
 		ResponseDto responseBody = new ResponseDto(ResponseCode.NO_EXIST_ORDER, ResponseMessage.NO_EXIST_ORDER);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
 	}
+
+	public static ResponseEntity<ResponseDto> noExistReview() {
+		ResponseDto responsBody = new ResponseDto(ResponseCode.NO_EXIST_REVIEW,
+				ResponseMessage.NO_EXIST_REVIEW);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
+	}
 }

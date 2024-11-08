@@ -11,7 +11,7 @@ import com.korit.thememorialday.entity.order.OrderEntity;
 public interface OrderRepository extends JpaRepository<OrderEntity, String> {
 
     List<OrderEntity> findByUserIdOrderByOrderTimeDesc(String userId);
-
+    
     OrderEntity findByOrderCode(String orderCode);
 
     List<OrderEntity> findByStoreNumberOrderByOrderTimeDesc(Integer storeNumber);
