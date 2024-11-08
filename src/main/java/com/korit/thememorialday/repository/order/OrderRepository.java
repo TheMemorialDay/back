@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 import com.korit.thememorialday.entity.order.OrderEntity;
 
 @Repository
-public interface OrderRepository extends JpaRepository<OrderEntity, String> {
+public interface OrderRepository extends JpaRepository<OrderEntity, String>{
 
-    List<OrderEntity> findByUserId(String userId);
-
+    List<OrderEntity> findByUserIdOrderByOrderTimeDesc(String userId);
+    
     OrderEntity findByOrderCode(String orderCode);
 
     List<OrderEntity> findByStoreNumber(Integer storeNumber);

@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Entity(name="review_photo")
 @Table(name="review_photo")
 public class ReviewPhotoEntity {
     

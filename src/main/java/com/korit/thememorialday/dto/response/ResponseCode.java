@@ -16,6 +16,7 @@ public interface ResponseCode {
   String NO_EXIST_PRODUCT = "NP";
   String NO_EXIST_STORE = "NS";
   String NO_EXIST_ORDER = "NO";
+  String NO_EXIST_REVIEW = "NR";
 
   // String NO_EXIST_TOOL = "NT";
   // String NO_EXIST_CUSTOMER = "NC";
