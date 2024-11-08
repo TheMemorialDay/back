@@ -66,7 +66,7 @@ public class OrderServiceImplement implements OrderService {
     // 주문내역
     @Override
     public ResponseEntity<GetOrderListResponseDto> getOrderList(String userId) {
-        List<OrderEntity> orders = orderRepository.findByUserId(userId);
+        List<OrderEntity> orders = orderRepository.findByUserIdOrderByOrderTimeDesc(userId);
         List<FullOrder> fullOrders = new ArrayList<>();
 
         for (OrderEntity order : orders) {
@@ -113,7 +113,7 @@ public class OrderServiceImplement implements OrderService {
 
     @Override
     public ResponseEntity<GetOrderListResponseDto> getOrderManageList(Integer storeNumber) {
-        List<OrderEntity> orders = orderRepository.findByStoreNumber(storeNumber);
+        List<OrderEntity> orders = orderRepository.findByStoreNumberOrderByOrderTimeDesc(storeNumber);
         List<FullOrder> fullOrders = new ArrayList<>();
 
         for (OrderEntity order : orders) {
