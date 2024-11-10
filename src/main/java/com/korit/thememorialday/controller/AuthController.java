@@ -7,6 +7,7 @@ import com.korit.thememorialday.dto.request.auth.IdCheckRequestDto;
 import com.korit.thememorialday.dto.request.auth.IdSearchTelNumberAuthRequestDto;
 import com.korit.thememorialday.dto.request.auth.IdSearchNameTelNumberRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordAuthRequestDto;
+import com.korit.thememorialday.dto.request.auth.PasswordResettingFinalRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordResettingRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordResettingIdAndTelNumberRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignInRequestDto;
@@ -136,6 +137,15 @@ public class AuthController {
 		@RequestBody @Valid PasswordAuthRequestDto requestBody
 	) {
 		ResponseEntity<ResponseDto> response = authService.passwordResettingAuthCheck(requestBody);
+		return response;
+	};
+
+	//* 비밀번호 재설정 들어가기 전 최종적으로 통합 확인
+	@PostMapping("/password-search-final")
+	public ResponseEntity<ResponseDto> passwordFinalCheck(
+		@RequestBody @Valid PasswordResettingFinalRequestDto requestBody
+	) {
+		ResponseEntity<ResponseDto> response = authService.passwordResettingFinalCheck(requestBody);
 		return response;
 	};
 

@@ -10,6 +10,7 @@ import com.korit.thememorialday.dto.request.auth.IdCheckRequestDto;
 import com.korit.thememorialday.dto.request.auth.IdSearchTelNumberAuthRequestDto;
 import com.korit.thememorialday.dto.request.auth.IdSearchNameTelNumberRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordAuthRequestDto;
+import com.korit.thememorialday.dto.request.auth.PasswordResettingFinalRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordResettingRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordResettingIdAndTelNumberRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignInRequestDto;
@@ -303,6 +304,31 @@ public class AuthServiceImplement implements AuthService {
 				return ResponseDto.telAuthFail();
 
 		} catch (Exception exception) {
+			exception.printStackTrace();
+			return ResponseDto.databaseError();
+		}
+
+		return ResponseDto.success();
+	}
+
+	//* 비밀번호 재설정 하기 전 최종 통합 확인
+	@Override
+	public ResponseEntity<ResponseDto> passwordResettingFinalCheck(
+		PasswordResettingFinalRequestDto dto) {
+		
+		String userId = dto.getUserId();
+		String telNumber = dto.getTelNumber();
+		String telAuthNumber = dto.getTelAuthNumber();
+
+		try {
+
+			UserEntity IdAndTelNumber = userRepository.findByUserIdAndTelNumber(userId, telNumber);
+			if (IdAndTelNumber == null) return ResponseDto.noExistInfo();
+
+			boolean isMatched = telAuthRepository.existsByTelNumberAndTelAuthNumber(telNumber, telAuthNumber);
+			if (!isMatched) return ResponseDto.telAuthFail();
+
+		} catch(Exception exception) {
 			exception.printStackTrace();
 			return ResponseDto.databaseError();
 		}
