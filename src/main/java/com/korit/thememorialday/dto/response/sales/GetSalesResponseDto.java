@@ -27,9 +27,4 @@ public class GetSalesResponseDto extends ResponseDto {
         GetSalesResponseDto responseBody = new GetSalesResponseDto(fullOrders);
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
-
-    // public static ResponseEntity<GetOrderListResponseDto> success(List<FullOrder>
-    // orders) {
-    // GetOrderListResponseDto responseBody = new GetOrderListResponseDto(orders);
-    // return ResponseEntity.status(HttpStatus.OK).body(responseBody);
 }
