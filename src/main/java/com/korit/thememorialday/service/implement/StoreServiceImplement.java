@@ -13,11 +13,13 @@ import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
 
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.entity.ProductEntity;
+import com.korit.thememorialday.entity.ReviewEntity;
 import com.korit.thememorialday.entity.StoreEntity;
 import com.korit.thememorialday.entity.LikeEntity;
 import com.korit.thememorialday.entity.ThemaEntity;
 import com.korit.thememorialday.repository.LikeRepository;
 import com.korit.thememorialday.repository.ProductRepository;
+import com.korit.thememorialday.repository.ReviewRepository;
 import com.korit.thememorialday.repository.StoreRepository;
 import com.korit.thememorialday.repository.ThemaRepostiroy;
 import com.korit.thememorialday.service.StoreService;
@@ -38,6 +40,7 @@ public class StoreServiceImplement implements StoreService {
   private final StoreRepository storeRepository;
   private final ProductRepository productRepository;
   private final ThemaRepostiroy themaRepostiory;
+  private final ReviewRepository reviewRepository;
 
   // 가게 등록
   @Override
@@ -80,18 +83,27 @@ public class StoreServiceImplement implements StoreService {
   public ResponseEntity<? super GetStoreResponseDto> getStore(Integer storeNumber) {
 
     StoreEntity storeEntity = null;
+    Double reviewRating = 0.0;
 
     try {
       storeEntity = storeRepository.findByStoreNumber(storeNumber);
       if (storeNumber == null)
         return ResponseDto.noExistStore();
 
+        List<ReviewEntity> reviewEntities = reviewRepository.findByStoreName(storeEntity.getStoreName());
+        Integer sum = 0;
+        
+        if(reviewEntities.size() != 0) {
+          for(ReviewEntity reviewEntity: reviewEntities) sum = sum + reviewEntity.getReviewRating();
+          reviewRating =  (sum / (double)reviewEntities.size());
+        }
+
     } catch (Exception exception) {
       exception.printStackTrace();
       return ResponseDto.databaseError();
     }
 
-    return GetStoreResponseDto.success(storeEntity);
+    return GetStoreResponseDto.success(storeEntity, reviewRating);
   }
 
   @Override
@@ -104,7 +116,10 @@ public class StoreServiceImplement implements StoreService {
       List<StoreEntity> storeEntities = storeRepository.findByOrderByStoreNumberDesc();
       for (StoreEntity storeEntity : storeEntities) {
         Integer storeNumber = storeEntity.getStoreNumber();
+
         List<LikeEntity> likeEntities = likeRepository.findByStoreNumber(storeNumber);
+        //List<ReviewEntity> reviewEntities = reviewRepository.findByStoreName(storeEntity.getStoreName());
+
         Store store = new Store(storeEntity, likeEntities);
         stores.add(store);
       }
@@ -133,18 +148,26 @@ public class StoreServiceImplement implements StoreService {
   public ResponseEntity<? super GetStoreResponseDto> getStore(String userId) {
 
     StoreEntity storeEntity = null;
+    Double reviewRating = 0.0;
 
     try {
       storeEntity = storeRepository.findByUserId(userId);
-      if (userId == null)
-        return ResponseDto.noExistStore();
+      if (userId == null) return ResponseDto.noExistStore();
+
+        List<ReviewEntity> reviewEntities = reviewRepository.findByStoreName(storeEntity.getStoreName());
+        Integer sum = 0;
+        
+        if(reviewEntities.size() != 0) {
+          for(ReviewEntity reviewEntity: reviewEntities) sum = sum + reviewEntity.getReviewRating();
+          reviewRating =  (sum / (double)reviewEntities.size());
+        }  
 
     } catch (Exception exception) {
       exception.printStackTrace();
       return ResponseDto.databaseError();
     }
 
-    return GetStoreResponseDto.success(storeEntity);
+    return GetStoreResponseDto.success(storeEntity, reviewRating);
   }
 
   public ResponseEntity<? super GetStoreNumberResponseDto> getStoreNumber(String userId) {
@@ -194,13 +217,25 @@ public class StoreServiceImplement implements StoreService {
         List<LikeEntity> likeEntities = likeRepository.findByStoreNumber(storeNumber);
         List<ProductEntity> productEntities = productRepository.findByStoreNumber(storeNumber);
 
+        Integer reviewCount = reviewRepository.countByStoreName(storeEntity.getStoreName());
+        
+        List<ReviewEntity> reviewEntities = reviewRepository.findByStoreName(storeEntity.getStoreName());
+        Integer sum = 0;
+        Double reviewRating = 0.0;
+
+        if(reviewEntities.size() != 0) {
+          for(ReviewEntity reviewEntity: reviewEntities) sum = sum + reviewEntity.getReviewRating();
+          reviewRating =  (sum / (double)reviewEntities.size());
+        }else reviewRating = 0.0;
+        
         // productEntities의 각 productNumber에 대해 ThemaEntity를 조회
         List<ThemaEntity> themaEntities = new ArrayList<>();
         for (ProductEntity productEntity : productEntities) {
           List<ThemaEntity> themasForProduct = themaRepostiory.findByProductNumber(productEntity.getProductNumber());
           themaEntities.addAll(themasForProduct);
         }
-        StoreDetail store = new StoreDetail(storeEntity, likeEntities, productEntities, themaEntities);
+        StoreDetail store = new StoreDetail(storeEntity, likeEntities, productEntities, themaEntities, 
+        reviewCount, reviewRating);
         stores.add(store);
       }
 

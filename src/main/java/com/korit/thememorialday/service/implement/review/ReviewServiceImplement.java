@@ -1,5 +1,6 @@
 package com.korit.thememorialday.service.implement.review;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,18 +30,20 @@ import lombok.RequiredArgsConstructor;
 public class ReviewServiceImplement implements ReviewService{
 
     private final ReviewRepository reviewRepository;
-    private final OrderRepository orderRepository;
     private final StoreRepository storeRepository;
     private final ReviewPhotoRepository reviewPhotoRepository;
 
     @Override
     public ResponseEntity<ResponseDto> postReview(PostReviewRequestDto dto) {
         try {
-            //OrderEntity orderEntity = orderRepository.findByOrderCode(orderCode);
-            //if(orderEntity == null) return ResponseDto.noExistOrder();
-
             ReviewEntity reviewEntity = new ReviewEntity(dto);
             reviewRepository.save(reviewEntity);
+            Integer reviewNumber = reviewEntity.getReviewNumber();
+
+            for (String imageUrl : dto.getImageUrls()) {
+                ReviewPhotoEntity reviewPhotoEntity = new ReviewPhotoEntity(reviewNumber, imageUrl);
+                reviewPhotoRepository.save(reviewPhotoEntity);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
@@ -90,6 +93,9 @@ public class ReviewServiceImplement implements ReviewService{
 
             for(ReviewEntity reviewEntity: reviewEntities) {
                 Integer reviewNumber = reviewEntity.getReviewNumber();
+                String storeName = reviewEntity.getStoreName();
+                StoreEntity storeEntity = storeRepository.findByStoreName(storeName);
+                Integer storeNumber = storeEntity.getStoreNumber();
 
                 List<String> reviewPhotos = new ArrayList<>();
                 List<ReviewPhotoEntity> reviewPhotoEntities = reviewPhotoRepository.findByReviewNumber(reviewNumber);
@@ -97,7 +103,7 @@ public class ReviewServiceImplement implements ReviewService{
                     reviewPhotos.add(reviewPhotoEntity.getReviewPhotoUrl());
                 }
 
-                MyReview myReview = new MyReview(reviewEntity, reviewPhotos);
+                MyReview myReview = new MyReview(storeNumber, reviewEntity, reviewPhotos);
                 myReviews.add(myReview);
             }
 

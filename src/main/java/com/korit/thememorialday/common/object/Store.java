@@ -49,6 +49,7 @@ public class Store {
     List<String> likeList = new ArrayList<>();
     for (LikeEntity likeEntity : likeEntities)
       likeList.add(likeEntity.getUserId());
+      
     this.storeNumber = storeEntity.getStoreNumber();
     this.userId = storeEntity.getUserId();
     this.storeName = storeEntity.getStoreName();
@@ -64,7 +65,7 @@ public class Store {
     this.storeLongtitude = storeEntity.getStoreLongtitude();
     this.storeTel = storeEntity.getStoreTel();
     this.storeRating = storeEntity.getStoreRating();
-    this.reviewCount = storeEntity.getReviewCount();
+    this.reviewCount = storeEntity.getReviewCount(); 
     this.likeCount = storeEntity.getLikeCount();
     this.storeImageUrl = storeEntity.getStoreImageUrl();
     this.mondayOpen = storeEntity.getMondayOpen();

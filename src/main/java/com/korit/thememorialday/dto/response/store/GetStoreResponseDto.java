@@ -27,7 +27,7 @@ public class GetStoreResponseDto extends ResponseDto {
   private String storeTel;
   private String storeLatitude;
   private String storeLongtitude;
-  private Float storeRating;
+  private Double storeRating;
   private Integer reviewCount;
   private Integer likeCount;
   private String storeImageUrl;
@@ -46,7 +46,7 @@ public class GetStoreResponseDto extends ResponseDto {
   private String sundayOpen;
   private String sundayLast;
 
-  private GetStoreResponseDto(StoreEntity storeEntity) {
+  private GetStoreResponseDto(StoreEntity storeEntity, Double storeRating) {
     super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
     this.storeNumber = storeEntity.getStoreNumber();
     this.userId = storeEntity.getUserId();
@@ -62,7 +62,7 @@ public class GetStoreResponseDto extends ResponseDto {
     this.storeLatitude = storeEntity.getStoreLatitude();
     this.storeLongtitude = storeEntity.getStoreLongtitude();
     this.storeTel = storeEntity.getStoreTel();
-    this.storeRating = storeEntity.getStoreRating();
+    this.storeRating = storeRating;
     this.reviewCount = storeEntity.getReviewCount();
     this.likeCount = storeEntity.getLikeCount();
     this.storeImageUrl = storeEntity.getStoreImageUrl();
@@ -82,8 +82,8 @@ public class GetStoreResponseDto extends ResponseDto {
     this.sundayLast = storeEntity.getSundayLast();
   }
 
-  public static ResponseEntity<GetStoreResponseDto> success(StoreEntity storeEntity) {
-    GetStoreResponseDto responseBody = new GetStoreResponseDto(storeEntity);
+  public static ResponseEntity<GetStoreResponseDto> success(StoreEntity storeEntity, Double storeRating) {
+    GetStoreResponseDto responseBody = new GetStoreResponseDto(storeEntity, storeRating);
     return ResponseEntity.status(HttpStatus.OK).body(responseBody);
   }
 

@@ -3,7 +3,6 @@ import java.util.List;
 
 
 import com.korit.thememorialday.entity.ProductEntity;
-import com.korit.thememorialday.entity.ProductOptionEntity;
 import com.korit.thememorialday.entity.StoreEntity;
 
 import lombok.AllArgsConstructor;
@@ -21,6 +20,7 @@ public class OrderProductDetail {
     private String StoreCaution; 
     private String productIntroduce;
     private Integer productPrice;
+    private String productTag;
     private boolean productToday;
     private List<String> productImages;
     private List<String> themes;
@@ -43,6 +43,7 @@ public class OrderProductDetail {
 
     public OrderProductDetail(ProductEntity productEntity, List<String> productImages, 
         List<String> themes, List<Option> options, StoreEntity storeEntity) {
+        this.productTag = productEntity.getProductTag();
         this.productNumber = productEntity.getProductNumber();
         this.productName = productEntity.getProductName();
         this.productIntroduce = productEntity.getProductIntroduce();

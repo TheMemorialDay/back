@@ -377,18 +377,3 @@ public class ProductServiceImpl implements ProductService {
     }
 }
 
-
-    // @Override
-    // public ResponseEntity<GetProductListResponseDto> getProductsByStoreNumber(Integer storeNumber) {
-    //     List<ProductEntity> products = productRepository.findByStoreNumber(storeNumber);
-    //     return GetProductListResponseDto.success(products);
-    // }
-
-    // @Override
-    // public ResponseEntity<GetProductResponseDto> getProductByNumber(Integer productNumber) {
-    //     ProductEntity product = productRepository.findByProductNumber(productNumber);
-    //     if (product == null) {
-    //         return ResponseEntity.notFound().build(); // 상품이 없는 경우 404 반환
-    //     }
-    //     return GetProductResponseDto.success(product);
-    // }
