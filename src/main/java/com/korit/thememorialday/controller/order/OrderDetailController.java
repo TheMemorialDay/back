@@ -1,6 +1,6 @@
 package com.korit.thememorialday.controller.order;
 
-// import java.security.Principal;
+import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -9,13 +9,17 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.korit.thememorialday.dto.request.order.PatchOrderStatusDto;
 import com.korit.thememorialday.dto.request.order.PostOrderRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.order.GetOrderListResponseDto;
+import com.korit.thememorialday.dto.response.sales.GetSalesResponseDto;
+import com.korit.thememorialday.dto.response.store.GetStoreNumberResponseDto;
 import com.korit.thememorialday.service.order.OrderService;
+import com.korit.thememorialday.service.StoreService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class OrderDetailController {
 
     private final OrderService orderService;
+    private final StoreService storeService;
 
     @PostMapping(value = { "/stores/{storeNumber}/order/{productNumber}/{userId}" })
     public ResponseEntity<ResponseDto> postOrder(
@@ -54,4 +59,23 @@ public class OrderDetailController {
             @PathVariable("storeNumber") Integer storeNumber) {
         return orderService.getOrderManageList(storeNumber);
     }
+
+    @GetMapping("/mypage/sales")
+    public ResponseEntity<GetSalesResponseDto> getSales(@RequestParam String userId) {
+        ResponseEntity<? super GetStoreNumberResponseDto> storeNumberResponse = storeService.getStoreNumber(userId);
+
+        // storeNumber가 없으면 404 반환
+        if (storeNumberResponse.getStatusCode() != HttpStatus.OK || storeNumberResponse.getBody() == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        // storeNumber 추출
+        GetStoreNumberResponseDto storeNumberDto = (GetStoreNumberResponseDto) storeNumberResponse.getBody();
+        Integer storeNumber = storeNumberDto.getStoreNumber();
+
+        // 매출 데이터 반환
+        return orderService.getSales(storeNumber);
+    }
+
+    
 }
