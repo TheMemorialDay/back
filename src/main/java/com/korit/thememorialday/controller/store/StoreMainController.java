@@ -82,16 +82,12 @@ public class StoreMainController {
     return response;
   }
 
-  //* store main search - 가게명 & 상품명 검색 후 가게 리스트 가져오기
+  // * store main search - 가게명 & 상품명 검색 후 가게 리스트 가져오기
   @GetMapping(value = "/search-main")
-  public ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainSearch(
-    @RequestParam(name="storeName", defaultValue="") String storeName,
-    @RequestParam(name="productName", defaultValue="") String productName
-  ) {
-
-    ResponseEntity<? super GetStoreListMainSearchResponseDto> response = storeService.getStoreMainSearch(storeName, productName);
+  public ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreByMainSearch(
+      @RequestParam("searchKeyword") String searchKeyword) {
+    ResponseEntity<? super GetStoreListMainSearchResponseDto> response = storeService.getStoreMainSearch(searchKeyword);
     return response;
-
   };
 
   @GetMapping(value = "/{storeNumber}/order/{productNumber}")
