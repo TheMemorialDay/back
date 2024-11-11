@@ -12,10 +12,10 @@ import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
 
 import com.korit.thememorialday.dto.response.ResponseDto;
-import com.korit.thememorialday.entity.LikeEntity;
 import com.korit.thememorialday.entity.ProductEntity;
 import com.korit.thememorialday.entity.ReviewEntity;
 import com.korit.thememorialday.entity.StoreEntity;
+import com.korit.thememorialday.entity.LikeEntity;
 import com.korit.thememorialday.entity.ThemaEntity;
 import com.korit.thememorialday.repository.LikeRepository;
 import com.korit.thememorialday.repository.ProductRepository;
@@ -23,6 +23,7 @@ import com.korit.thememorialday.repository.ReviewRepository;
 import com.korit.thememorialday.repository.StoreRepository;
 import com.korit.thememorialday.repository.ThemaRepostiroy;
 import com.korit.thememorialday.service.StoreService;
+import com.korit.thememorialday.dto.response.store.GetStoreListMainSearchResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreDetailListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreNumberResponseDto;
@@ -89,13 +90,14 @@ public class StoreServiceImplement implements StoreService {
       if (storeNumber == null)
         return ResponseDto.noExistStore();
 
-        List<ReviewEntity> reviewEntities = reviewRepository.findByStoreName(storeEntity.getStoreName());
-        Integer sum = 0;
-        
-        if(reviewEntities.size() != 0) {
-          for(ReviewEntity reviewEntity: reviewEntities) sum = sum + reviewEntity.getReviewRating();
-          reviewRating =  (sum / (double)reviewEntities.size());
-        }
+      List<ReviewEntity> reviewEntities = reviewRepository.findByStoreName(storeEntity.getStoreName());
+      Integer sum = 0;
+
+      if (reviewEntities.size() != 0) {
+        for (ReviewEntity reviewEntity : reviewEntities)
+          sum = sum + reviewEntity.getReviewRating();
+        reviewRating = (sum / (double) reviewEntities.size());
+      }
 
     } catch (Exception exception) {
       exception.printStackTrace();
@@ -117,7 +119,8 @@ public class StoreServiceImplement implements StoreService {
         Integer storeNumber = storeEntity.getStoreNumber();
 
         List<LikeEntity> likeEntities = likeRepository.findByStoreNumber(storeNumber);
-        //List<ReviewEntity> reviewEntities = reviewRepository.findByStoreName(storeEntity.getStoreName());
+        // List<ReviewEntity> reviewEntities =
+        // reviewRepository.findByStoreName(storeEntity.getStoreName());
 
         Store store = new Store(storeEntity, likeEntities);
         stores.add(store);
@@ -133,7 +136,7 @@ public class StoreServiceImplement implements StoreService {
 
   @Override
   public ResponseEntity<? super GetStoreOrderListResponseDto> getStoreOrderList(Integer storeNumber) {
-    // storeNumber로 ProductEntity 목록 조회
+    // storeNumber로 ProductEntity 목록 조회 ** 물어보기
     List<ProductEntity> productEntities = productRepository.findByStoreNumber(storeNumber);
 
     // 응답 DTO 생성
@@ -151,15 +154,17 @@ public class StoreServiceImplement implements StoreService {
 
     try {
       storeEntity = storeRepository.findByUserId(userId);
-      if (userId == null) return ResponseDto.noExistStore();
+      if (userId == null)
+        return ResponseDto.noExistStore();
 
-        List<ReviewEntity> reviewEntities = reviewRepository.findByStoreName(storeEntity.getStoreName());
-        Integer sum = 0;
-        
-        if(reviewEntities.size() != 0) {
-          for(ReviewEntity reviewEntity: reviewEntities) sum = sum + reviewEntity.getReviewRating();
-          reviewRating =  (sum / (double)reviewEntities.size());
-        }  
+      List<ReviewEntity> reviewEntities = reviewRepository.findByStoreName(storeEntity.getStoreName());
+      Integer sum = 0;
+
+      if (reviewEntities.size() != 0) {
+        for (ReviewEntity reviewEntity : reviewEntities)
+          sum = sum + reviewEntity.getReviewRating();
+        reviewRating = (sum / (double) reviewEntities.size());
+      }
 
     } catch (Exception exception) {
       exception.printStackTrace();
@@ -182,6 +187,45 @@ public class StoreServiceImplement implements StoreService {
     return GetStoreNumberResponseDto.success(storeEntity);
   }
 
+  // * store main search - storeName & productName 으로 검색
+  @Override
+  public ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainSearch(String searchKeyword) {
+    List<StoreDetail> stores = new ArrayList<>();
+
+    try {
+      // storeName 또는 productName이 검색어를 포함하는 가게들만 가져옴
+      List<StoreEntity> storeEntities = storeRepository
+          .findStoreEntityByStoreNameOrProductNameOrderByStoreNumberDesc(searchKeyword);
+      System.out.println("스토어 엔터티" + storeEntities);
+      System.out.println("검색어" + searchKeyword);
+      for (StoreEntity storeEntity : storeEntities) {
+        Integer storeNumber = storeEntity.getStoreNumber();
+        List<LikeEntity> likeEntities = likeRepository.findByStoreNumber(storeNumber);
+        List<ProductEntity> productEntities = productRepository.findByStoreNumber(storeNumber);
+
+        Integer reviewCount = reviewRepository.countByStoreName(storeEntity.getStoreName());
+        List<ReviewEntity> reviewEntities = reviewRepository.findByStoreName(storeEntity.getStoreName());
+        int sum = reviewEntities.stream().mapToInt(ReviewEntity::getReviewRating).sum();
+        double reviewRating = reviewEntities.isEmpty() ? 0.0 : (double) sum / reviewEntities.size();
+
+        List<ThemaEntity> themaEntities = new ArrayList<>();
+        for (ProductEntity productEntity : productEntities) {
+          List<ThemaEntity> themasForProduct = themaRepostiory.findByProductNumber(productEntity.getProductNumber());
+          themaEntities.addAll(themasForProduct);
+        }
+
+        StoreDetail store = new StoreDetail(storeEntity, likeEntities, productEntities, themaEntities, reviewCount,
+            reviewRating);
+        stores.add(store);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetStoreListMainSearchResponseDto.success(stores);
+  }
+
   @Override
   public ResponseEntity<? super GetStoreDetailListResponseDto> getStoreDetailList() {
 
@@ -196,24 +240,26 @@ public class StoreServiceImplement implements StoreService {
         List<ProductEntity> productEntities = productRepository.findByStoreNumber(storeNumber);
 
         Integer reviewCount = reviewRepository.countByStoreName(storeEntity.getStoreName());
-        
+
         List<ReviewEntity> reviewEntities = reviewRepository.findByStoreName(storeEntity.getStoreName());
         Integer sum = 0;
         Double reviewRating = 0.0;
 
-        if(reviewEntities.size() != 0) {
-          for(ReviewEntity reviewEntity: reviewEntities) sum = sum + reviewEntity.getReviewRating();
-          reviewRating =  (sum / (double)reviewEntities.size());
-        }else reviewRating = 0.0;
-        
+        if (reviewEntities.size() != 0) {
+          for (ReviewEntity reviewEntity : reviewEntities)
+            sum = sum + reviewEntity.getReviewRating();
+          reviewRating = (sum / (double) reviewEntities.size());
+        } else
+          reviewRating = 0.0;
+
         // productEntities의 각 productNumber에 대해 ThemaEntity를 조회
         List<ThemaEntity> themaEntities = new ArrayList<>();
         for (ProductEntity productEntity : productEntities) {
           List<ThemaEntity> themasForProduct = themaRepostiory.findByProductNumber(productEntity.getProductNumber());
           themaEntities.addAll(themasForProduct);
         }
-        StoreDetail store = new StoreDetail(storeEntity, likeEntities, productEntities, themaEntities, 
-        reviewCount, reviewRating);
+        StoreDetail store = new StoreDetail(storeEntity, likeEntities, productEntities, themaEntities,
+            reviewCount, reviewRating);
         stores.add(store);
       }
 

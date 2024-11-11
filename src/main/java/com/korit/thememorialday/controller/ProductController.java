@@ -39,14 +39,6 @@ public class ProductController {
         return response;
     }
 
-
-    // @GetMapping("/{userId}")                                             // 원래 이거 써야 함 10/27
-    // public ResponseEntity<GetProductListResponseDto> getProductsByStoreNumber(@AuthenticationPrincipal Principal principal, @PathVariable String userId) {
-    //     String userId = principal.getUserId(); // 현재 로그인한 유저의 ID 가져오기
-    //     return productService.getProductList(userId);
-    // }
-
-
     @GetMapping("/{userId}")                                       // 이거 지우고 토큰 인증 로그인까지 완료되면 윗줄 써야 함
     public ResponseEntity<? super GetProductListResponseDto> getProductsByStoreNumber(@PathVariable("userId") String userId) {
         return productService.getProductList(userId);

@@ -16,6 +16,7 @@ public interface ProductService {
     ResponseEntity<? super GetProductListResponseDto> getProductList(String userId);
     ResponseEntity<? super GetProductResponseDto> getProduct(Integer productNumber);
     ResponseEntity<ResponseDto> patchProduct(Integer productNumber, PatchProductRequestDto dto);
+
     ResponseEntity<ResponseDto> deleteProduct(Integer productNumber);
     
     // ResponseEntity<? super GetProductResponseDto> getProduct(Integer productNumber);

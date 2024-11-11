@@ -1,6 +1,10 @@
 package com.korit.thememorialday.entity;
 
-import com.korit.thememorialday.dto.request.auth.PatchPasswordRequestDto;
+
+import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
+import com.korit.thememorialday.dto.request.auth.TelAuthRequestDto;
+import com.korit.thememorialday.dto.request.join.PatchJoinRequestDto;
+import com.korit.thememorialday.dto.request.mypage_user_info.PatchUserInfoRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
 import com.korit.thememorialday.dto.request.join.PatchJoinRequestDto;
 
@@ -58,4 +62,12 @@ public class UserEntity {
 		this.permission = "사장";
 		this.businessUrl = dto.getBusinessUrl();
     }
+
+	// 회원 수정을 위한 생성자
+	public void patch(PatchUserInfoRequestDto dto) {
+		this.name = dto.getName();
+		this.birth = dto.getBirth();
+		this.gender = dto.getGender();
+		this.telNumber = dto.getTelNumber();
+	}
 }

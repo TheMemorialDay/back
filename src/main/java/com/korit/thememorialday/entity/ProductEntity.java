@@ -31,8 +31,8 @@ public class ProductEntity {
     private boolean productToday;
     private String productTag;
 
-    public ProductEntity(PostProductRequestDto dto, Integer storeNubmer) {
-        this.storeNumber = storeNubmer;
+    public ProductEntity(PostProductRequestDto dto, Integer storeNumber) {
+        this.storeNumber = storeNumber;
         this.productName = dto.getProductName();
         this.productIntroduce = dto.getProductIntroduce();
         this.productPrice = dto.getProductPrice();
