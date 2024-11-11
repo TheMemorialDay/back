@@ -70,6 +70,18 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Integer> {
       "WHERE S.store_number = :storeNumber", nativeQuery = true)
   GetStoreOrderResultSet getStoreOrderList(@Param("storeNumber") Integer storeNumber);
 
+  //* store main search - 가게명 & 상품명 검색해서 가게 불러오기
+  @Query(value = 
+    "SELECT DISTINCT * FROM store " +
+    "WHERE store_name LIKE %:storeName% " +
+    "OR store_number IN ( " +
+    "SELECT store_number FROM product " +
+    "WHERE product_name LIKE %:productName%)", nativeQuery = true)
+    List<StoreEntity> getStoreByMainSearch(
+      @Param("storeName") String storeName,
+      @Param("productName") String productName
+      );
+
   @Query(value = "SELECT " +
       "    S.store_number as storeNumber, " +
       "    S.store_name as storeName, " +

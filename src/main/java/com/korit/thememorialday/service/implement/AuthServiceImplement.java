@@ -7,23 +7,19 @@ import org.springframework.stereotype.Service;
 
 import com.korit.thememorialday.common.util.AuthNumberCreator;
 import com.korit.thememorialday.dto.request.auth.IdCheckRequestDto;
-import com.korit.thememorialday.dto.request.auth.IdSearchAuthRequestDto;
-import com.korit.thememorialday.dto.request.auth.IdSearchRequestDto;
+import com.korit.thememorialday.dto.request.auth.IdSearchTelNumberAuthRequestDto;
+import com.korit.thememorialday.dto.request.auth.IdSearchNameTelNumberRequestDto;
 import com.korit.thememorialday.dto.request.auth.PasswordAuthRequestDto;
-import com.korit.thememorialday.dto.request.auth.PatchPasswordRequestDto;
-import com.korit.thememorialday.dto.request.auth.PatchUserInfoRequestDto;
-import com.korit.thememorialday.dto.request.auth.PasswordSearchRequestDto;
+import com.korit.thememorialday.dto.request.auth.PasswordResettingFinalRequestDto;
+import com.korit.thememorialday.dto.request.auth.PasswordResettingRequestDto;
+import com.korit.thememorialday.dto.request.auth.PasswordResettingIdAndTelNumberRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignInRequestDto;
 import com.korit.thememorialday.dto.request.auth.SignUpRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthCheckRequestDto;
 import com.korit.thememorialday.dto.request.auth.TelAuthRequestDto;
-import com.korit.thememorialday.dto.request.auth.UserUpdatePasswordCheckRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
 
 import com.korit.thememorialday.dto.response.auth.GetSignInResponseDto;
-
-import com.korit.thememorialday.dto.response.auth.GetUserInfoResponseDto;
-
 import com.korit.thememorialday.dto.response.auth.IdSearchResponseDto;
 import com.korit.thememorialday.dto.response.auth.SignInResponseDto;
 import com.korit.thememorialday.entity.StoreEntity;
@@ -34,7 +30,6 @@ import com.korit.thememorialday.provider.SmsProvider;
 import com.korit.thememorialday.repository.StoreRepository;
 import com.korit.thememorialday.repository.TelAuthRepository;
 import com.korit.thememorialday.repository.UserRepository;
-// import com.korit.thememorialday.repository.resultSet.GetUserInfoResultSet;
 import com.korit.thememorialday.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
@@ -76,8 +71,8 @@ public class AuthServiceImplement implements AuthService {
 
 		try {
 			boolean isExistedTelNumber = userRepository.existsByTelNumber(telNumber);
-			if (isExistedTelNumber)
-				return ResponseDto.duplicatedaTelNumber();
+			if (isExistedTelNumber) return ResponseDto.duplicatedaTelNumber();
+
 		} catch (Exception exception) {
 			exception.printStackTrace();
 			return ResponseDto.databaseError();
@@ -113,8 +108,7 @@ public class AuthServiceImplement implements AuthService {
 
 		try {
 			boolean isMatched = telAuthRepository.existsByTelNumberAndTelAuthNumber(telNumber, telAuthNumber);
-			if (!isMatched)
-				return ResponseDto.telAuthFail();
+			if (!isMatched) return ResponseDto.telAuthFail();
 		} catch (Exception exception) {
 			exception.printStackTrace();
 			return ResponseDto.databaseError();
@@ -190,18 +184,16 @@ public class AuthServiceImplement implements AuthService {
 		return SignInResponseDto.success(accessToken);
 	}
 
-	// * 첫단계 아이디 찾기
+	// * 첫단계 아이디 찾기 (이름 + 전화번호)
 	@Override
-	public ResponseEntity<ResponseDto> beforeIdSearch(IdSearchRequestDto dto) {
+	public ResponseEntity<ResponseDto> idSearchNameTelCheck(IdSearchNameTelNumberRequestDto dto) {
 		String name = dto.getName();
 		String telNumber = dto.getTelNumber();
 
 		try {
 
 			UserEntity userEntity = userRepository.findByNameAndTelNumber(name, telNumber);
-
-			if (userEntity == null)
-				return ResponseDto.noExistInfo();
+			if (userEntity == null) return ResponseDto.noExistInfo();
 
 		} catch (Exception exception) {
 			exception.printStackTrace();
@@ -228,22 +220,34 @@ public class AuthServiceImplement implements AuthService {
 		return ResponseDto.success();
 	}
 
-	// * 아이디 찾기
+	//* 아이디 찾기 (전화번호 + 인증번호)
 	@Override
-	public ResponseEntity<? super IdSearchResponseDto> IdSearch(IdSearchAuthRequestDto dto) {
+	public ResponseEntity<ResponseDto> idSearchTelAuthCheck(IdSearchTelNumberAuthRequestDto dto) {
 		String telNumber = dto.getTelNumber();
 		String telAuthNumber = dto.getTelAuthNumber();
+
+		try {
+			boolean isMatched = telAuthRepository.existsByTelNumberAndTelAuthNumber(telNumber, telAuthNumber);
+			if (!isMatched) return ResponseDto.telAuthFail();
+		} catch (Exception exception) {
+			exception.printStackTrace();
+			return ResponseDto.databaseError();
+		}
+
+		return ResponseDto.success();
+	}
+
+	// * 아이디 찾기 (정보 결과 나오는)
+	@Override
+	public ResponseEntity<? super IdSearchResponseDto> getIdSearch(IdSearchNameTelNumberRequestDto dto) {
+		String name = dto.getName();
+		String telNumber = dto.getTelNumber();
 
 		UserEntity userEntity = null;
 
 		try {
-			boolean isMatched = telAuthRepository.existsByTelNumberAndTelAuthNumber(telNumber, telAuthNumber);
-			if (!isMatched)
-				return ResponseDto.telAuthFail();
-
-			userEntity = userRepository.findByTelNumber(telNumber);
-			if (userEntity == null)
-				return ResponseDto.noExistInfo();
+			userEntity = userRepository.findByNameAndTelNumber(name, telNumber);
+			if (userEntity == null) return ResponseDto.noExistInfo();
 
 		} catch (Exception exception) {
 			exception.printStackTrace();
@@ -253,16 +257,15 @@ public class AuthServiceImplement implements AuthService {
 		return IdSearchResponseDto.success(userEntity);
 	}
 
-	// * 비밀번호 찾기
+	// * 비밀번호 찾기 (아이디 & 전화번호로 존재 확인)
 	@Override
-	public ResponseEntity<ResponseDto> passwordSearch(PasswordSearchRequestDto dto) {
+	public ResponseEntity<ResponseDto> passwordResettingIdTelCheck(PasswordResettingIdAndTelNumberRequestDto dto) {
 		String userId = dto.getUserId();
 		String telNumber = dto.getTelNumber();
 
 		try {
-			boolean isMatched = userRepository.existsByUserIdAndTelNumber(userId, telNumber);
-			if (!isMatched)
-				return ResponseDto.noExistInfo();
+			UserEntity IdAndTelNumber = userRepository.findByUserIdAndTelNumber(userId, telNumber);
+			if (IdAndTelNumber == null) return ResponseDto.noExistInfo();
 
 		} catch (Exception exception) {
 			exception.printStackTrace();
@@ -289,9 +292,9 @@ public class AuthServiceImplement implements AuthService {
 		return ResponseDto.success();
 	}
 
-	// * 비밀번호를 위한 인증 확인
+	// * 비밀번호를 위한 인증 확인 (전화번호 + 인증번호)
 	@Override
-	public ResponseEntity<ResponseDto> passwordAuthCheck(PasswordAuthRequestDto dto) {
+	public ResponseEntity<ResponseDto> passwordResettingAuthCheck(PasswordAuthRequestDto dto) {
 		String telNumber = dto.getTelNumber();
 		String telAuthNumber = dto.getTelAuthNumber();
 
@@ -308,21 +311,53 @@ public class AuthServiceImplement implements AuthService {
 		return ResponseDto.success();
 	}
 
-	// * 비밀번호 재설정
+	//* 비밀번호 재설정 하기 전 최종 통합 확인
 	@Override
-	public ResponseEntity<ResponseDto> passwordResetting(PatchPasswordRequestDto dto) {
+	public ResponseEntity<ResponseDto> passwordResettingFinalCheck(
+		PasswordResettingFinalRequestDto dto) {
+		
 		String userId = dto.getUserId();
 		String telNumber = dto.getTelNumber();
-		String password = dto.getPassword();
-
-		UserEntity userEntity = null;
+		String telAuthNumber = dto.getTelAuthNumber();
 
 		try {
-			userEntity = userRepository.findByUserIdAndTelNumber(userId, telNumber);
-			if (userEntity == null)
-				ResponseDto.databaseError();
 
-			// 비밀번호 암호화 : 비밀번호만 업데이트
+			UserEntity IdAndTelNumber = userRepository.findByUserIdAndTelNumber(userId, telNumber);
+			if (IdAndTelNumber == null) return ResponseDto.noExistInfo();
+
+			boolean isMatched = telAuthRepository.existsByTelNumberAndTelAuthNumber(telNumber, telAuthNumber);
+			if (!isMatched) return ResponseDto.telAuthFail();
+
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			return ResponseDto.databaseError();
+		}
+
+		return ResponseDto.success();
+	}
+
+	// * 비밀번호 재설정
+	@Override
+	public ResponseEntity<ResponseDto> passwordResetting(PasswordResettingRequestDto dto) {
+
+		try {
+
+			String userId = dto.getUserId();
+			String telNumber = dto.getTelNumber();
+			String telAuthNumber = dto.getTelAuthNumber();
+			String password = dto.getPassword();
+
+			boolean isAuth = telAuthRepository.existsByTelNumberAndTelAuthNumber(telNumber, telAuthNumber);
+			if (!isAuth) return ResponseDto.telAuthFail();
+
+			UserEntity userEntity = userRepository.findByUserId(userId);
+			if (userEntity == null) return ResponseDto.noExistUserId();
+
+			// 기존 패스워드와 새 패스워드 비교
+			String prePassword = userEntity.getPassword();
+			boolean isEquals = passwordEncoder.matches(password, prePassword);
+			if (isEquals) return ResponseDto.validationFail();
+
 			String encodedPassword = passwordEncoder.encode(password);
 			userEntity.setPassword(encodedPassword);
 
@@ -334,57 +369,7 @@ public class AuthServiceImplement implements AuthService {
 		}
 
 		return ResponseDto.success();
-	}
 
-	// * 회원정보 수정 시 비밀번호 확인
-	@Override
-	public ResponseEntity<ResponseDto> userUpdatePasswordCheck(UserUpdatePasswordCheckRequestDto dto) {
-		String password = dto.getPassword();
-
-		UserEntity userEntity = null;
-
-		try {
-			String encodedPassword = userEntity.getPassword();
-			boolean isMatched = passwordEncoder.matches(password, encodedPassword);
-			if (!isMatched)
-				return ResponseDto.noPermission();
-
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			return ResponseDto.databaseError();
-		}
-
-		return ResponseDto.success();
-	}
-
-	// * 회원 개인 정보 보기
-	@Override
-	public ResponseEntity<? super GetUserInfoResponseDto> getUserInfo(String userId) {
-		UserEntity userEntity = null;
-
-		try {
-			userEntity = userRepository.findByUserId(userId);
-			if (userEntity == null)
-				return ResponseDto.noExistInfo();
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			return ResponseDto.databaseError();
-		}
-
-		return GetUserInfoResponseDto.success(userEntity);
-	}
-
-	// * 회원 개인 정보 수정
-	@Override
-	public ResponseEntity<ResponseDto> patchUserInfo(PatchUserInfoRequestDto dto, String userId) {
-		try {
-
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			ResponseDto.databaseError();
-		}
-
-		return ResponseDto.success();
 	}
 
 	@Override

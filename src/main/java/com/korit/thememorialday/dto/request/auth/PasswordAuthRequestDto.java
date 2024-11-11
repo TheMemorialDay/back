@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-//# 비밀번호 인증 확인 요청 dto
+//# 비밀번호 재설정 전 전화번호 + 인증 확인 요청 dto
 
 @Getter
 @Setter

@@ -1,4 +1,4 @@
-package com.korit.thememorialday.dto.response.auth;
+package com.korit.thememorialday.dto.response.mypage_user_info;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,6 @@ import lombok.Getter;
 
 @Getter
 public class GetUserInfoResponseDto extends ResponseDto {
-	private String password;
 	private String name;
 	private String birth;
 	private String gender;
@@ -23,14 +22,13 @@ public class GetUserInfoResponseDto extends ResponseDto {
 
 	private GetUserInfoResponseDto(UserEntity userEntity) {
 		super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-		this.password = userEntity.getPassword();
 		this.name = userEntity.getName();
 		this.birth = userEntity.getBirth();
 		this.gender = userEntity.getGender();
 		this.telNumber = userEntity.getTelNumber();
 	}
 
-	public static ResponseEntity<GetUserInfoResponseDto> success(UserEntity userEntity) {
+	public static ResponseEntity<? super GetUserInfoResponseDto> success(UserEntity userEntity) {
 		GetUserInfoResponseDto responseBody = new GetUserInfoResponseDto(userEntity);
 		return ResponseEntity.status(HttpStatus.OK).body(responseBody);
 	}

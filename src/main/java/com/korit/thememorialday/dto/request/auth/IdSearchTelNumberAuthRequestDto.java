@@ -6,13 +6,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-//# 회원정보 수정 작업할 때 비밀번호 확인 요청 dto
+//# 아이디 찾기의 인증번호 확인 dto (전화번호 + 인증번호)
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserUpdatePasswordCheckRequestDto {
+public class IdSearchTelNumberAuthRequestDto {
 	@NotBlank
-	@Pattern(regexp="^(?=.*[a-zA-Z])(?=.*[0-9]).{8,13}$")
-	private String password;
+	@Pattern(regexp="^[0-9]{11}$")
+	private String telNumber;
+	@NotBlank
+	private String telAuthNumber;
 }

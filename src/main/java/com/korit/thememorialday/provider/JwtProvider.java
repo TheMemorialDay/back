@@ -4,12 +4,12 @@ import java.util.Date;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
+import java.security.Key;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.nimbusds.jose.util.StandardCharset;
-
-import java.security.Key;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
