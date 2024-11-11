@@ -6,6 +6,7 @@ import com.korit.thememorialday.dto.request.like.PostLikeStoreRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.like.GetLikeStoreListResponseDto;
 import com.korit.thememorialday.dto.response.like.GetLikedStoreResponseDto;
+import com.korit.thememorialday.dto.response.like.GetLikedStoreReviewRatingResponseDto;
 import com.korit.thememorialday.dto.response.like.GetUserLikeListResponseDto;
 
 public interface LikeService {
@@ -19,5 +20,7 @@ public interface LikeService {
   ResponseEntity<? super GetUserLikeListResponseDto> getUserLikeList(String userId);
 
   public ResponseEntity<? super GetLikedStoreResponseDto> getStoreLike(Integer storeNumber);
+
+  ResponseEntity<? super GetLikedStoreReviewRatingResponseDto> getUserLikedStoreInfo(String userId);
 
 }
