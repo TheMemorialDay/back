@@ -12,10 +12,10 @@ import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
 
 import com.korit.thememorialday.dto.response.ResponseDto;
-import com.korit.thememorialday.entity.LikeEntity;
 import com.korit.thememorialday.entity.ProductEntity;
 import com.korit.thememorialday.entity.ReviewEntity;
 import com.korit.thememorialday.entity.StoreEntity;
+import com.korit.thememorialday.entity.LikeEntity;
 import com.korit.thememorialday.entity.ThemaEntity;
 import com.korit.thememorialday.repository.LikeRepository;
 import com.korit.thememorialday.repository.ProductRepository;
@@ -23,6 +23,7 @@ import com.korit.thememorialday.repository.ReviewRepository;
 import com.korit.thememorialday.repository.StoreRepository;
 import com.korit.thememorialday.repository.ThemaRepostiroy;
 import com.korit.thememorialday.service.StoreService;
+import com.korit.thememorialday.dto.response.store.GetStoreListMainSearchResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreDetailListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreNumberResponseDto;
@@ -133,7 +134,7 @@ public class StoreServiceImplement implements StoreService {
 
   @Override
   public ResponseEntity<? super GetStoreOrderListResponseDto> getStoreOrderList(Integer storeNumber) {
-    // storeNumber로 ProductEntity 목록 조회
+    // storeNumber로 ProductEntity 목록 조회 ** 물어보기
     List<ProductEntity> productEntities = productRepository.findByStoreNumber(storeNumber);
 
     // 응답 DTO 생성
@@ -182,6 +183,27 @@ public class StoreServiceImplement implements StoreService {
     return GetStoreNumberResponseDto.success(storeEntity);
   }
 
+  //* store main search - storeName & productName 으로 검색
+  @Override
+  public ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainSearch(
+    String storeName, String productName) {
+
+    List<StoreEntity> storeEntities = new ArrayList<>();
+
+    try {
+
+      storeEntities = storeRepository.getStoreByMainSearch(storeName, productName);
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetStoreListMainSearchResponseDto.success(storeEntities);
+
+  }
+
+  
   @Override
   public ResponseEntity<? super GetStoreDetailListResponseDto> getStoreDetailList() {
 

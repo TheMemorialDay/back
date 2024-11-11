@@ -32,7 +32,6 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,14 +100,6 @@ public class ProductServiceImpl implements ProductService {
         return ResponseDto.success();
 
     }
-
-    // @Override
-    // public ResponseEntity<GetProductListResponseDto> getProductsByStoreNumber(Integer storeNumber) {
-    // // 현재 로그인한 유저의 ID를 가져온다고 가정
-    // String userId = ...; // 현재 로그인한 유저의 ID를 가져오는 방법
-    // List<ProductEntity> products = productRepository.findByUserId(userId);
-    // return GetProductListResponseDto.success(products);
-    // }
     
     @Override
     public ResponseEntity<? super GetProductListResponseDto> getProductList(String userId) {
@@ -386,18 +377,3 @@ public class ProductServiceImpl implements ProductService {
     }
 }
 
-
-    // @Override
-    // public ResponseEntity<GetProductListResponseDto> getProductsByStoreNumber(Integer storeNumber) {
-    //     List<ProductEntity> products = productRepository.findByStoreNumber(storeNumber);
-    //     return GetProductListResponseDto.success(products);
-    // }
-
-    // @Override
-    // public ResponseEntity<GetProductResponseDto> getProductByNumber(Integer productNumber) {
-    //     ProductEntity product = productRepository.findByProductNumber(productNumber);
-    //     if (product == null) {
-    //         return ResponseEntity.notFound().build(); // 상품이 없는 경우 404 반환
-    //     }
-    //     return GetProductResponseDto.success(product);
-    // }

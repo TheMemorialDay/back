@@ -4,8 +4,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.korit.thememorialday.dto.response.store.GetStoreListMainSearchResponseDto;
 import com.korit.thememorialday.dto.response.store.GetProductDetailResponseDto;
 import com.korit.thememorialday.dto.response.store.GetProductPreviewListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreDetailListResponseDto;
@@ -79,6 +81,18 @@ public class StoreMainController {
         .getProductPreviewList(storeNumber);
     return response;
   }
+
+  //* store main search - 가게명 & 상품명 검색 후 가게 리스트 가져오기
+  @GetMapping(value = "/search-main")
+  public ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainSearch(
+    @RequestParam(name="storeName", defaultValue="") String storeName,
+    @RequestParam(name="productName", defaultValue="") String productName
+  ) {
+
+    ResponseEntity<? super GetStoreListMainSearchResponseDto> response = storeService.getStoreMainSearch(storeName, productName);
+    return response;
+
+  };
 
   @GetMapping(value = "/{storeNumber}/order/{productNumber}")
   public ResponseEntity<? super GetProductDetailResponseDto> getOrderProductDetail(

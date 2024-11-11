@@ -17,18 +17,22 @@ public class FullOrder {
     private String orderCode;
     private String orderStatus;
     private String orderTime;
+    private Integer storeNumber;
     private String storeName;
     private String productName;
     private String productContents;
     private String pickupTime;
     private Integer totalPrice;
     private String productImageUrl;
+    private String cancelCode;
+    private String cancelReason;
     private List<OrderSelectOption> options;
 
     public FullOrder(OrderEntity order, List<OrderSelectOption> options, String storeName, String productName,
             String productImageUrl) {
         this.orderCode = order.getOrderCode();
         this.orderStatus = order.getOrderStatus();
+        this.storeNumber = order.getStoreNumber();
         this.orderTime = order.getOrderTime().toString();
         this.storeName = storeName;
         this.productName = productName;
@@ -37,5 +41,7 @@ public class FullOrder {
         this.totalPrice = order.getTotalPrice();
         this.options = options;
         this.productImageUrl = productImageUrl;
+        this.cancelCode = order.getCancelCode();
+        this.cancelReason = order.getCancelReason();
     }
 }

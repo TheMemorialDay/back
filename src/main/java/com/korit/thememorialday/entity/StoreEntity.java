@@ -41,6 +41,7 @@ public class StoreEntity {
   private Integer reviewCount;
   private Integer likeCount;
   private String storeImageUrl;
+  //
   private String mondayOpen;
   private String mondayLast;
   private String tuesdayOpen;
@@ -55,6 +56,36 @@ public class StoreEntity {
   private String saturdayLast;
   private String sundayOpen;
   private String sundayLast;
+
+  //* FOR 픽업가능요일 필터
+  public boolean isMondayOpen() {
+    // 해당 요일 오픈이 null이 아니면서 비어있지 않은 것
+    return mondayOpen != null && !mondayOpen.isEmpty();
+  }
+
+  public boolean isTuesDayOpen() {
+    return tuesdayOpen != null && !tuesdayOpen.isEmpty();
+  }
+
+  public boolean isWednsDayOpen() {
+    return wednesdayOpen != null && !wednesdayOpen.isEmpty();
+  }
+
+  public boolean isThursDayOpen() {
+    return thursdayOpen != null && !thursdayOpen.isEmpty();
+  }
+
+  public boolean isFriDayOpen() {
+    return fridayOpen != null && !fridayOpen.isEmpty();
+  }
+
+  public boolean isSaturDayOpen() {
+    return saturdayOpen != null && !saturdayOpen.isEmpty();
+  }
+
+  public boolean isSunDayOpen() {
+    return sundayOpen != null && !sundayOpen.isEmpty();
+  }
 
   public StoreEntity(PostStoreRegisterRequestDto dto) { // 생성용도
     this.userId = dto.getUserId();
