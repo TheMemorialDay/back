@@ -30,8 +30,8 @@ public interface StoreService {
 
   ResponseEntity<? super GetStoreNumberResponseDto> getStoreNumber(String userId);
 
-  //* stores main search - storeName & productName 으로 검색
-  ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainSearch(String storeName, String productName);
-  
+  // * stores main search - storeName & productName 으로 검색
+  ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainSearch(String searchKeyword);
+
   ResponseEntity<? super GetStoreDetailListResponseDto> getStoreDetailList();
 }
