@@ -10,7 +10,6 @@ import com.korit.thememorialday.common.object.sales.SalesData;
 import com.korit.thememorialday.dto.response.ResponseCode;
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.ResponseMessage;
-import com.korit.thememorialday.dto.response.order.GetOrderListResponseDto;
 
 import lombok.Getter;
 
@@ -28,8 +27,4 @@ public class GetSalesResponseDto extends ResponseDto {
         GetSalesResponseDto responseBody = new GetSalesResponseDto(fullOrders);
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
-
-        // public static ResponseEntity<GetOrderListResponseDto> success(List<FullOrder> orders) {
-        // GetOrderListResponseDto responseBody = new GetOrderListResponseDto(orders);
-        // return ResponseEntity.status(HttpStatus.OK).body(responseBody);
 }
