@@ -40,33 +40,32 @@ public class WebSecurityConfig {
 	@Bean
 	protected SecurityFilterChain configure(HttpSecurity security) throws Exception {
 		security
-			.httpBasic(HttpBasicConfigurer::disable)
-			.sessionManagement(sessionManagement -> sessionManagement
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			.csrf(CsrfConfigurer::disable)
-			// configurationSource 메서드 만든 후 적용
-			.cors(cors -> cors.configurationSource(configurationSource()))
-			.authorizeHttpRequests(request -> request
-				.requestMatchers("/api/v1/auth/**", "/support/notice/**", "/stores/**", "/file/*", "/").permitAll()
-				.anyRequest().authenticated()
-			)
-			.exceptionHandling(exception -> exception
-				// AuthenticationFailEntryPoint 만든 후 적용
-				.authenticationEntryPoint(new AuthenticationFailEntryPoint())
-			)
+				.httpBasic(HttpBasicConfigurer::disable)
+				.sessionManagement(sessionManagement -> sessionManagement
+						.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.csrf(CsrfConfigurer::disable)
+				// configurationSource 메서드 만든 후 적용
+				.cors(cors -> cors.configurationSource(configurationSource()))
+				.authorizeHttpRequests(request -> request
+						.requestMatchers("/api/v1/auth/**", "/oauth2/callback/*", "/support/notice/**", "/stores/**", "/file/*",
+								"/")
+						.permitAll()
+						.anyRequest().authenticated())
+				.exceptionHandling(exception -> exception
+						// AuthenticationFailEntryPoint 만든 후 적용
+						.authenticationEntryPoint(new AuthenticationFailEntryPoint()))
 
-			//* OAuth2 로그인 적용
-			.oauth2Login(oauth2 -> oauth2
-				.redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
-				.authorizationEndpoint(endpoint -> endpoint.baseUri("/api/v1/auth/sns-sign-in"))
-				// OAuth 서비스 만든 후 적용
-				.userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserServiceImplement))
-				.successHandler(oAuth2SuccessHandler)
-			)
+				// * OAuth2 로그인 적용
+				.oauth2Login(oauth2 -> oauth2
+						.redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
+						.authorizationEndpoint(endpoint -> endpoint.baseUri("/api/v1/auth/sns-sign-in"))
+						// OAuth 서비스 만든 후 적용
+						.userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserServiceImplement))
+						.successHandler(oAuth2SuccessHandler))
 
-			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-			return security.build();
+		return security.build();
 	}
 
 	// CORS 설정
@@ -88,14 +87,14 @@ public class WebSecurityConfig {
 		@Override
 		public void commence(HttpServletRequest request, HttpServletResponse response,
 				AuthenticationException authException) throws IOException, ServletException {
-			
+
 			authException.printStackTrace();
 			response.setContentType("application/json");
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			response.getWriter()
-					.write("{\"code\": \"" + ResponseCode.AUTHENTICATION_FAIL + "\", \"message\": \"" + ResponseMessage.AUTHENTICATION_FAIL + "\"}");
+					.write("{\"code\": \"" + ResponseCode.AUTHENTICATION_FAIL + "\", \"message\": \""
+							+ ResponseMessage.AUTHENTICATION_FAIL + "\"}");
 		}
-		
-	}	
-}
 
+	}
+}
