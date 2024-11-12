@@ -395,4 +395,24 @@ public class AuthServiceImplement implements AuthService {
 		return GetSignInResponseDto.success(userEntity, storeNumber);
 	}
 
+	//* 회원 탈퇴 */
+	@Override
+	public ResponseEntity<ResponseDto> deleteUser(String userId) {
+
+		try {
+
+			UserEntity userEntity = userRepository.findByUserId(userId);
+			if (userEntity == null) return ResponseDto.noExistUserId();
+
+			userRepository.delete(userEntity);
+
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			return ResponseDto.databaseError();
+		};
+
+		return ResponseDto.success();
+
+	}
+
 }

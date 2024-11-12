@@ -56,4 +56,7 @@ public interface AuthService {
 	// 비밀번호 재설정
 	ResponseEntity<ResponseDto> passwordResetting(PasswordResettingRequestDto dto);
 
+	//* 회원 탈퇴 */
+	ResponseEntity<ResponseDto> deleteUser(String userId);
+
 }
