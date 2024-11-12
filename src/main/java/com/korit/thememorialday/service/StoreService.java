@@ -1,7 +1,5 @@
 package com.korit.thememorialday.service;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 
 import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
@@ -12,6 +10,7 @@ import com.korit.thememorialday.dto.response.store.GetStoreListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreNumberResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreOrderListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreResponseDto;
+import com.korit.thememorialday.dto.response.store.GetPopularKeywordResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreDetailListResponseDto;
 
 public interface StoreService {
@@ -34,4 +33,9 @@ public interface StoreService {
   ResponseEntity<? super GetStoreListMainSearchResponseDto> getStoreMainSearch(String searchKeyword);
 
   ResponseEntity<? super GetStoreDetailListResponseDto> getStoreDetailList();
+
+  //* 인기 검색어 저장 */
+  ResponseEntity<ResponseDto> postKeyword(String keyword);
+  //* 인기 검색어 인기순 조회 */
+  ResponseEntity<? super GetPopularKeywordResponseDto> getKeyword();
 }

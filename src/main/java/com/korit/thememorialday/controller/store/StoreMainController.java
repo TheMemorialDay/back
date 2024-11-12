@@ -3,11 +3,14 @@ package com.korit.thememorialday.controller.store;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.korit.thememorialday.dto.response.store.GetStoreListMainSearchResponseDto;
+import com.korit.thememorialday.dto.response.ResponseDto;
+import com.korit.thememorialday.dto.response.store.GetPopularKeywordResponseDto;
 import com.korit.thememorialday.dto.response.store.GetProductDetailResponseDto;
 import com.korit.thememorialday.dto.response.store.GetProductPreviewListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreDetailListResponseDto;
@@ -98,4 +101,20 @@ public class StoreMainController {
         storeNumber);
     return response;
   }
+
+  //* 인기키워드 저장 */
+  @PostMapping("/keyword")
+  public ResponseEntity<ResponseDto> postKeyword(
+    @RequestParam("keyword") String keyword
+  ) {
+    ResponseEntity<ResponseDto> response = storeService.postKeyword(keyword);
+    return response;
+  };
+
+  //* 인기키워드 조회 */
+  @GetMapping("/hot-keyword")
+  public ResponseEntity<? super GetPopularKeywordResponseDto> getKeyword() {
+    ResponseEntity<? super GetPopularKeywordResponseDto> response = storeService.getKeyword();
+    return response;
+  };
 }
