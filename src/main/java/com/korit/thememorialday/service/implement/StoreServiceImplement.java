@@ -155,7 +155,7 @@ public class StoreServiceImplement implements StoreService {
 
     try {
       storeEntity = storeRepository.findByUserId(userId);
-      if (userId == null)
+      if (storeEntity == null)
         return ResponseDto.noExistStore();
 
       List<ReviewEntity> reviewEntities = reviewRepository.findByStoreName(storeEntity.getStoreName());
