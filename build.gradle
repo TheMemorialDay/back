@@ -32,6 +32,9 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
 	implementation 'net.nurigo:sdk:4.3.0'
 
+	// Firebase SDK 의존성 추가 
+	implementation 'com.google.firebase:firebase-admin:9.1.1'
+
 	implementation 'com.querydsl:querydsl-jpa'
 
 	compileOnly 'org.projectlombok:lombok'

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.korit.thememorialday.dto.response.like.GetLikedStoreResponseDto;
+import com.korit.thememorialday.dto.response.like.GetLikedStoreReviewRatingResponseDto;
 import com.korit.thememorialday.dto.response.like.GetUserLikeListResponseDto;
 import com.korit.thememorialday.service.LikeService;
 
@@ -42,4 +43,11 @@ public class MyPageLikeController {
     return response;
   }
 
+  @GetMapping(value = "/{userId}/info")
+  public ResponseEntity<? super GetLikedStoreReviewRatingResponseDto> getUserLikedStoreInfo(
+    @PathVariable("userId") String userId  
+  ) {
+    ResponseEntity<? super GetLikedStoreReviewRatingResponseDto> response = likeService.getUserLikedStoreInfo(userId);
+    return response;
+  }
 }

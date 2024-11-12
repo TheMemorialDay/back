@@ -6,13 +6,19 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.korit.thememorialday.common.object.LikeStoreReviewNRating;
 import com.korit.thememorialday.dto.request.like.PostLikeStoreRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.like.GetLikeStoreListResponseDto;
 import com.korit.thememorialday.dto.response.like.GetLikedStoreResponseDto;
+import com.korit.thememorialday.dto.response.like.GetLikedStoreReviewRatingResponseDto;
 import com.korit.thememorialday.dto.response.like.GetUserLikeListResponseDto;
 import com.korit.thememorialday.entity.LikeEntity;
+import com.korit.thememorialday.entity.ReviewEntity;
+import com.korit.thememorialday.entity.StoreEntity;
 import com.korit.thememorialday.repository.LikeRepository;
+import com.korit.thememorialday.repository.ReviewRepository;
+import com.korit.thememorialday.repository.StoreRepository;
 import com.korit.thememorialday.repository.resultSet.GetLikeUserResultSet;
 import com.korit.thememorialday.service.LikeService;
 
@@ -23,6 +29,8 @@ import lombok.RequiredArgsConstructor;
 public class LikeServiceImplement implements LikeService {
 
   private final LikeRepository likeRepository;
+  private final StoreRepository storeRepository;
+  private final ReviewRepository reviewRepository;
 
   @Override
   public ResponseEntity<ResponseDto> postLike(PostLikeStoreRequestDto dto) {
@@ -70,6 +78,24 @@ public class LikeServiceImplement implements LikeService {
         return ResponseDto.noExistStore();
       }
 
+      // List<LikeEntity> likeEntities = likeRepository.findByUserId(userId);
+      // for(LikeEntity likeEntity: likeEntities) {
+      //   Integer storeNumber = likeEntity.getStoreNumber();
+      //   StoreEntity storeEntity = storeRepository.findByStoreNumber(storeNumber);
+        
+      //   String storeName = storeEntity.getStoreName();
+      //   List<ReviewEntity> reviewEntities = reviewRepository.findByStoreName(storeName);
+      //   Integer reviewCount = reviewEntities.size();
+  
+
+      //   Integer sum = 0;
+      //   Double reviewRating = 0.0;
+      //   if(reviewEntities.size() != 0) {
+      //     for(ReviewEntity reviewEntity: reviewEntities) sum = sum + reviewEntity.getReviewRating();
+      //     reviewRating =  (sum / (double)reviewEntities.size());
+      //   }
+      // }
+
     } catch (Exception exception) {
       exception.printStackTrace();
       return ResponseDto.databaseError();
@@ -110,6 +136,38 @@ public class LikeServiceImplement implements LikeService {
 
     return GetLikedStoreResponseDto.success(likeEntities);
 
+  }
+
+  @Override
+  public ResponseEntity<? super GetLikedStoreReviewRatingResponseDto> getUserLikedStoreInfo(String userId) {
+    
+    List<LikeStoreReviewNRating> list = new ArrayList<>();
+
+    try {
+      List<LikeEntity> likeEntities = likeRepository.findByUserId(userId);
+      for(LikeEntity likeEntity: likeEntities) {
+        Integer storeNumber = likeEntity.getStoreNumber();
+        StoreEntity storeEntity = storeRepository.findByStoreNumber(storeNumber);
+        
+        String storeName = storeEntity.getStoreName();
+        List<ReviewEntity> reviewEntities = reviewRepository.findByStoreName(storeName);
+        Integer reviewCount = reviewEntities.size();
+
+        Integer sum = 0;
+        Double reviewRating = 0.0;
+        if(reviewEntities.size() != 0) {
+          for(ReviewEntity reviewEntity: reviewEntities) sum = sum + reviewEntity.getReviewRating();
+          reviewRating =  (sum / (double)reviewEntities.size());
+        }
+
+        LikeStoreReviewNRating one = new LikeStoreReviewNRating(storeNumber, reviewRating, reviewCount);
+        list.add(one);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+    return GetLikedStoreReviewRatingResponseDto.success(list);
   }
 
 }

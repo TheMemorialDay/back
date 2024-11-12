@@ -41,7 +41,6 @@ public class StoreEntity {
   private Integer reviewCount;
   private Integer likeCount;
   private String storeImageUrl;
-  //
   private String mondayOpen;
   private String mondayLast;
   private String tuesdayOpen;
