@@ -1,18 +1,24 @@
 package com.korit.thememorialday.service.implement.order;
 
 import com.korit.thememorialday.common.object.order.FullOrder;
+import com.korit.thememorialday.common.object.order.OrderManage;
 import com.korit.thememorialday.common.object.order.OrderSelectOption;
 import com.korit.thememorialday.common.object.sales.SalesData;
 import com.korit.thememorialday.dto.request.order.PatchOrderStatusDto;
 import com.korit.thememorialday.dto.request.order.PostOrderRequestDto;
+import com.korit.thememorialday.dto.request.order.PostSendPaymentMsgRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.order.GetOrderListResponseDto;
+import com.korit.thememorialday.dto.response.order.GetOrderManageListResponseDto;
 import com.korit.thememorialday.dto.response.sales.GetSalesResponseDto;
 import com.korit.thememorialday.entity.ProductEntity;
+import com.korit.thememorialday.entity.UserEntity;
 import com.korit.thememorialday.entity.order.OrderEntity;
 import com.korit.thememorialday.entity.order.OrderSelectOptionEntity;
+import com.korit.thememorialday.provider.SmsProvider;
 import com.korit.thememorialday.repository.ProductRepository;
 import com.korit.thememorialday.repository.StoreRepository;
+import com.korit.thememorialday.repository.UserRepository;
 import com.korit.thememorialday.repository.order.OrderRepository;
 import com.korit.thememorialday.repository.order.OrderSelectOptionRepository;
 import com.korit.thememorialday.service.order.OrderService;
@@ -38,6 +44,8 @@ public class OrderServiceImplement implements OrderService {
     private final OrderSelectOptionRepository orderSelectOptionRepository;
     private final StoreRepository storeRepository;
     private final ProductRepository productRepository;
+    private final UserRepository userRepository;
+    private final SmsProvider smsProvider;
 
     @Override
     public ResponseEntity<ResponseDto> postOrder(PostOrderRequestDto dto, String userId, Integer storeNumber,
@@ -191,5 +199,60 @@ public class OrderServiceImplement implements OrderService {
         }
 
         return GetOrderListResponseDto.success(fullOrders);
+    }
+
+    @Override
+    public ResponseEntity<? super GetOrderManageListResponseDto> getOrderManageListUser(Integer storeNumber) {
+        List<OrderManage> orderManages = new ArrayList<>();
+        try {
+            List<OrderEntity> orders = orderRepository.findByStoreNumberOrderByOrderTimeDesc(storeNumber);
+            
+            for (OrderEntity order : orders) {
+                String storeName = storeRepository.findStoreNameByStoreNumber(order.getStoreNumber());
+                String productName = productRepository.findProductNameByProductNumber(order.getProductNumber());
+                String productImageUrl = productRepository.findFirstImageUrlByProductNumber(order.getProductNumber());
+                
+                UserEntity userEntity = userRepository.findByUserId(order.getUserId());
+                String telNumber = userEntity.getTelNumber();
+                String name = userEntity.getName();
+
+                // 옵션 정보 조회
+                List<OrderSelectOptionEntity> optionEntities = orderSelectOptionRepository
+                        .findByOrderCode(order.getOrderCode());
+                List<OrderSelectOption> options = optionEntities.stream()
+                        .map(optionEntity -> {
+                            String productCategory = productRepository
+                                    .findProductCategoryByOptionCategoryNumber(optionEntity.getOptionCategoryNumber());
+                            return new OrderSelectOption(optionEntity, productCategory); // productCategory 추가
+                        })
+    
+                        .collect(Collectors.toList());
+    
+                // FullOrder 객체 생성 후 리스트에 추가
+                orderManages.add(new OrderManage(order, options, storeName, productName, 
+                productImageUrl, telNumber, name));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetOrderManageListResponseDto.success(orderManages);
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> postSendPaymentMsg(PostSendPaymentMsgRequestDto dto) {
+        String telNumber = dto.getTelNumber();
+        try {
+            boolean isExistedTelNumber = userRepository.existsByTelNumber(telNumber);
+			if (!isExistedTelNumber) return ResponseDto.noExistUserId();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        boolean isSendSuccess = smsProvider.sendPaymentMsg(dto.getName(), dto.getStoreName(), telNumber, dto.getTotalPrice(), dto.getProductName());
+        if(!isSendSuccess) return ResponseDto.messageSendFail();
+
+        return ResponseDto.success();
     }
 }
