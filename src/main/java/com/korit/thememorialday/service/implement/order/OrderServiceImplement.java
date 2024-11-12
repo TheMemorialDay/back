@@ -60,10 +60,10 @@ public class OrderServiceImplement implements OrderService {
             List<OrderSelectOptionEntity> optionEntities = new ArrayList<>();
             for (OrderSelectOption orderSelectOption : orderSelectOptions) {
 
-                // Integer optionNumber = orderSelectOption.getOptionNumber();
+                Integer optionNumber = orderSelectOption.getOptionNumber();
                 Integer optionCategoryNumber = orderSelectOption.getOptionCategoryNumber();
 
-                OrderSelectOptionEntity optionEntity = new OrderSelectOptionEntity(orderCode, optionCategoryNumber); 
+                OrderSelectOptionEntity optionEntity = new OrderSelectOptionEntity(orderCode, optionNumber, optionCategoryNumber); 
                 optionEntities.add(optionEntity);
             }
             orderSelectOptionRepository.saveAll(optionEntities);
@@ -115,6 +115,7 @@ public class OrderServiceImplement implements OrderService {
         }
 
         List<String> orderCodes = orders.stream().map(OrderEntity::getOrderCode).collect(Collectors.toList());
+
         List<OrderSelectOptionEntity> optionEntities = orderSelectOptionRepository.findByOrderCodeIn(orderCodes);
 
         Map<Integer, String> productCategoryMap = optionEntities.stream()
@@ -130,6 +131,7 @@ public class OrderServiceImplement implements OrderService {
                 Collectors.mapping(
                     option -> new OrderSelectOption(
                         option.getOptionCategoryNumber(),
+                        option.getOptionNumber(),
                         productCategoryMap.get(option.getOptionCategoryNumber())),
                     Collectors.toList())));
 

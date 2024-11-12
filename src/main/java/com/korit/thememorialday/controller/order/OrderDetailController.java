@@ -70,12 +70,13 @@ public class OrderDetailController {
 
     @GetMapping("/mypage/sales")
     public ResponseEntity<GetSalesResponseDto> getSales(@RequestParam String userId) {
+
         ResponseEntity<? super GetStoreNumberResponseDto> storeNumberResponse = storeService.getStoreNumber(userId);
 
         // storeNumber가 없으면 404 반환
-        if (storeNumberResponse.getStatusCode() != HttpStatus.OK || storeNumberResponse.getBody() == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+        // if (storeNumberResponse.getStatusCode() != HttpStatus.OK || storeNumberResponse.getBody() == null) {
+        //     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        // }
 
         // storeNumber 추출
         GetStoreNumberResponseDto storeNumberDto = (GetStoreNumberResponseDto) storeNumberResponse.getBody();

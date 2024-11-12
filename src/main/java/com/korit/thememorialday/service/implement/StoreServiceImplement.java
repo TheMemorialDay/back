@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.korit.thememorialday.common.object.Store;
 import com.korit.thememorialday.common.object.StoreDetail;
+import com.korit.thememorialday.common.object.stores_main_search.StoresMainSearch;
 import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
 
@@ -154,7 +155,7 @@ public class StoreServiceImplement implements StoreService {
 
     try {
       storeEntity = storeRepository.findByUserId(userId);
-      if (userId == null)
+      if (storeEntity == null)
         return ResponseDto.noExistStore();
 
       List<ReviewEntity> reviewEntities = reviewRepository.findByStoreName(storeEntity.getStoreName());
