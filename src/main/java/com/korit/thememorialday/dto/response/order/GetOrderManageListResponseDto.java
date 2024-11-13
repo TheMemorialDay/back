@@ -16,11 +16,11 @@ import lombok.ToString;
 @Getter
 @ToString
 public class GetOrderManageListResponseDto extends ResponseDto{
-    private List<OrderManage> orderManages;
+    private List<OrderManage> orders;
     
     private GetOrderManageListResponseDto(List<OrderManage> orderManages) {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-        this.orderManages = orderManages;
+        this.orders = orderManages;
     }
 
     public static ResponseEntity<GetOrderManageListResponseDto> success(List<OrderManage> orderManages) {
