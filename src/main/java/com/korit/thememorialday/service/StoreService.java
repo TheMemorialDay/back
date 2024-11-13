@@ -36,6 +36,6 @@ public interface StoreService {
 
   //* 인기 검색어 저장 */
   ResponseEntity<ResponseDto> postKeyword(String keyword);
-  //* 인기 검색어 인기순 조회 */
-  ResponseEntity<? super GetPopularKeywordResponseDto> getKeyword();
+  // //* 인기 검색어 인기순 조회 */
+  // ResponseEntity<? super GetPopularKeywordResponseDto> getKeyword();
 }

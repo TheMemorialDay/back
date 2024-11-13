@@ -111,10 +111,10 @@ public class StoreMainController {
     return response;
   };
 
-  //* 인기키워드 조회 */
-  @GetMapping("/hot-keyword")
-  public ResponseEntity<? super GetPopularKeywordResponseDto> getKeyword() {
-    ResponseEntity<? super GetPopularKeywordResponseDto> response = storeService.getKeyword();
-    return response;
-  };
+  // //* 인기키워드 조회 */
+  // @GetMapping("/hot-keyword")
+  // public ResponseEntity<? super GetPopularKeywordResponseDto> getKeyword() {
+  //   ResponseEntity<? super GetPopularKeywordResponseDto> response = storeService.getKeyword();
+  //   return response;
+  // };
 }

@@ -295,23 +295,23 @@ public class StoreServiceImplement implements StoreService {
     
   }
 
-  //* 인기 키워드 가져오기 */
-  @Override
-  public ResponseEntity<? super GetPopularKeywordResponseDto> getKeyword() {
+  // //* 인기 키워드 가져오기 */
+  // @Override
+  // public ResponseEntity<? super GetPopularKeywordResponseDto> getKeyword() {
 
-    List<GetKeywordResultSet> resultSets = new ArrayList<>();
+  //   List<GetKeywordResultSet> resultSets = new ArrayList<>();
 
-    try {
+  //   try {
 
-      resultSets = popularKeywordRepository.getKeyword();
+  //     resultSets = popularKeywordRepository.getKeyword();
 
-    } catch(Exception exception) {
-      exception.printStackTrace();
-      return ResponseDto.databaseError();
-    };
+  //   } catch(Exception exception) {
+  //     exception.printStackTrace();
+  //     return ResponseDto.databaseError();
+  //   };
 
-    return GetPopularKeywordResponseDto.success(resultSets);
+  //   return GetPopularKeywordResponseDto.success(resultSets);
     
-  }
+  // }
 
 }
