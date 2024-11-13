@@ -26,4 +26,6 @@ public class PostOrderRequestDto {
     private List<OrderSelectOption> options;
 
     private Integer totalPrice;
+
+    private String photoUrl;
 }

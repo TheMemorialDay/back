@@ -41,6 +41,7 @@ public class OrderEntity {
     private String cancelCode;
     private String cancelReason;
     private String optionSelect;
+    private String photoUrl;
 
     public OrderEntity(PostOrderRequestDto dto, String userId, Integer storeNumber, Integer productNumber) {
         this.orderCode = generateOrderCode();
@@ -54,6 +55,7 @@ public class OrderEntity {
         this.totalPrice = dto.getTotalPrice();
         this.orderTime = LocalDateTime.now();
         this.optionSelect = optionSelect;
+        this.photoUrl = dto.getPhotoUrl();
     }
 
     private String generateOrderCode() {
