@@ -255,4 +255,12 @@ public class OrderServiceImplement implements OrderService {
 
         return ResponseDto.success();
     }
+
+    private String gggg(OrderSelectOptionEntity option) {
+        System.out.println(option);
+        System.out.println(option.getOptionCategoryNumber());
+        String result = productRepository.findProductCategoryByOptionCategoryNumber(option.getOptionCategoryNumber());
+        System.out.println(result);
+        return result;
+    }
 }
