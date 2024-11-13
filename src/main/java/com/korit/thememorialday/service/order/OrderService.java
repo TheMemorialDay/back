@@ -14,7 +14,7 @@ public interface OrderService {
     ResponseEntity<ResponseDto> postOrder(PostOrderRequestDto dto, String userId, Integer storeNumber,
             Integer productNumber);
 
-    ResponseEntity<GetOrderListResponseDto> getOrderList(String userId);
+    ResponseEntity<GetOrderManageListResponseDto> getOrderList(String userId);
 
     ResponseEntity<GetSalesResponseDto> getSales(Integer storeNumber);
 

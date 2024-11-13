@@ -1,7 +1,5 @@
 package com.korit.thememorialday.controller.order;
 
-import org.springframework.http.HttpStatus;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,15 +50,9 @@ public class OrderDetailController {
     }
 
     @GetMapping("/mypage/order-detail/{userId}")
-    public ResponseEntity<GetOrderListResponseDto> getOrderDetail(@PathVariable("userId") String userId) {
+    public ResponseEntity<GetOrderManageListResponseDto> getOrderDetail(@PathVariable("userId") String userId) {
         return orderService.getOrderList(userId);
     }
-
-    // @GetMapping("/mypage/order-manage/{storeNumber}")
-    // public ResponseEntity<GetOrderListResponseDto> getOrderManageDetail(
-    //         @PathVariable("storeNumber") Integer storeNumber) {
-    //     return orderService.getOrderManageList(storeNumber);
-    // }
 
     @GetMapping("/mypage/order-manage/{storeNumber}")
     public ResponseEntity<? super GetOrderManageListResponseDto> getOrderManageDetail(

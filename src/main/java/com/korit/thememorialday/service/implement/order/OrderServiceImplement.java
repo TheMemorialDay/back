@@ -3,7 +3,6 @@ package com.korit.thememorialday.service.implement.order;
 import com.korit.thememorialday.common.object.order.FullOrder;
 import com.korit.thememorialday.common.object.order.OrderManage;
 import com.korit.thememorialday.common.object.order.OrderSelectOption;
-import com.korit.thememorialday.common.object.sales.SalesData;
 import com.korit.thememorialday.dto.request.order.PatchOrderStatusDto;
 import com.korit.thememorialday.dto.request.order.PostOrderRequestDto;
 import com.korit.thememorialday.dto.request.order.PostSendPaymentMsgRequestDto;
@@ -11,7 +10,6 @@ import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.order.GetOrderListResponseDto;
 import com.korit.thememorialday.dto.response.order.GetOrderManageListResponseDto;
 import com.korit.thememorialday.dto.response.sales.GetSalesResponseDto;
-import com.korit.thememorialday.entity.ProductEntity;
 import com.korit.thememorialday.entity.UserEntity;
 import com.korit.thememorialday.entity.order.OrderEntity;
 import com.korit.thememorialday.entity.order.OrderSelectOptionEntity;
@@ -28,8 +26,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -77,9 +73,9 @@ public class OrderServiceImplement implements OrderService {
 
     // 주문내역
     @Override
-    public ResponseEntity<GetOrderListResponseDto> getOrderList(String userId) {
+    public ResponseEntity<GetOrderManageListResponseDto> getOrderList(String userId) {
         List<OrderEntity> orders = orderRepository.findByUserIdOrderByOrderTimeDesc(userId);
-        List<FullOrder> fullOrders = new ArrayList<>();
+        List<OrderManage> fullOrders = new ArrayList<>();
 
         for (OrderEntity order : orders) {
             String storeName = storeRepository.findStoreNameByStoreNumber(order.getStoreNumber());
@@ -98,11 +94,15 @@ public class OrderServiceImplement implements OrderService {
 
                     .collect(Collectors.toList());
 
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            String name = userEntity.getName();
+            String telNumber = userEntity.getTelNumber();
+
             // FullOrder 객체 생성 후 리스트에 추가
-            fullOrders.add(new FullOrder(order, options, storeName, productName, productImageUrl));
+            fullOrders.add(new OrderManage(order, options, storeName, productName, productImageUrl, telNumber, name));
         }
 
-        return GetOrderListResponseDto.success(fullOrders);
+        return GetOrderManageListResponseDto.success(fullOrders);
     }
 
     @Override
@@ -254,5 +254,13 @@ public class OrderServiceImplement implements OrderService {
         if(!isSendSuccess) return ResponseDto.messageSendFail();
 
         return ResponseDto.success();
+    }
+
+    private String gggg(OrderSelectOptionEntity option) {
+        System.out.println(option);
+        System.out.println(option.getOptionCategoryNumber());
+        String result = productRepository.findProductCategoryByOptionCategoryNumber(option.getOptionCategoryNumber());
+        System.out.println(result);
+        return result;
     }
 }

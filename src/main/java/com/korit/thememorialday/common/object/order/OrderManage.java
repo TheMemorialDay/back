@@ -23,6 +23,7 @@ public class OrderManage {
     private List<OrderSelectOption> options;
     private String name;
     private String telNumber;
+    private String photoUrl;
 
     public OrderManage(OrderEntity order, List<OrderSelectOption> options, String storeName, String productName,
             String productImageUrl, String telNumber, String name) {
@@ -41,5 +42,6 @@ public class OrderManage {
         this.cancelCode = order.getCancelCode();
         this.cancelReason = order.getCancelReason();
         this.telNumber = telNumber;
+        this.photoUrl = order.getPhotoUrl();
     }
 }
