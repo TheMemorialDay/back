@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -155,6 +156,15 @@ public class AuthController {
 		@RequestBody @Valid PasswordResettingRequestDto requestBody
 	) {
 		ResponseEntity<ResponseDto> response = authService.passwordResetting(requestBody);
+		return response;
+	};
+
+	//* 회원 탈퇴 */
+	@DeleteMapping("/delete-user/me")
+	public ResponseEntity<ResponseDto> deleteUser(
+		@AuthenticationPrincipal String userId
+	) {
+		ResponseEntity<ResponseDto> response = authService.deleteUser(userId);
 		return response;
 	};
 	

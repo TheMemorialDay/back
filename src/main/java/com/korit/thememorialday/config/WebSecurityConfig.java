@@ -40,20 +40,20 @@ public class WebSecurityConfig {
 	@Bean
 	protected SecurityFilterChain configure(HttpSecurity security) throws Exception {
 		security
-				.httpBasic(HttpBasicConfigurer::disable)
-				.sessionManagement(sessionManagement -> sessionManagement
-						.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.csrf(CsrfConfigurer::disable)
-				// configurationSource 메서드 만든 후 적용
-				.cors(cors -> cors.configurationSource(configurationSource()))
-				.authorizeHttpRequests(request -> request
-						.requestMatchers("/api/v1/auth/**", "/oauth2/callback/*", "/support/notice/**", "/stores/**", "/file/*",
-								"/")
-						.permitAll()
-						.anyRequest().authenticated())
-				.exceptionHandling(exception -> exception
-						// AuthenticationFailEntryPoint 만든 후 적용
-						.authenticationEntryPoint(new AuthenticationFailEntryPoint()))
+			.httpBasic(HttpBasicConfigurer::disable)
+			.sessionManagement(sessionManagement -> sessionManagement
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.csrf(CsrfConfigurer::disable)
+			// configurationSource 메서드 만든 후 적용
+			.cors(cors -> cors.configurationSource(configurationSource()))
+			.authorizeHttpRequests(request -> request
+				.requestMatchers("/api/v1/auth/**", "/support/notice/**", "/stores/**", "/file/*", "/**").permitAll()
+				.anyRequest().authenticated()
+			)
+			.exceptionHandling(exception -> exception
+				// AuthenticationFailEntryPoint 만든 후 적용
+				.authenticationEntryPoint(new AuthenticationFailEntryPoint())
+			)
 
 				// * OAuth2 로그인 적용
 				.oauth2Login(oauth2 -> oauth2
