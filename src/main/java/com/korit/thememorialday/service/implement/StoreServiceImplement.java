@@ -12,16 +12,20 @@ import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
 
 import com.korit.thememorialday.dto.response.ResponseDto;
+import com.korit.thememorialday.dto.response.home.GetPopularKeywordResponseDto;
 import com.korit.thememorialday.entity.ProductEntity;
 import com.korit.thememorialday.entity.ReviewEntity;
 import com.korit.thememorialday.entity.StoreEntity;
 import com.korit.thememorialday.entity.LikeEntity;
+import com.korit.thememorialday.entity.PopularKeywordEntity;
 import com.korit.thememorialday.entity.ThemaEntity;
 import com.korit.thememorialday.repository.LikeRepository;
+import com.korit.thememorialday.repository.PopularKeywordRepository;
 import com.korit.thememorialday.repository.ProductRepository;
 import com.korit.thememorialday.repository.ReviewRepository;
 import com.korit.thememorialday.repository.StoreRepository;
 import com.korit.thememorialday.repository.ThemaRepostiroy;
+import com.korit.thememorialday.repository.resultSet.GetKeywordResultSet;
 import com.korit.thememorialday.service.StoreService;
 import com.korit.thememorialday.dto.response.store.GetStoreListMainSearchResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreDetailListResponseDto;
@@ -41,6 +45,7 @@ public class StoreServiceImplement implements StoreService {
   private final ProductRepository productRepository;
   private final ThemaRepostiroy themaRepostiory;
   private final ReviewRepository reviewRepository;
+  private final PopularKeywordRepository popularKeywordRepository;
 
   // 가게 등록
   @Override
@@ -269,5 +274,44 @@ public class StoreServiceImplement implements StoreService {
     }
     return GetStoreDetailListResponseDto.success(stores);
   }
+
+  //* 인기 키워드 저장 */
+  @Override
+  public ResponseEntity<ResponseDto> postKeyword(String keyword) {
+
+    try {
+
+      System.out.println("keyword : " + keyword);
+      PopularKeywordEntity newKeyword = new PopularKeywordEntity(keyword);
+
+      popularKeywordRepository.save(newKeyword);
+
+    } catch(Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    };
+
+    return ResponseDto.success();
+    
+  }
+
+  // //* 인기 키워드 가져오기 */
+  // @Override
+  // public ResponseEntity<? super GetPopularKeywordResponseDto> getKeyword() {
+
+  //   List<GetKeywordResultSet> resultSets = new ArrayList<>();
+
+  //   try {
+
+  //     resultSets = popularKeywordRepository.getKeyword();
+
+  //   } catch(Exception exception) {
+  //     exception.printStackTrace();
+  //     return ResponseDto.databaseError();
+  //   };
+
+  //   return GetPopularKeywordResponseDto.success(resultSets);
+    
+  // }
 
 }
