@@ -12,6 +12,7 @@ import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
 
 import com.korit.thememorialday.dto.response.ResponseDto;
+import com.korit.thememorialday.dto.response.home.GetPopularKeywordResponseDto;
 import com.korit.thememorialday.entity.ProductEntity;
 import com.korit.thememorialday.entity.ReviewEntity;
 import com.korit.thememorialday.entity.StoreEntity;
@@ -27,7 +28,6 @@ import com.korit.thememorialday.repository.ThemaRepostiroy;
 import com.korit.thememorialday.repository.resultSet.GetKeywordResultSet;
 import com.korit.thememorialday.service.StoreService;
 import com.korit.thememorialday.dto.response.store.GetStoreListMainSearchResponseDto;
-import com.korit.thememorialday.dto.response.store.GetPopularKeywordResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreDetailListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreNumberResponseDto;

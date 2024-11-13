@@ -14,7 +14,7 @@ import com.korit.thememorialday.repository.resultSet.GetKeywordResultSet;
 @Repository
 public interface PopularKeywordRepository extends JpaRepository<PopularKeywordEntity, Integer> {
 
-	// 핫한 키워드 조회
+	//* 핫한 키워드 조회
 	@Query(value = 
 		"SELECT keyword, count(*) AS cnt " +
 		"FROM popular_keyword " +

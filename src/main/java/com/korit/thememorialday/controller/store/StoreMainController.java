@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.korit.thememorialday.dto.response.store.GetStoreListMainSearchResponseDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
-import com.korit.thememorialday.dto.response.store.GetPopularKeywordResponseDto;
+import com.korit.thememorialday.dto.response.home.GetPopularKeywordResponseDto;
 import com.korit.thememorialday.dto.response.store.GetProductDetailResponseDto;
 import com.korit.thememorialday.dto.response.store.GetProductPreviewListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreDetailListResponseDto;
