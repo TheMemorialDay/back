@@ -1,7 +1,5 @@
 package com.korit.thememorialday.service;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 
 import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
