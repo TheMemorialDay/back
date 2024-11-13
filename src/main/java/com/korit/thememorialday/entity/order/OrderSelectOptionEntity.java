@@ -9,12 +9,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@ToString
 @Table(name = "order_select_option")
 public class OrderSelectOptionEntity {
     
@@ -26,9 +28,9 @@ public class OrderSelectOptionEntity {
     private Integer optionNumber;
     private Integer optionCategoryNumber;
 
-    public OrderSelectOptionEntity(String orderCode, Integer optionCategoryNumber) {            // optionNumber 안 받기로 해당 줄에서 지웠습니다
+    public OrderSelectOptionEntity(String orderCode, Integer optionNumber, Integer optionCategoryNumber) {            // optionNumber 안 받기로 해당 줄에서 지웠습니다
         this.orderCode = orderCode;
-        // this.optionNumber = optionNumber;            // optionNumber 안 받기로 해당 줄에서 지웠습니다
+        this.optionNumber = optionNumber;            // optionNumber 안 받기로 해당 줄에서 지웠습니다
         this.optionCategoryNumber = optionCategoryNumber;
     }
 }

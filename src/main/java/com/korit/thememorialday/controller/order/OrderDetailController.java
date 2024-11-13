@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.korit.thememorialday.dto.request.order.PatchOrderStatusDto;
 import com.korit.thememorialday.dto.request.order.PostOrderRequestDto;
+import com.korit.thememorialday.dto.request.order.PostSendPaymentMsgRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.order.GetOrderListResponseDto;
+import com.korit.thememorialday.dto.response.order.GetOrderManageListResponseDto;
 import com.korit.thememorialday.dto.response.sales.GetSalesResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreNumberResponseDto;
 import com.korit.thememorialday.service.order.OrderService;
@@ -54,20 +56,27 @@ public class OrderDetailController {
         return orderService.getOrderList(userId);
     }
 
+    // @GetMapping("/mypage/order-manage/{storeNumber}")
+    // public ResponseEntity<GetOrderListResponseDto> getOrderManageDetail(
+    //         @PathVariable("storeNumber") Integer storeNumber) {
+    //     return orderService.getOrderManageList(storeNumber);
+    // }
+
     @GetMapping("/mypage/order-manage/{storeNumber}")
-    public ResponseEntity<GetOrderListResponseDto> getOrderManageDetail(
+    public ResponseEntity<? super GetOrderManageListResponseDto> getOrderManageDetail(
             @PathVariable("storeNumber") Integer storeNumber) {
-        return orderService.getOrderManageList(storeNumber);
+        return orderService.getOrderManageListUser(storeNumber);
     }
 
     @GetMapping("/mypage/sales")
     public ResponseEntity<GetSalesResponseDto> getSales(@RequestParam String userId) {
+
         ResponseEntity<? super GetStoreNumberResponseDto> storeNumberResponse = storeService.getStoreNumber(userId);
 
         // storeNumber가 없으면 404 반환
-        if (storeNumberResponse.getStatusCode() != HttpStatus.OK || storeNumberResponse.getBody() == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+        // if (storeNumberResponse.getStatusCode() != HttpStatus.OK || storeNumberResponse.getBody() == null) {
+        //     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        // }
 
         // storeNumber 추출
         GetStoreNumberResponseDto storeNumberDto = (GetStoreNumberResponseDto) storeNumberResponse.getBody();
@@ -77,5 +86,12 @@ public class OrderDetailController {
         return orderService.getSales(storeNumber);
     }
 
-    
+    @PostMapping("/mypage/order-manage/send-pay-msg")
+    public ResponseEntity<ResponseDto> sendPayMsg(
+        @RequestBody @Valid PostSendPaymentMsgRequestDto requestBody,
+        @AuthenticationPrincipal String userId
+    ) {
+        ResponseEntity<ResponseDto> response = orderService.postSendPaymentMsg(requestBody);
+        return response;
+    }
 }
