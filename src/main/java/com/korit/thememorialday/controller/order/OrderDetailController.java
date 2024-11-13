@@ -50,7 +50,7 @@ public class OrderDetailController {
     }
 
     @GetMapping("/mypage/order-detail/{userId}")
-    public ResponseEntity<GetOrderListResponseDto> getOrderDetail(@PathVariable("userId") String userId) {
+    public ResponseEntity<GetOrderManageListResponseDto> getOrderDetail(@PathVariable("userId") String userId) {
         return orderService.getOrderList(userId);
     }
 

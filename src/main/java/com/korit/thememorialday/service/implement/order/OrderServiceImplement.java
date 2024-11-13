@@ -73,9 +73,9 @@ public class OrderServiceImplement implements OrderService {
 
     // 주문내역
     @Override
-    public ResponseEntity<GetOrderListResponseDto> getOrderList(String userId) {
+    public ResponseEntity<GetOrderManageListResponseDto> getOrderList(String userId) {
         List<OrderEntity> orders = orderRepository.findByUserIdOrderByOrderTimeDesc(userId);
-        List<FullOrder> fullOrders = new ArrayList<>();
+        List<OrderManage> fullOrders = new ArrayList<>();
 
         for (OrderEntity order : orders) {
             String storeName = storeRepository.findStoreNameByStoreNumber(order.getStoreNumber());
@@ -94,11 +94,15 @@ public class OrderServiceImplement implements OrderService {
 
                     .collect(Collectors.toList());
 
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            String name = userEntity.getName();
+            String telNumber = userEntity.getTelNumber();
+
             // FullOrder 객체 생성 후 리스트에 추가
-            fullOrders.add(new FullOrder(order, options, storeName, productName, productImageUrl));
+            fullOrders.add(new OrderManage(order, options, storeName, productName, productImageUrl, telNumber, name));
         }
 
-        return GetOrderListResponseDto.success(fullOrders);
+        return GetOrderManageListResponseDto.success(fullOrders);
     }
 
     @Override
