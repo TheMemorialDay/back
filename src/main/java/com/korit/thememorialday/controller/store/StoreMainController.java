@@ -46,12 +46,14 @@ public class StoreMainController {
     return response;
   }
 
-  @GetMapping(value = { "/{storeNumber}/order" })
-  public ResponseEntity<? super GetStoreOrderListResponseDto> getStoreOrderList(
-      @PathVariable("storeNumber") Integer storeNumber) {
-    ResponseEntity<? super GetStoreOrderListResponseDto> response = storeService.getStoreOrderList(storeNumber);
-    return response;
-  }
+  // @GetMapping(value = { "/{storeNumber}/order" })
+  // public ResponseEntity<? super GetStoreOrderListResponseDto>
+  // getStoreOrderList(
+  // @PathVariable("storeNumber") Integer storeNumber) {
+  // ResponseEntity<? super GetStoreOrderListResponseDto> response =
+  // storeService.getStoreOrderList(storeNumber);
+  // return response;
+  // }
 
   @GetMapping(value = "/{storeNumber}/information")
   public ResponseEntity<? super GetStoreResponseDto> getStoreInformation(

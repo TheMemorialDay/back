@@ -125,4 +125,6 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Integer> {
         String findStoreNameByStoreNumber(@Param("storeNumber") Integer storeNumber);
 
         Integer findStoreNumberByUserId(@Param("userId") String userId);
+
+        boolean existsByStoreNumber(Integer storeNumber);
 }

@@ -22,7 +22,8 @@ public interface StoreService {
 
   ResponseEntity<? super GetStoreListResponseDto> getStoreList();
 
-  ResponseEntity<? super GetStoreOrderListResponseDto> getStoreOrderList(Integer storeNumber);
+  // ResponseEntity<? super GetStoreOrderListResponseDto>
+  // getStoreOrderList(Integer storeNumber);
 
   ResponseEntity<? super GetStoreResponseDto> getStore(String userId);
 
