@@ -47,11 +47,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ResponseEntity<ResponseDto> postProduct(PostProductRequestDto dto, Integer storeNubmer) {
-        
+
         try {
 
             boolean isExistStore = storeRepository.existsById(storeNubmer);
-            if (!isExistStore) return ResponseDto.noExistStore();
+            if (!isExistStore)
+                return ResponseDto.noExistStore();
 
             ProductEntity productEntity = new ProductEntity(dto, storeNubmer);
             productRepository.save(productEntity);
@@ -59,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
 
             List<String> productImages = dto.getProductImages();
             List<ProductImageEntity> productImageEntities = new ArrayList<>();
-            for (String productImage: productImages) {
+            for (String productImage : productImages) {
                 ProductImageEntity productImageEntity = new ProductImageEntity(productNumber, productImage);
                 productImageEntities.add(productImageEntity);
             }
@@ -68,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
             List<String> themes = dto.getThemes();
             if (themes != null) {
                 List<ThemaEntity> themaEntities = new ArrayList<>();
-                for (String theme: themes) {
+                for (String theme : themes) {
                     ThemaEntity themaEntity = new ThemaEntity(theme, productNumber);
                     themaEntities.add(themaEntity);
                 }
@@ -76,14 +77,15 @@ public class ProductServiceImpl implements ProductService {
             }
 
             List<Option> options = dto.getOptions();
-            for (Option option: options) {
-                ProductMappingEntity productMappingEntity = new ProductMappingEntity(productNumber, option.getProductOptionName());
+            for (Option option : options) {
+                ProductMappingEntity productMappingEntity = new ProductMappingEntity(productNumber,
+                        option.getProductOptionName());
                 productMappingRepository.save(productMappingEntity);
                 Integer optionNumber = productMappingEntity.getOptionNumber();
 
                 List<OptionDetail> optionDetails = option.getOptionDetails();
                 List<ProductOptionEntity> productOptionEntities = new ArrayList<>();
-                for (OptionDetail optionDetail: optionDetails) {
+                for (OptionDetail optionDetail : optionDetails) {
                     ProductOptionEntity productOptionEntity = new ProductOptionEntity(optionNumber, optionDetail);
                     productOptionEntities.add(productOptionEntity);
                 }
@@ -98,7 +100,7 @@ public class ProductServiceImpl implements ProductService {
         return ResponseDto.success();
 
     }
-    
+
     @Override
     public ResponseEntity<? super GetProductListResponseDto> getProductList(String userId) {
 
@@ -107,35 +109,41 @@ public class ProductServiceImpl implements ProductService {
         try {
 
             StoreEntity storeEntity = storeRepository.findByUserId(userId);
-            if (storeEntity == null) return ResponseDto.noExistStore();
+            if (storeEntity == null)
+                return ResponseDto.noExistStore();
 
             Integer storeNumber = storeEntity.getStoreNumber();
             List<ProductEntity> productEntities = productRepository.findByStoreNumber(storeNumber);
 
-            for (ProductEntity productEntity: productEntities) {
+            for (ProductEntity productEntity : productEntities) {
                 Integer productNumber = productEntity.getProductNumber();
-                List<ProductImageEntity> productImageEntities = productImageRepository.findByProductNumber(productNumber);
+                List<ProductImageEntity> productImageEntities = productImageRepository
+                        .findByProductNumber(productNumber);
                 List<ThemaEntity> themaEntities = themaRepostiroy.findByProductNumber(productNumber);
-                List<ProductMappingEntity> productMappingEntities = productMappingRepository.findByProductNumber(productNumber);
+                List<ProductMappingEntity> productMappingEntities = productMappingRepository
+                        .findByProductNumber(productNumber);
 
                 // description: 이미지 리스트 생성 //
                 List<String> productImages = new ArrayList<>();
-                for (ProductImageEntity productImageEntity: productImageEntities) productImages.add(productImageEntity.getProductImageUrl());
+                for (ProductImageEntity productImageEntity : productImageEntities)
+                    productImages.add(productImageEntity.getProductImageUrl());
 
                 // description: 테마 리스트 생성 //
                 List<String> themes = new ArrayList<>();
-                for (ThemaEntity themaEntity: themaEntities) themes.add(themaEntity.getThema());
+                for (ThemaEntity themaEntity : themaEntities)
+                    themes.add(themaEntity.getThema());
 
                 // description: 옵션 리스트 생성 //
                 List<Option> options = new ArrayList<>();
-                for (ProductMappingEntity productMappingEntity: productMappingEntities) {
+                for (ProductMappingEntity productMappingEntity : productMappingEntities) {
 
                     Integer optionNumber = productMappingEntity.getOptionNumber();
                     String productOptionName = productMappingEntity.getProductOptionName();
 
-                    List<ProductOptionEntity> productOptionEntities = productOptionRepository.findByOptionNumber(optionNumber);
+                    List<ProductOptionEntity> productOptionEntities = productOptionRepository
+                            .findByOptionNumber(optionNumber);
                     List<OptionDetail> optionDetails = new ArrayList<>();
-                    for (ProductOptionEntity productOptionEntity: productOptionEntities) {
+                    for (ProductOptionEntity productOptionEntity : productOptionEntities) {
                         OptionDetail optionDetail = new OptionDetail(productOptionEntity);
                         optionDetails.add(optionDetail);
                     }
@@ -172,23 +180,27 @@ public class ProductServiceImpl implements ProductService {
 
             List<ProductImageEntity> productImageEntities = productImageRepository.findByProductNumber(productNumber);
             List<ThemaEntity> themaEntities = themaRepostiroy.findByProductNumber(productNumber);
-            List<ProductMappingEntity> productMappingEntities = productMappingRepository.findByProductNumber(productNumber);
+            List<ProductMappingEntity> productMappingEntities = productMappingRepository
+                    .findByProductNumber(productNumber);
 
             // description: 이미지 리스트 생성 //
-            for (ProductImageEntity productImageEntity: productImageEntities) productImages.add(productImageEntity.getProductImageUrl());
+            for (ProductImageEntity productImageEntity : productImageEntities)
+                productImages.add(productImageEntity.getProductImageUrl());
 
             // description: 테마 리스트 생성 //
-            for (ThemaEntity themaEntity: themaEntities) themes.add(themaEntity.getThema());
+            for (ThemaEntity themaEntity : themaEntities)
+                themes.add(themaEntity.getThema());
 
             // description: 옵션 리스트 생성 //
-            for (ProductMappingEntity productMappingEntity: productMappingEntities) {
+            for (ProductMappingEntity productMappingEntity : productMappingEntities) {
 
                 Integer optionNumber = productMappingEntity.getOptionNumber();
                 String productOptionName = productMappingEntity.getProductOptionName();
 
-                List<ProductOptionEntity> productOptionEntities = productOptionRepository.findByOptionNumber(optionNumber);
+                List<ProductOptionEntity> productOptionEntities = productOptionRepository
+                        .findByOptionNumber(optionNumber);
                 List<OptionDetail> optionDetails = new ArrayList<>();
-                for (ProductOptionEntity productOptionEntity: productOptionEntities) {
+                for (ProductOptionEntity productOptionEntity : productOptionEntities) {
                     OptionDetail optionDetail = new OptionDetail(productOptionEntity);
                     optionDetails.add(optionDetail);
                 }
@@ -197,7 +209,7 @@ public class ProductServiceImpl implements ProductService {
                 options.add(option);
 
             }
-            
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
@@ -207,17 +219,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ResponseEntity<ResponseDto> patchProduct(Integer productNumber, PatchProductRequestDto dto) {
-        
+
         try {
 
             ProductEntity productEntity = productRepository.findByProductNumber(productNumber);
-            if (productEntity == null) return ResponseDto.noExistProduct();
+            if (productEntity == null)
+                return ResponseDto.noExistProduct();
             productEntity.patch(dto);
             productRepository.save(productEntity);
 
             List<String> productImages = dto.getProductImages();
             List<ProductImageEntity> productImageEntities = new ArrayList<>();
-            for (String productImage: productImages) {
+            for (String productImage : productImages) {
                 ProductImageEntity productImageEntity = new ProductImageEntity(productNumber, productImage);
                 productImageEntities.add(productImageEntity);
             }
@@ -227,7 +240,7 @@ public class ProductServiceImpl implements ProductService {
             List<String> themes = dto.getThemes();
             if (themes != null) {
                 List<ThemaEntity> themaEntities = new ArrayList<>();
-                for (String theme: themes) {
+                for (String theme : themes) {
                     ThemaEntity themaEntity = new ThemaEntity(theme, productNumber);
                     themaEntities.add(themaEntity);
                 }
@@ -235,22 +248,24 @@ public class ProductServiceImpl implements ProductService {
                 themaRepostiroy.saveAll(themaEntities);
             }
 
-            List<ProductMappingEntity> productMappingEntities = productMappingRepository.findByProductNumber(productNumber);
-            for (ProductMappingEntity productMappingEntity: productMappingEntities) {
+            List<ProductMappingEntity> productMappingEntities = productMappingRepository
+                    .findByProductNumber(productNumber);
+            for (ProductMappingEntity productMappingEntity : productMappingEntities) {
                 Integer optionNumber = productMappingEntity.getOptionNumber();
                 productOptionRepository.deleteByOptionNumber(optionNumber);
             }
             productMappingRepository.deleteAll(productMappingEntities);
 
             List<Option> options = dto.getOptions();
-            for (Option option: options) {
-                ProductMappingEntity productMappingEntity = new ProductMappingEntity(productNumber, option.getProductOptionName());
+            for (Option option : options) {
+                ProductMappingEntity productMappingEntity = new ProductMappingEntity(productNumber,
+                        option.getProductOptionName());
                 productMappingRepository.save(productMappingEntity);
                 Integer optionNumber = productMappingEntity.getOptionNumber();
 
                 List<OptionDetail> optionDetails = option.getOptionDetails();
                 List<ProductOptionEntity> productOptionEntities = new ArrayList<>();
-                for (OptionDetail optionDetail: optionDetails) {
+                for (OptionDetail optionDetail : optionDetails) {
                     ProductOptionEntity productOptionEntity = new ProductOptionEntity(optionNumber, optionDetail);
                     productOptionEntities.add(productOptionEntity);
                 }
@@ -271,30 +286,38 @@ public class ProductServiceImpl implements ProductService {
         List<PreviewProduct> previewProducts = new ArrayList<>();
 
         try {
-            List<ProductEntity> productEntity = productRepository.findByStoreNumber(storeNumber);
-            if(productEntity == null) return ResponseDto.noExistProduct();
 
-            for(ProductEntity product: productEntity) {
+            // storeNumber가 존재하는지 확인
+            if (!storeRepository.existsByStoreNumber(storeNumber)) {
+                return ResponseDto.noExistStore(); // 존재하지 않는 store 응답
+            }
+
+            List<ProductEntity> productEntity = productRepository.findByStoreNumber(storeNumber);
+            if (productEntity == null)
+                return ResponseDto.noExistProduct();
+
+            for (ProductEntity product : productEntity) {
                 Integer productNumber = product.getProductNumber();
                 String productName = product.getProductName();
                 Integer productPrice = product.getProductPrice();
                 boolean productToday = product.isProductToday();
 
                 List<String> productImages = new ArrayList<>();
-                List<ProductImageEntity> productImageEntities = productImageRepository.findByProductNumber(productNumber);
-                for(ProductImageEntity productImageEntity: productImageEntities) {
+                List<ProductImageEntity> productImageEntities = productImageRepository
+                        .findByProductNumber(productNumber);
+                for (ProductImageEntity productImageEntity : productImageEntities) {
                     productImages.add(productImageEntity.getProductImageUrl());
                 }
-                String imageUrl = productImages.isEmpty()? null : productImages.get(0);
+                String imageUrl = productImages.isEmpty() ? null : productImages.get(0);
 
                 List<ThemaEntity> themaEntities = themaRepostiroy.findByProductNumber(productNumber);
 
-                
                 List<String> themes = new ArrayList<>();
-                for(ThemaEntity themaEntity: themaEntities) {
+                for (ThemaEntity themaEntity : themaEntities) {
                     themes.add(themaEntity.getThema());
                 }
-                PreviewProduct fullProduct = new PreviewProduct(productNumber, productName, productPrice, imageUrl, themes, productToday);
+                PreviewProduct fullProduct = new PreviewProduct(productNumber, productName, productPrice, imageUrl,
+                        themes, productToday);
                 previewProducts.add(fullProduct);
             }
 
@@ -306,42 +329,47 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResponseEntity<? super GetProductDetailResponseDto> getOrderProductDetail(Integer productNumber, Integer storeNumber) {
+    public ResponseEntity<? super GetProductDetailResponseDto> getOrderProductDetail(Integer productNumber,
+            Integer storeNumber) {
 
         OrderProductDetail orderProductDetails = null;
 
         try {
             ProductEntity productEntity = productRepository.findByProductNumber(productNumber);
-            if(productEntity == null) return ResponseDto.noExistProduct();
+            if (productEntity == null)
+                return ResponseDto.noExistProduct();
 
             StoreEntity storeEntity = storeRepository.findByStoreNumber(storeNumber);
-            if(storeEntity == null) return ResponseDto.noExistStore();
+            if (storeEntity == null)
+                return ResponseDto.noExistStore();
 
             List<ProductImageEntity> productImageEntities = productImageRepository.findByProductNumber(productNumber);
             List<ThemaEntity> themaEntities = themaRepostiroy.findByProductNumber(productNumber);
-            List<ProductMappingEntity> productMappingEntities = productMappingRepository.findByProductNumber(productNumber);
+            List<ProductMappingEntity> productMappingEntities = productMappingRepository
+                    .findByProductNumber(productNumber);
 
             List<String> productImages = new ArrayList<>();
             List<String> themes = new ArrayList<>();
             List<Option> options = new ArrayList<>();
 
             // description: 이미지 리스트 생성 //
-            for (ProductImageEntity productImageEntity: productImageEntities) 
+            for (ProductImageEntity productImageEntity : productImageEntities)
                 productImages.add(productImageEntity.getProductImageUrl());
 
             // description: 테마 리스트 생성 //
-            for (ThemaEntity themaEntity: themaEntities) themes.add(themaEntity.getThema());
+            for (ThemaEntity themaEntity : themaEntities)
+                themes.add(themaEntity.getThema());
 
             // description: 옵션 리스트 생성 //
-            for (ProductMappingEntity productMappingEntity: productMappingEntities) {
+            for (ProductMappingEntity productMappingEntity : productMappingEntities) {
 
                 Integer optionNumber = productMappingEntity.getOptionNumber();
                 String productOptionName = productMappingEntity.getProductOptionName();
-                
 
-                List<ProductOptionEntity> productOptionEntities = productOptionRepository.findByOptionNumber(optionNumber);
+                List<ProductOptionEntity> productOptionEntities = productOptionRepository
+                        .findByOptionNumber(optionNumber);
                 List<OptionDetail> optionDetails = new ArrayList<>();
-                for (ProductOptionEntity productOptionEntity: productOptionEntities) {
+                for (ProductOptionEntity productOptionEntity : productOptionEntities) {
                     OptionDetail optionDetail = new OptionDetail(productOptionEntity);
                     optionDetails.add(optionDetail);
                 }
@@ -363,7 +391,8 @@ public class ProductServiceImpl implements ProductService {
     public ResponseEntity<ResponseDto> deleteProduct(Integer productNumber) {
         try {
             ProductEntity productEntity = productRepository.findByProductNumber(productNumber);
-            if (productEntity == null) return ResponseDto.noExistProduct();
+            if (productEntity == null)
+                return ResponseDto.noExistProduct();
 
             productRepository.delete(productEntity);
 
@@ -374,4 +403,3 @@ public class ProductServiceImpl implements ProductService {
         return ResponseDto.success();
     }
 }
-

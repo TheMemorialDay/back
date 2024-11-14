@@ -139,17 +139,20 @@ public class StoreServiceImplement implements StoreService {
     return GetStoreListResponseDto.success(stores);
   }
 
-  @Override
-  public ResponseEntity<? super GetStoreOrderListResponseDto> getStoreOrderList(Integer storeNumber) {
-    // storeNumber로 ProductEntity 목록 조회 ** 물어보기
-    List<ProductEntity> productEntities = productRepository.findByStoreNumber(storeNumber);
+  // @Override
+  // public ResponseEntity<? super GetStoreOrderListResponseDto>
+  // getStoreOrderList(Integer storeNumber) {
+  // // storeNumber로 ProductEntity 목록 조회 ** 물어보기
+  // List<ProductEntity> productEntities =
+  // productRepository.findByStoreNumber(storeNumber);
 
-    // 응답 DTO 생성
-    GetStoreOrderListResponseDto responseDto = new GetStoreOrderListResponseDto(productEntities);
+  // // 응답 DTO 생성
+  // GetStoreOrderListResponseDto responseDto = new
+  // GetStoreOrderListResponseDto(productEntities);
 
-    // ResponseEntity 반환
-    return ResponseEntity.ok(responseDto);
-  }
+  // // ResponseEntity 반환
+  // return ResponseEntity.ok(responseDto);
+  // }
 
   @Override
   public ResponseEntity<? super GetStoreResponseDto> getStore(String userId) {
