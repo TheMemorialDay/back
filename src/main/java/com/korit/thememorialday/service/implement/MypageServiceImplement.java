@@ -10,6 +10,7 @@ import com.korit.thememorialday.dto.request.mypage_user_info.PatchUserInfoReques
 import com.korit.thememorialday.dto.request.mypage_user_info.UserUpdatePasswordCheckRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.mypage_user_info.GetUserInfoResponseDto;
+import com.korit.thememorialday.dto.response.mypage_user_info.GetUserUpdateInfoResponseDto;
 import com.korit.thememorialday.entity.TelAuthEntity;
 import com.korit.thememorialday.entity.UserEntity;
 import com.korit.thememorialday.provider.SmsProvider;
@@ -151,6 +152,19 @@ public class MypageServiceImplement implements MypageService {
 		}
 
 		return ResponseDto.success();
+	}
+
+	@Override
+	public ResponseEntity<? super GetUserUpdateInfoResponseDto> getUpdateInfo(String userId) {
+		UserEntity userEntity = null;
+		try {
+			userEntity = userRepository.findByUserId(userId);
+			if(userEntity == null) return ResponseDto.noExistUserId();
+			
+		} catch (Exception e) {
+			return ResponseDto.databaseError();
+		}
+		return GetUserUpdateInfoResponseDto.success(userEntity);
 	}
 	
 }

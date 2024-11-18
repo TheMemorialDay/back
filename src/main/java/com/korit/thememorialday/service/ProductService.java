@@ -18,8 +18,7 @@ public interface ProductService {
     ResponseEntity<ResponseDto> patchProduct(Integer productNumber, PatchProductRequestDto dto);
 
     ResponseEntity<ResponseDto> deleteProduct(Integer productNumber);
-    
-    // ResponseEntity<? super GetProductResponseDto> getProduct(Integer productNumber);
+
     ResponseEntity<? super GetProductPreviewListResponseDto> getProductPreviewList(Integer storeNumber);
     ResponseEntity<? super GetProductDetailResponseDto> getOrderProductDetail(Integer productNumber, Integer storeNumber);
 }
