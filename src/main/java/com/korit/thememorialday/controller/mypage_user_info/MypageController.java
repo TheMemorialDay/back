@@ -2,7 +2,9 @@ package com.korit.thememorialday.controller.mypage_user_info;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,7 @@ import com.korit.thememorialday.dto.request.mypage_user_info.PatchUserInfoReques
 import com.korit.thememorialday.dto.request.mypage_user_info.UserUpdatePasswordCheckRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.mypage_user_info.GetUserInfoResponseDto;
+import com.korit.thememorialday.dto.response.mypage_user_info.GetUserUpdateInfoResponseDto;
 import com.korit.thememorialday.service.MypageService;
 
 import jakarta.validation.Valid;
@@ -64,4 +67,12 @@ public class MypageController {
 		ResponseEntity<ResponseDto> response = mypageService.patchUserInfo(requestBody, userId);
 		return response;
 	};
+
+	@GetMapping("/{userId}")
+	public ResponseEntity<? super GetUserUpdateInfoResponseDto> getUpdateUserInfo(
+		@PathVariable("userId") String userId
+	) {
+		ResponseEntity<? super GetUserUpdateInfoResponseDto> response = mypageService.getUpdateInfo(userId);
+		return response;
+	}
 }

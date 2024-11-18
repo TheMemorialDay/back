@@ -175,8 +175,8 @@ public class ProductServiceImpl implements ProductService {
         List<Option> options = new ArrayList<>();
 
         try {
-
             productEntity = productRepository.findByProductNumber(productNumber);
+            if(productEntity == null) return ResponseDto.noExistProduct();
 
             List<ProductImageEntity> productImageEntities = productImageRepository.findByProductNumber(productNumber);
             List<ThemaEntity> themaEntities = themaRepostiroy.findByProductNumber(productNumber);

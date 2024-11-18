@@ -15,6 +15,4 @@ public interface ProductOptionRepository extends JpaRepository<ProductOptionEnti
 
     @Transactional
     void deleteByOptionNumber(Integer optionNumber);
-
-    //List<ProductOptionEntity> findByOptionNumber(Integer optionNumber);
 }

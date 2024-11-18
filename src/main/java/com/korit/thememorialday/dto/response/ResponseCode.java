@@ -18,10 +18,6 @@ public interface ResponseCode {
   String NO_EXIST_ORDER = "NO";
   String NO_EXIST_REVIEW = "NR";
 
-  // String NO_EXIST_TOOL = "NT";
-  // String NO_EXIST_CUSTOMER = "NC";
-  // String TOOL_INSUFFICIENT = "TI";
-
   String TEL_AUTH_FAIL = "TAF";
   String SIGN_IN_FAIL = "SF";
   String AUTHENTICATION_FAIL = "AF";

@@ -13,7 +13,6 @@ import com.korit.thememorialday.repository.resultSet.GetQnAListResultSet;
 @Repository
 public interface QnARepository extends JpaRepository<QnAEntity, Integer>{
     
-    
     QnAEntity findByQuestionNumber(Integer questionNumber);
 
     @Query(value = 

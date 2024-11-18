@@ -12,7 +12,6 @@ import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
 
 import com.korit.thememorialday.dto.response.ResponseDto;
-import com.korit.thememorialday.dto.response.home.GetPopularKeywordResponseDto;
 import com.korit.thememorialday.entity.ProductEntity;
 import com.korit.thememorialday.entity.ReviewEntity;
 import com.korit.thememorialday.entity.StoreEntity;
@@ -25,13 +24,11 @@ import com.korit.thememorialday.repository.ProductRepository;
 import com.korit.thememorialday.repository.ReviewRepository;
 import com.korit.thememorialday.repository.StoreRepository;
 import com.korit.thememorialday.repository.ThemaRepostiroy;
-import com.korit.thememorialday.repository.resultSet.GetKeywordResultSet;
 import com.korit.thememorialday.service.StoreService;
 import com.korit.thememorialday.dto.response.store.GetStoreListMainSearchResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreDetailListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreNumberResponseDto;
-import com.korit.thememorialday.dto.response.store.GetStoreOrderListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreResponseDto;
 
 import lombok.RequiredArgsConstructor;
@@ -138,21 +135,6 @@ public class StoreServiceImplement implements StoreService {
 
     return GetStoreListResponseDto.success(stores);
   }
-
-  // @Override
-  // public ResponseEntity<? super GetStoreOrderListResponseDto>
-  // getStoreOrderList(Integer storeNumber) {
-  // // storeNumber로 ProductEntity 목록 조회 ** 물어보기
-  // List<ProductEntity> productEntities =
-  // productRepository.findByStoreNumber(storeNumber);
-
-  // // 응답 DTO 생성
-  // GetStoreOrderListResponseDto responseDto = new
-  // GetStoreOrderListResponseDto(productEntities);
-
-  // // ResponseEntity 반환
-  // return ResponseEntity.ok(responseDto);
-  // }
 
   @Override
   public ResponseEntity<? super GetStoreResponseDto> getStore(String userId) {
@@ -297,24 +279,5 @@ public class StoreServiceImplement implements StoreService {
     return ResponseDto.success();
     
   }
-
-  // //* 인기 키워드 가져오기 */
-  // @Override
-  // public ResponseEntity<? super GetPopularKeywordResponseDto> getKeyword() {
-
-  //   List<GetKeywordResultSet> resultSets = new ArrayList<>();
-
-  //   try {
-
-  //     resultSets = popularKeywordRepository.getKeyword();
-
-  //   } catch(Exception exception) {
-  //     exception.printStackTrace();
-  //     return ResponseDto.databaseError();
-  //   };
-
-  //   return GetPopularKeywordResponseDto.success(resultSets);
-    
-  // }
 
 }
