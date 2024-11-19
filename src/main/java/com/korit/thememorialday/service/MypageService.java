@@ -8,6 +8,7 @@ import com.korit.thememorialday.dto.request.mypage_user_info.PatchUserInfoReques
 import com.korit.thememorialday.dto.request.mypage_user_info.UserUpdatePasswordCheckRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.mypage_user_info.GetUserInfoResponseDto;
+import com.korit.thememorialday.dto.response.mypage_user_info.GetUserUpdateInfoResponseDto;
 
 //# 마이페이지 개인정보 서비스
 
@@ -23,7 +24,7 @@ public interface MypageService {
 
 	// 회원 개인 정보 수정
 	ResponseEntity<ResponseDto> patchUserInfo(PatchUserInfoRequestDto dto, String userId);
-	
-	// 회원 개인 정보 보기
-	// ResponseEntity<? super GetUserInfoResponseDto> getUserInfo(String userId);
+
+	ResponseEntity<? super GetUserUpdateInfoResponseDto> getUpdateInfo(String userId);
+
 }

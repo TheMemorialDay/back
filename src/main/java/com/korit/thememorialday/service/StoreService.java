@@ -5,11 +5,9 @@ import org.springframework.http.ResponseEntity;
 import com.korit.thememorialday.dto.request.store.PatchStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.request.store.PostStoreRegisterRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
-import com.korit.thememorialday.dto.response.home.GetPopularKeywordResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreListMainSearchResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreNumberResponseDto;
-import com.korit.thememorialday.dto.response.store.GetStoreOrderListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreDetailListResponseDto;
 
@@ -23,9 +21,6 @@ public interface StoreService {
 
   ResponseEntity<? super GetStoreListResponseDto> getStoreList();
 
-  // ResponseEntity<? super GetStoreOrderListResponseDto>
-  // getStoreOrderList(Integer storeNumber);
-
   ResponseEntity<? super GetStoreResponseDto> getStore(String userId);
 
   ResponseEntity<? super GetStoreNumberResponseDto> getStoreNumber(String userId);
@@ -37,6 +32,5 @@ public interface StoreService {
 
   //* 인기 검색어 저장 */
   ResponseEntity<ResponseDto> postKeyword(String keyword);
-  // //* 인기 검색어 인기순 조회 */
-  // ResponseEntity<? super GetPopularKeywordResponseDto> getKeyword();
+
 }

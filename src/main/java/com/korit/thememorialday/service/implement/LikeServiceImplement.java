@@ -78,24 +78,6 @@ public class LikeServiceImplement implements LikeService {
         return ResponseDto.noExistStore();
       }
 
-      // List<LikeEntity> likeEntities = likeRepository.findByUserId(userId);
-      // for(LikeEntity likeEntity: likeEntities) {
-      //   Integer storeNumber = likeEntity.getStoreNumber();
-      //   StoreEntity storeEntity = storeRepository.findByStoreNumber(storeNumber);
-        
-      //   String storeName = storeEntity.getStoreName();
-      //   List<ReviewEntity> reviewEntities = reviewRepository.findByStoreName(storeName);
-      //   Integer reviewCount = reviewEntities.size();
-  
-
-      //   Integer sum = 0;
-      //   Double reviewRating = 0.0;
-      //   if(reviewEntities.size() != 0) {
-      //     for(ReviewEntity reviewEntity: reviewEntities) sum = sum + reviewEntity.getReviewRating();
-      //     reviewRating =  (sum / (double)reviewEntities.size());
-      //   }
-      // }
-
     } catch (Exception exception) {
       exception.printStackTrace();
       return ResponseDto.databaseError();
