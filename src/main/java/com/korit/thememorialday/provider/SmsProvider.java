@@ -44,7 +44,7 @@ public class SmsProvider {
 		message.setFrom(from);
 		message.setTo(telNumber);
 
-		String contents = String.format("[The Memorial Day]\n%s님의 %s - %s 주문이 승인되었습니다.\n홈페이지에서 로그인 후 마이페이지 - 주문 내역에서 %d원 결제 부탁드립니다. 24시간 이내에 결제가 이루어지지 않을 시, 자동 주문 취소됩니다.", 
+		String contents = String.format("[The Memorial Day]\n%s님의 %s - %s 주문이 승인되었습니다.\n홈페이지에서 로그인 후 마이페이지 - 주문 내역에서 %d원 결제 부탁드립니다.", 
 		name, storeName, productName, totalPrice);
 		message.setText(contents);
 

@@ -10,9 +10,6 @@ import jakarta.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostOrderSelectOptionRequestDto {
-    
     @NotNull(message = "옵션 번호는 필수입니다.")
     private Integer optionNumber;
-
-    // private Integer orderCategoryNumber;      // optionNumber 안 받기로 해당 줄에서 지웠습니다
 }

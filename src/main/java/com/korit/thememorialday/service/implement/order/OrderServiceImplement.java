@@ -59,7 +59,8 @@ public class OrderServiceImplement implements OrderService {
                 Integer optionNumber = orderSelectOption.getOptionNumber();
                 Integer optionCategoryNumber = orderSelectOption.getOptionCategoryNumber();
 
-                OrderSelectOptionEntity optionEntity = new OrderSelectOptionEntity(orderCode, optionNumber, optionCategoryNumber); 
+                OrderSelectOptionEntity optionEntity = new OrderSelectOptionEntity(orderCode, optionNumber,
+                        optionCategoryNumber);
                 optionEntities.add(optionEntity);
             }
             orderSelectOptionRepository.saveAll(optionEntities);
@@ -73,43 +74,52 @@ public class OrderServiceImplement implements OrderService {
 
     // 주문내역
     @Override
-    public ResponseEntity<GetOrderManageListResponseDto> getOrderList(String userId) {
-        List<OrderEntity> orders = orderRepository.findByUserIdOrderByOrderTimeDesc(userId);
-        List<OrderManage> fullOrders = new ArrayList<>();
-
-        for (OrderEntity order : orders) {
-            String storeName = storeRepository.findStoreNameByStoreNumber(order.getStoreNumber());
-            String productName = productRepository.findProductNameByProductNumber(order.getProductNumber());
-            String productImageUrl = productRepository.findFirstImageUrlByProductNumber(order.getProductNumber());
-
-            // 옵션 정보 조회
-            List<OrderSelectOptionEntity> optionEntities = orderSelectOptionRepository
-                    .findByOrderCode(order.getOrderCode());
-            List<OrderSelectOption> options = optionEntities.stream()
-                    .map(optionEntity -> {
-                        String productCategory = productRepository
-                                .findProductCategoryByOptionCategoryNumber(optionEntity.getOptionCategoryNumber());
-                        return new OrderSelectOption(optionEntity, productCategory); // productCategory 추가
-                    })
-
-                    .collect(Collectors.toList());
-
+    public ResponseEntity<? super GetOrderManageListResponseDto> getOrderList(String userId) {
+        try {
+            List<OrderEntity> orders = orderRepository.findByUserIdOrderByOrderTimeDesc(userId);
+            List<OrderManage> fullOrders = new ArrayList<>();
             UserEntity userEntity = userRepository.findByUserId(userId);
-            String name = userEntity.getName();
-            String telNumber = userEntity.getTelNumber();
+            if (userEntity == null) {
+                return ResponseDto.noExistUserId(); // userId가 없는 경우 반환
+            }
+            for (OrderEntity order : orders) {
+                String storeName = storeRepository.findStoreNameByStoreNumber(order.getStoreNumber());
+                String productName = productRepository.findProductNameByProductNumber(order.getProductNumber());
+                String productImageUrl = productRepository.findFirstImageUrlByProductNumber(order.getProductNumber());
 
-            // FullOrder 객체 생성 후 리스트에 추가
-            fullOrders.add(new OrderManage(order, options, storeName, productName, productImageUrl, telNumber, name));
+                // 옵션 정보 조회
+                List<OrderSelectOptionEntity> optionEntities = orderSelectOptionRepository
+                        .findByOrderCode(order.getOrderCode());
+                List<OrderSelectOption> options = optionEntities.stream()
+                        .map(optionEntity -> {
+                            String productCategory = productRepository
+                                    .findProductCategoryByOptionCategoryNumber(optionEntity.getOptionCategoryNumber());
+                            return new OrderSelectOption(optionEntity, productCategory); // productCategory 추가
+                        })
+
+                        .collect(Collectors.toList());
+
+                String name = userEntity.getName();
+                String telNumber = userEntity.getTelNumber();
+
+                // FullOrder 객체 생성 후 리스트에 추가
+                fullOrders
+                        .add(new OrderManage(order, options, storeName, productName, productImageUrl, telNumber, name));
+            }
+            return GetOrderManageListResponseDto.success(fullOrders);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
         }
 
-        return GetOrderManageListResponseDto.success(fullOrders);
     }
 
     @Override
     @Transactional
     public ResponseEntity<GetSalesResponseDto> getSales(Integer storeNumber) {
         List<OrderEntity> orders = orderRepository.findByStoreNumber(storeNumber);
-        
+
         if (orders.isEmpty()) {
             return GetSalesResponseDto.success(Collections.emptyList());
         }
@@ -119,21 +129,22 @@ public class OrderServiceImplement implements OrderService {
         List<OrderSelectOptionEntity> optionEntities = orderSelectOptionRepository.findByOrderCodeIn(orderCodes);
 
         Map<Integer, String> productCategoryMap = optionEntities.stream()
-            .collect(Collectors.toMap(
-                OrderSelectOptionEntity::getOptionCategoryNumber,
-                option -> productRepository.findProductCategoryByOptionCategoryNumber(option.getOptionCategoryNumber()),
-                (existing, replacement) -> existing // 중복 키 발생 시 기존 값을 유지
-            ));
+                .collect(Collectors.toMap(
+                        OrderSelectOptionEntity::getOptionCategoryNumber,
+                        option -> productRepository
+                                .findProductCategoryByOptionCategoryNumber(option.getOptionCategoryNumber()),
+                        (existing, replacement) -> existing // 중복 키 발생 시 기존 값을 유지
+                ));
 
         Map<String, List<OrderSelectOption>> optionsMap = optionEntities.stream()
-            .collect(Collectors.groupingBy(
-                OrderSelectOptionEntity::getOrderCode,
-                Collectors.mapping(
-                    option -> new OrderSelectOption(
-                        option.getOptionCategoryNumber(),
-                        option.getOptionNumber(),
-                        productCategoryMap.get(option.getOptionCategoryNumber())),
-                    Collectors.toList())));
+                .collect(Collectors.groupingBy(
+                        OrderSelectOptionEntity::getOrderCode,
+                        Collectors.mapping(
+                                option -> new OrderSelectOption(
+                                        option.getOptionCategoryNumber(),
+                                        option.getOptionNumber(),
+                                        productCategoryMap.get(option.getOptionCategoryNumber())),
+                                Collectors.toList())));
 
         List<FullOrder> fullOrders = orders.stream().map(order -> {
             String productName = productRepository.findProductNameByProductNumber(order.getProductNumber());
@@ -141,17 +152,15 @@ public class OrderServiceImplement implements OrderService {
             List<OrderSelectOption> options = optionsMap.getOrDefault(order.getOrderCode(), new ArrayList<>());
 
             return new FullOrder(
-                order,
-                options,
-                storeRepository.findStoreNameByStoreNumber(order.getStoreNumber()),
-                productName,
-                productImageUrl);
+                    order,
+                    options,
+                    storeRepository.findStoreNameByStoreNumber(order.getStoreNumber()),
+                    productName,
+                    productImageUrl);
         }).collect(Collectors.toList());
 
         return GetSalesResponseDto.success(fullOrders);
     }
-    
-
 
     @Transactional
     @Override
@@ -173,32 +182,44 @@ public class OrderServiceImplement implements OrderService {
     }
 
     @Override
-    public ResponseEntity<GetOrderListResponseDto> getOrderManageList(Integer storeNumber) {
-        List<OrderEntity> orders = orderRepository.findByStoreNumberOrderByOrderTimeDesc(storeNumber);
-        List<FullOrder> fullOrders = new ArrayList<>();
+    public ResponseEntity<? super GetOrderListResponseDto> getOrderManageList(Integer storeNumber) {
 
-        for (OrderEntity order : orders) {
-            String storeName = storeRepository.findStoreNameByStoreNumber(order.getStoreNumber());
-            String productName = productRepository.findProductNameByProductNumber(order.getProductNumber());
-            String productImageUrl = productRepository.findFirstImageUrlByProductNumber(order.getProductNumber());
+        try {
+            String storeEntity = storeRepository.findStoreNameByStoreNumber(storeNumber);
+            if (storeEntity == null) {
+                return ResponseDto.noExistStore(); // storeNumber가 없을 경우 반환
+            }
+            List<OrderEntity> orders = orderRepository.findByStoreNumberOrderByOrderTimeDesc(storeNumber);
+            if (orders.isEmpty()) {
+                return ResponseDto.noExistStore(); // 주문이 없을 경우 반환
+            }
 
-            // 옵션 정보 조회
-            List<OrderSelectOptionEntity> optionEntities = orderSelectOptionRepository
-                    .findByOrderCode(order.getOrderCode());
-            List<OrderSelectOption> options = optionEntities.stream()
-                    .map(optionEntity -> {
-                        String productCategory = productRepository
-                                .findProductCategoryByOptionCategoryNumber(optionEntity.getOptionCategoryNumber());
-                        return new OrderSelectOption(optionEntity, productCategory); // productCategory 추가
-                    })
+            List<FullOrder> fullOrders = new ArrayList<>();
 
-                    .collect(Collectors.toList());
+            for (OrderEntity order : orders) {
+                String storeName = storeRepository.findStoreNameByStoreNumber(order.getStoreNumber());
+                String productName = productRepository.findProductNameByProductNumber(order.getProductNumber());
+                String productImageUrl = productRepository.findFirstImageUrlByProductNumber(order.getProductNumber());
 
-            // FullOrder 객체 생성 후 리스트에 추가
-            fullOrders.add(new FullOrder(order, options, storeName, productName, productImageUrl));
+                // 옵션 정보 조회
+                List<OrderSelectOptionEntity> optionEntities = orderSelectOptionRepository
+                        .findByOrderCode(order.getOrderCode());
+                List<OrderSelectOption> options = optionEntities.stream()
+                        .map(optionEntity -> {
+                            String productCategory = productRepository
+                                    .findProductCategoryByOptionCategoryNumber(optionEntity.getOptionCategoryNumber());
+                            return new OrderSelectOption(optionEntity, productCategory); // productCategory 추가
+                        })
+                        .collect(Collectors.toList());
+                // FullOrder 객체 생성 후 리스트에 추가
+                fullOrders.add(new FullOrder(order, options, storeName, productName, productImageUrl));
+            }
+            return GetOrderListResponseDto.success(fullOrders);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
         }
-
-        return GetOrderListResponseDto.success(fullOrders);
     }
 
     @Override
@@ -206,12 +227,12 @@ public class OrderServiceImplement implements OrderService {
         List<OrderManage> orderManages = new ArrayList<>();
         try {
             List<OrderEntity> orders = orderRepository.findByStoreNumberOrderByOrderTimeDesc(storeNumber);
-            
+
             for (OrderEntity order : orders) {
                 String storeName = storeRepository.findStoreNameByStoreNumber(order.getStoreNumber());
                 String productName = productRepository.findProductNameByProductNumber(order.getProductNumber());
                 String productImageUrl = productRepository.findFirstImageUrlByProductNumber(order.getProductNumber());
-                
+
                 UserEntity userEntity = userRepository.findByUserId(order.getUserId());
                 String telNumber = userEntity.getTelNumber();
                 String name = userEntity.getName();
@@ -225,12 +246,12 @@ public class OrderServiceImplement implements OrderService {
                                     .findProductCategoryByOptionCategoryNumber(optionEntity.getOptionCategoryNumber());
                             return new OrderSelectOption(optionEntity, productCategory); // productCategory 추가
                         })
-    
+
                         .collect(Collectors.toList());
-    
+
                 // FullOrder 객체 생성 후 리스트에 추가
-                orderManages.add(new OrderManage(order, options, storeName, productName, 
-                productImageUrl, telNumber, name));
+                orderManages.add(new OrderManage(order, options, storeName, productName,
+                        productImageUrl, telNumber, name));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -244,23 +265,19 @@ public class OrderServiceImplement implements OrderService {
         String telNumber = dto.getTelNumber();
         try {
             boolean isExistedTelNumber = userRepository.existsByTelNumber(telNumber);
-			if (!isExistedTelNumber) return ResponseDto.noExistUserId();
+            if (!isExistedTelNumber)
+                return ResponseDto.noExistUserId();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
         }
 
-        boolean isSendSuccess = smsProvider.sendPaymentMsg(dto.getName(), dto.getStoreName(), telNumber, dto.getTotalPrice(), dto.getProductName());
-        if(!isSendSuccess) return ResponseDto.messageSendFail();
+        boolean isSendSuccess = smsProvider.sendPaymentMsg(dto.getName(), dto.getStoreName(), telNumber,
+                dto.getTotalPrice(), dto.getProductName());
+        if (!isSendSuccess)
+            return ResponseDto.messageSendFail();
 
         return ResponseDto.success();
     }
 
-    private String gggg(OrderSelectOptionEntity option) {
-        System.out.println(option);
-        System.out.println(option.getOptionCategoryNumber());
-        String result = productRepository.findProductCategoryByOptionCategoryNumber(option.getOptionCategoryNumber());
-        System.out.println(result);
-        return result;
-    }
 }

@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.korit.thememorialday.dto.response.store.GetStoreListMainSearchResponseDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
-import com.korit.thememorialday.dto.response.home.GetPopularKeywordResponseDto;
 import com.korit.thememorialday.dto.response.store.GetProductDetailResponseDto;
 import com.korit.thememorialday.dto.response.store.GetProductPreviewListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreDetailListResponseDto;
-import com.korit.thememorialday.dto.response.store.GetStoreOrderListResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreResponseDto;
 import com.korit.thememorialday.service.ProductService;
 import com.korit.thememorialday.service.StoreService;
@@ -29,13 +27,6 @@ public class StoreMainController {
   private final StoreService storeService;
   private final ProductService productService;
 
-  // @GetMapping(value = { "/", "" })
-  // public ResponseEntity<? super GetStoreListResponseDto> getStoreList() {
-  // ResponseEntity<? super GetStoreListResponseDto> response =
-  // storeService.getStoreList();
-  // return response;
-  // }
-
   @GetMapping(value = { "/", "" })
   public ResponseEntity<? super GetStoreDetailListResponseDto> getStoreList() {
     ResponseEntity<? super GetStoreDetailListResponseDto> response = storeService.getStoreDetailList();
@@ -48,15 +39,6 @@ public class StoreMainController {
     ResponseEntity<? super GetStoreResponseDto> response = storeService.getStore(storeNumber);
     return response;
   }
-
-  // @GetMapping(value = { "/{storeNumber}/order" })
-  // public ResponseEntity<? super GetStoreOrderListResponseDto>
-  // getStoreOrderList(
-  // @PathVariable("storeNumber") Integer storeNumber) {
-  // ResponseEntity<? super GetStoreOrderListResponseDto> response =
-  // storeService.getStoreOrderList(storeNumber);
-  // return response;
-  // }
 
   @GetMapping(value = "/{storeNumber}/information")
   public ResponseEntity<? super GetStoreResponseDto> getStoreInformation(
@@ -112,11 +94,5 @@ public class StoreMainController {
     ResponseEntity<ResponseDto> response = storeService.postKeyword(keyword);
     return response;
   };
-
-  // //* 인기키워드 조회 */
-  // @GetMapping("/hot-keyword")
-  // public ResponseEntity<? super GetPopularKeywordResponseDto> getKeyword() {
-  //   ResponseEntity<? super GetPopularKeywordResponseDto> response = storeService.getKeyword();
-  //   return response;
-  // };
+  
 }

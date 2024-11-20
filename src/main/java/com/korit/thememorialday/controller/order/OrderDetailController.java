@@ -14,7 +14,6 @@ import com.korit.thememorialday.dto.request.order.PatchOrderStatusDto;
 import com.korit.thememorialday.dto.request.order.PostOrderRequestDto;
 import com.korit.thememorialday.dto.request.order.PostSendPaymentMsgRequestDto;
 import com.korit.thememorialday.dto.response.ResponseDto;
-import com.korit.thememorialday.dto.response.order.GetOrderListResponseDto;
 import com.korit.thememorialday.dto.response.order.GetOrderManageListResponseDto;
 import com.korit.thememorialday.dto.response.sales.GetSalesResponseDto;
 import com.korit.thememorialday.dto.response.store.GetStoreNumberResponseDto;
@@ -50,7 +49,7 @@ public class OrderDetailController {
     }
 
     @GetMapping("/mypage/order-detail/{userId}")
-    public ResponseEntity<GetOrderManageListResponseDto> getOrderDetail(@PathVariable("userId") String userId) {
+    public ResponseEntity<? super GetOrderManageListResponseDto> getOrderDetail(@PathVariable("userId") String userId) {
         return orderService.getOrderList(userId);
     }
 
@@ -64,12 +63,11 @@ public class OrderDetailController {
     public ResponseEntity<GetSalesResponseDto> getSales(@RequestParam String userId) {
 
         ResponseEntity<? super GetStoreNumberResponseDto> storeNumberResponse = storeService.getStoreNumber(userId);
-
         // storeNumber가 없으면 404 반환
-        // if (storeNumberResponse.getStatusCode() != HttpStatus.OK || storeNumberResponse.getBody() == null) {
-        //     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        // if (storeNumberResponse.getStatusCode() != HttpStatus.OK ||
+        // storeNumberResponse.getBody() == null) {
+        // return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         // }
-
         // storeNumber 추출
         GetStoreNumberResponseDto storeNumberDto = (GetStoreNumberResponseDto) storeNumberResponse.getBody();
         Integer storeNumber = storeNumberDto.getStoreNumber();
@@ -80,9 +78,8 @@ public class OrderDetailController {
 
     @PostMapping("/mypage/order-manage/send-pay-msg")
     public ResponseEntity<ResponseDto> sendPayMsg(
-        @RequestBody @Valid PostSendPaymentMsgRequestDto requestBody,
-        @AuthenticationPrincipal String userId
-    ) {
+            @RequestBody @Valid PostSendPaymentMsgRequestDto requestBody,
+            @AuthenticationPrincipal String userId) {
         ResponseEntity<ResponseDto> response = orderService.postSendPaymentMsg(requestBody);
         return response;
     }
