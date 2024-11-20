@@ -437,7 +437,7 @@ The Memorial Day 서비스 시연 영상입니다.
     </tr>
     <tr>
       <td style="text-align: center; width: 20%;">정호정</td>
-      <td>주문서 조회, 사업자 등록, 리뷰 작성 및 조회, 공지사항 작성 및 삭제, Q&A 작성 및 삭제</td>
+      <td>가게 별 상품 조회, 주문서 조회, 사업자 등록, 리뷰 작성 및 조회, 공지사항 작성 및 삭제, Q&A 작성 및 삭제</td>
     </tr>
     <tr>
       <td style="text-align: center; width: 20%;">김도연</td>
