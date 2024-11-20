@@ -36,5 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 
-*.properties
+resources/
+# !**/src/main/**/application-production.properties
 thememorialday-c4384-firebase-adminsdk-qy9du-65922fc971.json
