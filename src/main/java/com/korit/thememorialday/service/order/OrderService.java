@@ -14,11 +14,11 @@ public interface OrderService {
     ResponseEntity<ResponseDto> postOrder(PostOrderRequestDto dto, String userId, Integer storeNumber,
             Integer productNumber);
 
-    ResponseEntity<GetOrderManageListResponseDto> getOrderList(String userId);
+    ResponseEntity<? super GetOrderManageListResponseDto> getOrderList(String userId);
 
     ResponseEntity<GetSalesResponseDto> getSales(Integer storeNumber);
 
-    ResponseEntity<GetOrderListResponseDto> getOrderManageList(Integer storeNumber);
+    ResponseEntity<? super GetOrderListResponseDto> getOrderManageList(Integer storeNumber);
 
     ResponseEntity<ResponseDto> patchOrderStatus(String orderCode, PatchOrderStatusDto dto);
 
