@@ -19,22 +19,20 @@ import jakarta.servlet.http.HttpServletResponse;
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	@Override
 	public void onAuthenticationSuccess(
-		HttpServletRequest request,
-		HttpServletResponse response,
-		Authentication authentication
-	) throws IOException, SerialException {
+			HttpServletRequest request,
+			HttpServletResponse response,
+			Authentication authentication) throws IOException, SerialException {
 		CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 		Map<String, Object> attributes = customOAuth2User.getAttributes();
 		boolean existed = customOAuth2User.isExisted();
 
 		if (existed) {
 			String accessToken = (String) attributes.get("accessToken");
-			response.sendRedirect("http://localhost:3000/sns-success?accessToken=" + accessToken + "&expiration=36000");
-		}
-		else {
+			response.sendRedirect("http://43.202.40.194:3000/sns-success?accessToken=" + accessToken + "&expiration=36000");
+		} else {
 			String snsId = (String) attributes.get("snsId");
 			String joinPath = (String) attributes.get("joinPath");
-			response.sendRedirect("http://localhost:3000/auth/sign-up?snsId=" + snsId + "&joinPath=" + joinPath);
+			response.sendRedirect("http://43.202.40.194:3000/auth/sign-up?snsId=" + snsId + "&joinPath=" + joinPath);
 		}
 	}
 }

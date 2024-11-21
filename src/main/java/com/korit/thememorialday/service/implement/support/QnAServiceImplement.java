@@ -11,7 +11,6 @@ import com.korit.thememorialday.dto.response.ResponseDto;
 import com.korit.thememorialday.dto.response.support.GetQnADetailResponseDto;
 import com.korit.thememorialday.dto.response.support.GetQnAListResponseDto;
 import com.korit.thememorialday.entity.support.QnAEntity;
-import com.korit.thememorialday.repository.resultSet.GetQnAListResultSet;
 import com.korit.thememorialday.repository.support.QnARepository;
 import com.korit.thememorialday.service.support.QnAService;
 
@@ -19,16 +18,16 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class QnAServiceImplement implements QnAService{
+public class QnAServiceImplement implements QnAService {
 
     private final QnARepository qnaRepository;
 
     @Override
     public ResponseEntity<? super GetQnAListResponseDto> GetQnAList() {
-        List<GetQnAListResultSet> resultSets = new ArrayList<>();
-        try{
-            resultSets = qnaRepository.getQnAList();
-        } catch(Exception e) {
+        List<QnAEntity> resultSets = new ArrayList<>();
+        try {
+            resultSets = qnaRepository.findByOrderByQuestionNumber();
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
         }
@@ -62,8 +61,9 @@ public class QnAServiceImplement implements QnAService{
     @Override
     public ResponseEntity<ResponseDto> deleteQnA(Integer questionNumber) {
         try {
-            QnAEntity qnaEntity = qnaRepository.findByQuestionNumber(questionNumber); 
-            if(qnaEntity == null) return ResponseDto.noExistQuestion();
+            QnAEntity qnaEntity = qnaRepository.findByQuestionNumber(questionNumber);
+            if (qnaEntity == null)
+                return ResponseDto.noExistQuestion();
             qnaRepository.delete(qnaEntity);
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,5 +71,5 @@ public class QnAServiceImplement implements QnAService{
         }
         return ResponseDto.success();
     }
-    
+
 }
