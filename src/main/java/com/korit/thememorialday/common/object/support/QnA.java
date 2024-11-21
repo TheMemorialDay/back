@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.korit.thememorialday.repository.resultSet.GetQnAListResultSet;
+import com.korit.thememorialday.entity.support.QnAEntity;
 
 import lombok.Getter;
 
@@ -17,9 +17,8 @@ public class QnA {
     private String userId;
     private String questionStatus;
     private String answerContents;
-    private String name;
 
-    private QnA(GetQnAListResultSet resultSet) {
+    private QnA(QnAEntity resultSet) {
         this.questionNumber = resultSet.getQuestionNumber();
         this.questionTitle = resultSet.getQuestionTitle();
         this.questionContents = resultSet.getQuestionContents();
@@ -27,12 +26,11 @@ public class QnA {
         this.userId = resultSet.getUserId();
         this.questionStatus = resultSet.getQuestionStatus();
         this.answerContents = resultSet.getAnswerContents();
-        this.name = resultSet.getName();
     }
 
-    public static List<QnA> getList(List<GetQnAListResultSet> resultSets) {
+    public static List<QnA> getList(List<QnAEntity> resultSets) {
         List<QnA> qnas = new ArrayList<>();
-        for (GetQnAListResultSet resultSet : resultSets) {
+        for (QnAEntity resultSet : resultSets) {
             QnA qna = new QnA(resultSet);
             qnas.add(qna);
         }
