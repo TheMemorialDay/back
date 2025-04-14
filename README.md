@@ -44,7 +44,7 @@ THEMEMORIALDAY/
  ┣ gradle/                              # Gradle 관련 설정 파일 및 스크립트
  ┣ src/                                 # 소스 코드 디렉토리
  ┃ ┣ main/                              # 메인 소스 코드
- ┃ ┃ ┣ java/com/서비스 상위 폴더명/서비스명/ # 자바 소스 코드 경로
+ ┃ ┃ ┣ java/com/korit/TheMemorialDay/ # 자바 소스 코드 경로
  ┃ ┃ ┃ ┣ common/                        # 공통 모듈 또는 유틸리티 클래스
  ┃ ┃ ┃ ┣ config/                        # 애플리케이션 설정 관련 클래스
  ┃ ┃ ┃ ┣ controller/                    # API 요청을 처리하는 컨트롤러
@@ -63,10 +63,7 @@ THEMEMORIALDAY/
  ┣ build.gradle                          # Gradle 빌드 설정 파일
  ┣ gradlew                               # Gradle Wrapper 스크립트 (Unix 계열)
  ┣ gradlew.bat                           # Gradle Wrapper 스크립트 (Windows)
- ┣ .HELP.md                              # 프로젝트 관련 도움말 문서
- ┣ hs_err_pid1256.log                    # JVM 오류 로그 파일
  ┗ README.md                             # 프로젝트 소개 파일
- ┗ replay_pid1256.log                    # JVM 재생 로그 파일
  ┗ settings.gradle                       # Gradle 설정 파일
 
 ```
